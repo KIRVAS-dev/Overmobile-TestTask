@@ -1,0 +1,91 @@
+# ============================================
+# General Settings
+# ============================================
+
+# Normalize line endings to LF in the repository
+* text=auto eol=lf
+
+# Windows batch scripts — use CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# ============================================
+# Unity YAML files with Smart Merge support
+# ============================================
+
+*.unity         merge=unityyamlmerge
+*.prefab        merge=unityyamlmerge
+*.asset         merge=unityyamlmerge
+*.mat           merge=unityyamlmerge
+*.controller    merge=unityyamlmerge
+*.overrideController merge=unityyamlmerge
+*.anim          merge=unityyamlmerge
+
+# Unity .meta files — keep as text for versioning
+*.meta          text
+
+# ============================================
+# Source files and configuration — treat as text
+# ============================================
+
+*.cs            text
+*.shader        text
+*.compute       text
+*.cginc         text
+*.hlsl          text
+*.glsl          text
+*.json          text
+*.xml           text
+*.txt           text
+*.md            text
+*.asmdef        text
+*.asmref        text
+*.yml           text
+*.yaml          text
+*.rsp           text
+
+# ============================================
+# Binary files — disable diff and merge
+# ============================================
+
+# Images
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.psd           binary
+*.tga           binary
+*.exr           binary
+
+# 3D models and animation
+*.fbx           binary
+*.obj           binary
+*.blend         binary
+
+# Audio
+*.wav           binary
+*.mp3           binary
+*.ogg           binary
+
+# Fonts
+*.ttf           binary
+*.otf           binary
+
+# Unity packages
+*.unitypackage  binary
+
+# FMOD
+Overmobile/Assets/Plugins/FMOD/**/*.bundle text eol=lf
+Overmobile/Assets/Plugins/FMOD/**/Info.plist text eol=lf
+
+# ============================================
+# UnityYAMLMerge setup (instructions)
+# ============================================
+# To enable Unity Smart Merge globally:
+#
+# Windows:
+# git config --global merge.unityyamlmerge.name "Unity SmartMerge"
+# git config --global merge.unityyamlmerge.driver "\"C:/Program Files/Unity/Hub/Editor/6000.4.x/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p -s file \"%BASE\" \"%REMOTE\" \"%LOCAL\" \"%MERGED\""
+#
+# macOS:
+# git config --global merge.unityyamlmerge.name "Unity SmartMerge"
+# git config --global merge.unityyamlmerge.driver "/Applications/Unity/Hub/Editor/6000.4.x/Unity.app/Contents/Tools/UnityYAMLMerge merge -p -s file \"$BASE\" \"$REMOTE\" \"$LOCAL\" \"$MERGED\""
