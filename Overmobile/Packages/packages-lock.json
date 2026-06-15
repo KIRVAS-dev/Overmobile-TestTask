@@ -14,6 +14,18 @@
       "dependencies": {},
       "hash": "acc1c7bc9ea34c33b830e40316fca52553878d29"
     },
+    "com.kirvas.entrypoint-scene-autoloader": {
+      "version": "file:EntryPointSceneAutoloader",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.kirvas.interface-ref": {
+      "version": "file:InterfaceRef",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.2d.animation": {
       "version": "14.0.4",
       "depth": 1,
@@ -360,6 +372,12 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "com.unity.uiextensions": {
+      "version": "file:UnityUIExtensions",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.visualscripting": {
       "version": "1.9.11",
