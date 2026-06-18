@@ -34,7 +34,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6933858595149416045}
-    m_Position: {x: 200, y: 0, z: 0}
+    m_Position: {x: 470, y: -20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -52,7 +52,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Animation
+  m_Name: SplashUp
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

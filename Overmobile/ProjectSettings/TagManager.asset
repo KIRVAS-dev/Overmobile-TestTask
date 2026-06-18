@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -38,8 +38,26 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2216511059
+    locked: 0
+  - name: Props
+    uniqueID: 807567981
+    locked: 0
+  - name: Shadows
+    uniqueID: 3760783669
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: WorldSpaceUI
+    uniqueID: 706587451
+    locked: 0
+  - name: Items
+    uniqueID: 4290455537
+    locked: 0
+  - name: VFX
+    uniqueID: 1182670473
     locked: 0
   m_RenderingLayers:
   - Default
@@ -50,27 +68,4 @@ TagManager:
   - Light Layer 5
   - Light Layer 6
   - Light Layer 7
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  m_MigratedRenderPipelines: []
