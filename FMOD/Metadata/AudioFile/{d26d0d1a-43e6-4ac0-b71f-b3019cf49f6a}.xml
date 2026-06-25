@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{d26d0d1a-43e6-4ac0-b71f-b3019cf49f6a}">
+		<property name="assetPath">
+			<value>Upgrades/Super Charged Game Power Up 2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.25</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b10dbed6-5c80-48a8-a4fb-47aed200e30d}</destination>
+		</relationship>
+	</object>
+</objects>

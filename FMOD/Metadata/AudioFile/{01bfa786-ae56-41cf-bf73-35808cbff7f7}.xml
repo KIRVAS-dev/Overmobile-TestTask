@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{01bfa786-ae56-41cf-bf73-35808cbff7f7}">
+		<property name="assetPath">
+			<value>TargetSelection/403005__inspectorj__ui-confirmation-alert-a4.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3576643990929704</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b10dbed6-5c80-48a8-a4fb-47aed200e30d}</destination>
+		</relationship>
+	</object>
+</objects>
