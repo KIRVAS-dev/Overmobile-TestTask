@@ -1,6 +1,6 @@
 using ExtendedExceptions;
 
-namespace ViewComponents.PowerPanel
+namespace ViewComponents.PowerPanel.Api
 {
     public sealed class MissingPowerPanelConfigException : ExtendedException
     {
