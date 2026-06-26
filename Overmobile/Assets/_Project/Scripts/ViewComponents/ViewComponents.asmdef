@@ -2,15 +2,22 @@
     "name": "ViewComponents",
     "rootNamespace": "ViewComponents",
     "references": [
+        "Core",
         "ExtendedExceptions",
+        "Input",
+        "UniTask",
+        "VContainer",
+        "DOTween.Modules",
         "Unity.TextMeshPro",
         "Unity.ugui"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "DOTween.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

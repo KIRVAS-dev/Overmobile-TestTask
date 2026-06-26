@@ -1,4 +1,3 @@
-using Rendering.VignetteBlur.Api;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;

@@ -4,7 +4,8 @@
     "references": [
         "ExtendedExceptions",
         "VContainer",
-        "UniTask"
+        "UniTask",
+        "Unity.ugui"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

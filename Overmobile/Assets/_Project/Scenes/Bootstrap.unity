@@ -162,7 +162,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb68b656566a4b24f8fbfd558f6c7fea, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Core::Core.Bootstrap.ProjectScope
+  m_EditorClassIdentifier: Infrastructure.Bootstrap::Infrastructure.Bootstrap.ProjectScope
   parentReference:
     TypeName: 
   autoRun: 1

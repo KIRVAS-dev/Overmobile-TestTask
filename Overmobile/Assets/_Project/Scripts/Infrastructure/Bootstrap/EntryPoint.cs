@@ -1,19 +1,19 @@
 using System.Threading;
-using Core.Bootstrap.Api;
+using Core.Bootstrap;
 using Cysharp.Threading.Tasks;
 using VContainer.Unity;
 
-namespace Core.Bootstrap
+namespace Infrastructure.Bootstrap
 {
     public sealed class EntryPoint : IStartable
     {
         const string CORE_SCENE_NAME = "Core";
 
-        readonly ISceneLoader sceneLoader;
+        private readonly ISceneLoader _sceneLoader;
 
         public EntryPoint(ISceneLoader sceneLoader)
         {
-            this.sceneLoader = sceneLoader;
+            _sceneLoader = sceneLoader;
         }
 
         public void Start()
@@ -21,9 +21,9 @@ namespace Core.Bootstrap
             LoadCoreAsync().Forget();
         }
 
-        async UniTaskVoid LoadCoreAsync()
+        private async UniTaskVoid LoadCoreAsync()
         {
-            await sceneLoader.LoadSceneAsync(CORE_SCENE_NAME, LoadSceneMode.Additive, CancellationToken.None);
+            await _sceneLoader.LoadSceneAsync(CORE_SCENE_NAME, LoadSceneMode.Additive, CancellationToken.None);
         }
     }
 }

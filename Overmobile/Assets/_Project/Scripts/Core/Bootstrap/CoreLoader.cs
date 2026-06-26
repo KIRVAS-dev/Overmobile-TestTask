@@ -1,32 +1,33 @@
-using System.Threading;
-using Core.Bootstrap.Api;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using LoadSceneMode = Core.Bootstrap.Api.LoadSceneMode;
+using CoreLoadSceneMode = Core.Bootstrap.LoadSceneMode;
+using UnityLoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
 
 namespace Core.Bootstrap
 {
     public sealed class CoreLoader : ISceneLoader
     {
-        public async UniTask LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode, CancellationToken cancellationToken)
+        public async UniTask LoadSceneAsync(string sceneName, CoreLoadSceneMode loadSceneMode,
+            CancellationToken cancellationToken)
         {
-            UnityEngine.SceneManagement.LoadSceneMode unityLoadSceneMode = ConvertLoadSceneMode(loadSceneMode);
+            UnityLoadSceneMode unityLoadSceneMode = ConvertLoadSceneMode(loadSceneMode);
 
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, unityLoadSceneMode);
 
             await loadOperation.ToUniTask(cancellationToken: cancellationToken);
         }
 
-        UnityEngine.SceneManagement.LoadSceneMode ConvertLoadSceneMode(LoadSceneMode loadSceneMode)
+        private UnityLoadSceneMode ConvertLoadSceneMode(CoreLoadSceneMode loadSceneMode)
         {
             switch (loadSceneMode)
             {
-                case LoadSceneMode.Single:
-                    return UnityEngine.SceneManagement.LoadSceneMode.Single;
+                case CoreLoadSceneMode.Single:
+                    return UnityLoadSceneMode.Single;
 
-                case LoadSceneMode.Additive:
-                    return UnityEngine.SceneManagement.LoadSceneMode.Additive;
+                case CoreLoadSceneMode.Additive:
+                    return UnityLoadSceneMode.Additive;
 
                 default:
                     throw new UnhandledLoadSceneModeException(loadSceneMode);

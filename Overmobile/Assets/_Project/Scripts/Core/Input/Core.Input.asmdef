@@ -1,0 +1,20 @@
+{
+    "name": "Core.Input",
+    "rootNamespace": "Core.Input",
+    "references": [
+        "Core",
+        "ExtendedExceptions",
+        "Input",
+        "ViewComponents",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

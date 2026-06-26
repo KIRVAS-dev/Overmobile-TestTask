@@ -1,15 +1,15 @@
-using Core.Bootstrap.Api;
+using Core.Bootstrap;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Bootstrap
+namespace Infrastructure.Bootstrap
 {
     public sealed class ProjectScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<CoreLoader>(Lifetime.Singleton).As<ISceneLoader>();
             builder.RegisterEntryPoint<EntryPoint>();
+            builder.Register<CoreLoader>(Lifetime.Singleton).As<ISceneLoader>();
         }
     }
 }

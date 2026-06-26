@@ -1,4 +1,4 @@
-namespace Core.Bootstrap.Api
+namespace Core.Bootstrap
 {
     public enum LoadSceneMode
     {

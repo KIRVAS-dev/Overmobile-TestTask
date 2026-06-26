@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using ViewComponents.PowerPanel.Api;
 
 namespace ViewComponents.PowerPanel
 {

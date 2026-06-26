@@ -4,7 +4,10 @@
     "references": [
         "ExtendedExceptions",
         "VContainer",
-        "UniTask"
+        "UniTask",
+        "Core",
+        "Core.Input",
+        "ViewComponents"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

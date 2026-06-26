@@ -1,6 +1,6 @@
 using ExtendedExceptions;
 
-namespace Rendering.VignetteBlur.Api
+namespace Rendering.VignetteBlur
 {
     public sealed class MissingVignetteBlurMaterialException : ExtendedException
     {

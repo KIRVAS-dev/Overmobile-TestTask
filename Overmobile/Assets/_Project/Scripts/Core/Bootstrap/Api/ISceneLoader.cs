@@ -1,7 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace Core.Bootstrap.Api
+namespace Core.Bootstrap
 {
     public interface ISceneLoader
     {
