@@ -5,7 +5,6 @@
         "Core",
         "ExtendedExceptions",
         "Input",
-        "ViewComponents",
         "UniTask"
     ],
     "includePlatforms": [],

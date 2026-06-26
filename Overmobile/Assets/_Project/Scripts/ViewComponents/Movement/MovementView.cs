@@ -54,10 +54,10 @@ namespace ViewComponents.Movement
             float length = 0f;
             Vector3 previous = transform.position;
 
-            for (int i = 0; i < path.Count; i++)
+            foreach (Vector3 pathPoint in path)
             {
-                length += Vector3.Distance(previous, path[i]);
-                previous = path[i];
+                length += Vector3.Distance(previous, pathPoint);
+                previous = pathPoint;
             }
 
             return length;

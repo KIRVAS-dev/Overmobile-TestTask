@@ -4,33 +4,34 @@ using Input.Binds;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using ViewComponents.Movement;
 
 namespace Core.Input.Movement
 {
     public sealed class MovementInputHandler
     {
         private readonly IMovementService _movementService;
-        private readonly MovementTargetProvider _movementTargetProvider;
+        private readonly IMovementInputTargetProvider _movementInputTargetProvider;
         private readonly List<Bind> _binds = new List<Bind>();
 
         private CancellationTokenSource _cancellationTokenSource;
 
-        public MovementInputHandler(IMovementService movementService, MovementTargetProvider movementTargetProvider)
+        public MovementInputHandler(
+            IMovementService movementService,
+            IMovementInputTargetProvider movementInputTargetProvider)
         {
             _movementService = movementService;
-            _movementTargetProvider = movementTargetProvider;
+            _movementInputTargetProvider = movementInputTargetProvider;
         }
 
         public void StartListening()
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            IReadOnlyList<MovementTarget> movementTargets = _movementTargetProvider.GetTargets();
+            IReadOnlyList<MovementInputTarget> inputTargets = _movementInputTargetProvider.GetInputTargets();
 
-            foreach (MovementTarget movementTarget in movementTargets)
+            foreach (MovementInputTarget inputTarget in inputTargets)
             {
-                string endpointKey = movementTarget.EndpointKey;
-                Bind bind = new Bind(movementTarget.PointArea.PointerUp);
+                string endpointKey = inputTarget.EndpointKey;
+                Bind bind = new Bind(inputTarget.PointerUp);
 
                 bind.OnTriggered += () => OnPointerUp(endpointKey);
                 bind.Enable();
