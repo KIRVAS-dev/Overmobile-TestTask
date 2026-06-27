@@ -4,6 +4,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using ViewComponents.Animation;
 
 namespace ViewComponents.Movement
 {
@@ -11,20 +12,15 @@ namespace ViewComponents.Movement
         : MonoBehaviour,
           IMovementView
     {
-        private static readonly int IsMovingHash = Animator.StringToHash("IsMoving");
-
         [SerializeField] private Transform _facingTransform;
-        [SerializeField] private Animator _animator;
-        [SerializeField] private GameObject _footstepsSfx;
         [SerializeField] private float _facingYawOffset = 180f;
         [SerializeField] private PathType _pathType = PathType.Linear;
         [SerializeField] private PathMode _pathMode = PathMode.TopDown2D;
+        [SerializeField] private CharacterAnimationView _characterAnimationView;
+        [SerializeField] private GameObject _footstepsSfx;
 
-        public async UniTask MoveAlongPathAsync(
-            IReadOnlyList<Vector3> pathPoints,
-            float moveSpeed, float facingRotationDuration,
-            Vector3 destinationFacingWorldPosition,
-            CancellationToken cancellationToken)
+        public async UniTask MoveAlongPathAsync(IReadOnlyList<Vector3> pathPoints, float moveSpeed, float facingRotationDuration,
+            Vector3 destinationFacingWorldPosition, CancellationToken cancellationToken)
         {
             if (_facingTransform == null)
             {
@@ -84,13 +80,13 @@ namespace ViewComponents.Movement
 
         private void BeginRunLocomotion()
         {
-            _animator.SetBool(IsMovingHash, true);
+            _characterAnimationView.SetIsMoving(true);
             SetFootstepsActive(true);
         }
 
         private void EndRunLocomotion()
         {
-            _animator.SetBool(IsMovingHash, false);
+            _characterAnimationView.SetIsMoving(false);
             SetFootstepsActive(false);
         }
 

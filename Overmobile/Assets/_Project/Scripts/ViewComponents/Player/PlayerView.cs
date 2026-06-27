@@ -1,8 +1,11 @@
+using Core.Gameplay.Animation;
+using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
 using DG.Tweening;
 using UnityEngine;
 using VContainer;
+using ViewComponents.Animation;
 using ViewComponents.Movement;
 
 namespace ViewComponents.Player
@@ -18,16 +21,16 @@ namespace ViewComponents.Player
         [SerializeField] private Transform _upgradeTierRoot;
         [SerializeField] private GameObject[] _upgradeTierPrefabs;
 
-        private IActiveMovementViewRegistry _movementViewRegistry;
-        private IActiveMovementViewProvider _movementViewProvider;
+        private IActiveCharacterViewRegistry _activeCharacterViewRegistry;
+        private IActiveCharacterViewProvider _activeCharacterViewProvider;
 
         [Inject]
         public void Construct(
-            IActiveMovementViewRegistry movementViewRegistry,
-            IActiveMovementViewProvider movementViewProvider)
+            IActiveCharacterViewRegistry activeCharacterViewRegistry,
+            IActiveCharacterViewProvider activeCharacterViewProvider)
         {
-            _movementViewRegistry = movementViewRegistry;
-            _movementViewProvider = movementViewProvider;
+            _activeCharacterViewRegistry = activeCharacterViewRegistry;
+            _activeCharacterViewProvider = activeCharacterViewProvider;
         }
 
         public void Spawn(int tierIndex)
@@ -53,7 +56,8 @@ namespace ViewComponents.Player
 
             if (replaceCurrent)
             {
-                MovementView currentMovementView = (MovementView)_movementViewProvider.ActiveMovementView;
+                MovementView currentMovementView =
+                    (MovementView)_activeCharacterViewProvider.ActiveCharacterView.MovementView;
                 Transform currentTierTransform = currentMovementView.transform;
                 worldPosition = currentTierTransform.position;
                 worldRotation = currentTierTransform.rotation;
@@ -66,8 +70,17 @@ namespace ViewComponents.Player
             tierInstance.transform.SetPositionAndRotation(worldPosition, worldRotation);
 
             MovementView movementView = tierInstance.GetComponent<MovementView>();
-            _movementViewRegistry.SetActiveMovementView(movementView);
+            CharacterAnimationView characterAnimationView = tierInstance.GetComponent<CharacterAnimationView>();
+
+            _activeCharacterViewRegistry.SetActiveCharacterView(
+                new CharacterViewBinding(characterAnimationView, movementView)
+            );
             CurrentTierIndex = tierIndex;
+
+            if (replaceCurrent)
+            {
+                characterAnimationView.FireAnimation(CharacterAnimationSlot.Upgrade);
+            }
         }
     }
 }

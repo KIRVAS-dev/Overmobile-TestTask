@@ -769,6 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4635797771478905391}
   - component: {fileID: 5776583395254240755}
+  - component: {fileID: 3528520294824144858}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -810,11 +811,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementView
   _facingTransform: {fileID: 4192523190375051584}
-  _animator: {fileID: 6262452792421950317}
+  _characterAnimationView: {fileID: 3528520294824144858}
   _footstepsSfx: {fileID: 3194794899493447377}
   _facingYawOffset: 180
   _pathType: 0
   _pathMode: 2
+--- !u!114 &3528520294824144858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001716404040914708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790bdcf671341f747bb9033187ac5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Animation.CharacterAnimationView
+  _isMovingBoolName: IsMoving
+  _animator: {fileID: 6262452792421950317}
+  _rawTriggersMap:
+  - AnimationSlot: 1
+    TriggerName: AttackTrigger
+  - AnimationSlot: 4
+    TriggerName: UpgradeTrigger
+  - AnimationSlot: 5
+    TriggerName: CelebrateTrigger
+  - AnimationSlot: 2
+    TriggerName: DefeatTrigger
 --- !u!1 &8573976392950650886
 GameObject:
   m_ObjectHideFlags: 0

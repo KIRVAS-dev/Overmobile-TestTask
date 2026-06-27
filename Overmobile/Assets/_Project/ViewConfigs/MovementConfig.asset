@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb06721c38ed38f479a393af59337880, type: 3}
   m_Name: MovementConfig
   m_EditorClassIdentifier: Core::Core.Services.Movement.MovementConfig
-  _moveSpeed: 4
-  _facingRotationDuration: 0.15
+  _moveSpeed: 3.25
+  _facingRotationDuration: 0.35

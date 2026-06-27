@@ -13,10 +13,4 @@ namespace ViewComponents.Movement
         public MovementFacingTransformMissingException(string objectName)
             : base("movement-view-2", $"Facing transform is not assigned on '{objectName}'") { }
     }
-
-    public sealed class InvalidMovementTargetViewException : ExtendedException
-    {
-        public InvalidMovementTargetViewException(string providerName, string reason)
-            : base("movement-view-3", $"Invalid movement target provider '{providerName}': {reason}") { }
-    }
 }

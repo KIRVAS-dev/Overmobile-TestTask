@@ -200,7 +200,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2069127016291750437}
+  - component: {fileID: 4914371018067680657}
   - component: {fileID: 654493932898075962}
+  - component: {fileID: 4355730437235926077}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -231,6 +233,21 @@ Transform:
   - {fileID: 1102072288433020731}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4914371018067680657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793627057752628137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f9e37ca6c455748a1ec336b25d80a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.InteractableTarget
+  _pointArea: {fileID: 1012956945655186846}
+  _movementTarget: {fileID: 654493932898075962}
+  _characterAnimationView: {fileID: 4355730437235926077}
 --- !u!114 &654493932898075962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,7 +261,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementTarget
   _endpointKey: 
-  _pointArea: {fileID: 1012956945655186846}
+--- !u!114 &4355730437235926077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793627057752628137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790bdcf671341f747bb9033187ac5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Animation.CharacterAnimationView
+  _isMovingBoolName: IsMoving
+  _animator: {fileID: 8651897280454782039}
+  _rawTriggersMap:
+  - AnimationSlot: 2
+    TriggerName: DefeatTrigger
 --- !u!1 &4716099593165831685
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +787,11 @@ PrefabInstance:
 --- !u!4 &3382654567267251757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b6e06368cb5ff4499064c78262c9ac4, type: 3}
+  m_PrefabInstance: {fileID: 2989021352292012486}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8651897280454782039 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 1b6e06368cb5ff4499064c78262c9ac4, type: 3}
   m_PrefabInstance: {fileID: 2989021352292012486}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4672988228558511649

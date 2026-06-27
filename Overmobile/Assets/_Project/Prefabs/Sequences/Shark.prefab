@@ -124,6 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8330236077381630444}
+  - component: {fileID: 8748232072380845054}
   - component: {fileID: -8843980892807431689}
   m_Layer: 0
   m_Name: Shark
@@ -150,6 +151,21 @@ Transform:
   - {fileID: 51769851662013252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8748232072380845054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416135395303402786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f9e37ca6c455748a1ec336b25d80a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.InteractableTarget
+  _pointArea: {fileID: 4610870707419756717}
+  _movementTarget: {fileID: -8843980892807431689}
+  _characterAnimationView: {fileID: 0}
 --- !u!114 &-8843980892807431689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementTarget
   _endpointKey: 
-  _pointArea: {fileID: 4610870707419756717}
 --- !u!1001 &4465699695709705570
 PrefabInstance:
   m_ObjectHideFlags: 0

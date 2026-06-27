@@ -8219,7 +8219,7 @@ GameObject:
   - component: {fileID: 631628028}
   - component: {fileID: 631628029}
   m_Layer: 0
-  m_Name: EntryPoint
+  m_Name: CoreEntryPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

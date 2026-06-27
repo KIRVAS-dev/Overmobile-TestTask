@@ -1,9 +1,11 @@
+using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
 using Core.Input.Movement;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
 
@@ -14,7 +16,7 @@ namespace Core.Bootstrap
         [Header("Movement")]
         [SerializeField] private MovementConfig _movementConfig;
         [SerializeField] private MovementRouteProvider _movementRouteProvider;
-        [SerializeField] private MovementTargetProvider _movementTargetProvider;
+        [SerializeField] private InteractableTargetProvider _interactableTargetProvider;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -27,22 +29,22 @@ namespace Core.Bootstrap
         private void RegisterPlayer(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<PlayerView>().As<IPlayerUpgradeView>().As<IPlayerSpawnView>();
+
+            builder
+               .Register<ActiveCharacterViewRegistry>(Lifetime.Singleton)
+               .As<IActiveCharacterViewProvider>()
+               .As<IActiveCharacterViewRegistry>();
         }
 
         private void RegisterMovement(IContainerBuilder builder)
         {
             builder.RegisterInstance(_movementConfig);
             builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
-            builder.RegisterInstance(_movementTargetProvider).As<IMovementInputTargetProvider>();
+            builder.RegisterInstance(_interactableTargetProvider).As<IMovementInputTargetProvider>();
             builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
             builder.Register<MovementModel>(Lifetime.Singleton);
             builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
             builder.Register<MovementInputHandler>(Lifetime.Singleton);
-
-            builder
-               .Register<ActiveMovementViewRegistry>(Lifetime.Singleton)
-               .As<IActiveMovementViewProvider>()
-               .As<IActiveMovementViewRegistry>();
         }
     }
 }
