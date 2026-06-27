@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: MovementConfig
   m_EditorClassIdentifier: Core::Core.Services.Movement.MovementConfig
   _moveSpeed: 4
+  _facingRotationDuration: 0.15

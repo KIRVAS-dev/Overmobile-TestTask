@@ -28,9 +28,10 @@ namespace Core.Gameplay.Movement
 
         public bool IsMoving => _movementModel.IsMoving;
 
-        public string CurrentEndpointKey => _movementModel.CurrentEndpointKey;
-
-        public async UniTask MoveToAsync(string toEndpointKey, CancellationToken cancellationToken)
+        public async UniTask MoveToAsync(
+            string toEndpointKey,
+            Vector3 destinationFacingWorldPosition,
+            CancellationToken cancellationToken)
         {
             if (_movementModel.IsMoving)
             {
@@ -39,8 +40,31 @@ namespace Core.Gameplay.Movement
 
             string fromEndpointKey = _movementModel.CurrentEndpointKey;
 
+            if (_movementConfig.FacingRotationDuration <= 0f)
+            {
+                throw new InvalidMovementRouteException(
+                    nameof(MovementService),
+                    "Facing rotation duration must be greater than zero"
+                );
+            }
+
             if (fromEndpointKey == toEndpointKey)
             {
+                _movementModel.SetMoving(true);
+
+                try
+                {
+                    await _movementView.FaceTowardAsync(
+                        destinationFacingWorldPosition,
+                        _movementConfig.FacingRotationDuration,
+                        cancellationToken
+                    );
+                }
+                finally
+                {
+                    _movementModel.SetMoving(false);
+                }
+
                 return;
             }
 
@@ -52,6 +76,8 @@ namespace Core.Gameplay.Movement
                 throw new InvalidMovementRouteException($"{fromEndpointKey}->{toEndpointKey}", "Path has no waypoints");
             }
 
+            IReadOnlyList<Vector3> movementPath = GetMovementPath(pathPoints);
+
             if (_movementConfig.MoveSpeed <= 0f)
             {
                 throw new InvalidMovementRouteException(nameof(MovementService), "Move speed must be greater than zero");
@@ -61,7 +87,13 @@ namespace Core.Gameplay.Movement
 
             try
             {
-                await _movementView.MoveAlongPathAsync(pathPoints, _movementConfig.MoveSpeed, cancellationToken);
+                await _movementView.MoveAlongPathAsync(
+                    movementPath,
+                    _movementConfig.MoveSpeed,
+                    _movementConfig.FacingRotationDuration,
+                    destinationFacingWorldPosition,
+                    cancellationToken
+                );
 
                 _movementModel.SetCurrentEndpointKey(toEndpointKey);
             }
@@ -69,6 +101,23 @@ namespace Core.Gameplay.Movement
             {
                 _movementModel.SetMoving(false);
             }
+        }
+
+        private IReadOnlyList<Vector3> GetMovementPath(IReadOnlyList<Vector3> pathPoints)
+        {
+            if (pathPoints.Count == 1)
+            {
+                return pathPoints;
+            }
+
+            Vector3[] trimmedPath = new Vector3[pathPoints.Count - 1];
+
+            for (int i = 1; i < pathPoints.Count; i++)
+            {
+                trimmedPath[i - 1] = pathPoints[i];
+            }
+
+            return trimmedPath;
         }
     }
 }

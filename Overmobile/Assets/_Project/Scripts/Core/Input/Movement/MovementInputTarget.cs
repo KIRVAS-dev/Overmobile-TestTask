@@ -1,4 +1,5 @@
 using Input;
+using UnityEngine;
 
 namespace Core.Input.Movement
 {
@@ -8,10 +9,16 @@ namespace Core.Input.Movement
 
         public ITrigger PointerUp { get; }
 
-        public MovementInputTarget(string endpointKey, ITrigger pointerUp)
+        public Vector3 FacingWorldPosition { get; }
+
+        public MovementInputTarget(
+            string endpointKey,
+            ITrigger pointerUp,
+            Vector3 facingWorldPosition)
         {
             EndpointKey = endpointKey;
             PointerUp = pointerUp;
+            FacingWorldPosition = facingWorldPosition;
         }
     }
 }

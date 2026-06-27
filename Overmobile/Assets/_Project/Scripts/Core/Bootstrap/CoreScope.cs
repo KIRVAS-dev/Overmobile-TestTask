@@ -9,6 +9,7 @@ namespace Core.Bootstrap
 {
     public sealed class CoreScope : LifetimeScope
     {
+        [Header("Movement")]
         [SerializeField] private MovementConfig _movementConfig;
         [SerializeField] private MovementRouteProvider _movementRouteProvider;
         [SerializeField] private MovementTargetProvider _movementTargetProvider;

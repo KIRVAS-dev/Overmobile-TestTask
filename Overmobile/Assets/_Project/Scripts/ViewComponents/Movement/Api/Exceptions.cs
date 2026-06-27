@@ -8,15 +8,15 @@ namespace ViewComponents.Movement
             : base("movement-view-1", $"Invalid movement route '{routeName}': {reason}") { }
     }
 
-    public sealed class MovementTargetEndpointKeyMissingException : ExtendedException
+    public sealed class MovementFacingTransformMissingException : ExtendedException
     {
-        public MovementTargetEndpointKeyMissingException(string objectName)
-            : base("movement-view-2", $"Endpoint key is empty on '{objectName}'") { }
+        public MovementFacingTransformMissingException(string objectName)
+            : base("movement-view-2", $"Facing transform is not assigned on '{objectName}'") { }
     }
 
     public sealed class InvalidMovementTargetViewException : ExtendedException
     {
         public InvalidMovementTargetViewException(string providerName, string reason)
-            : base("movement-view-4", $"Invalid movement target provider '{providerName}': {reason}") { }
+            : base("movement-view-3", $"Invalid movement target provider '{providerName}': {reason}") { }
     }
 }

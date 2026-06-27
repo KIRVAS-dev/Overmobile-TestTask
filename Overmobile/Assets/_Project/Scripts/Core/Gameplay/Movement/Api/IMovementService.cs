@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEngine;
 
 namespace Core.Gameplay.Movement
 {
@@ -7,8 +8,6 @@ namespace Core.Gameplay.Movement
     {
         bool IsMoving { get; }
 
-        string CurrentEndpointKey { get; }
-
-        UniTask MoveToAsync(string toEndpointKey, CancellationToken cancellationToken);
+        UniTask MoveToAsync(string toEndpointKey, Vector3 destinationFacingWorldPosition, CancellationToken cancellationToken);
     }
 }

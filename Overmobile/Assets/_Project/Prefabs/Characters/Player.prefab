@@ -809,6 +809,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23246c55696572344a757dd706e9dd0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementView
+  _facingTransform: {fileID: 4192523190375051584}
+  _animator: {fileID: 6262452792421950317}
+  _footstepsSfx: {fileID: 3194794899493447377}
+  _facingYawOffset: 180
+  _pathType: 0
+  _pathMode: 2
 --- !u!1 &8573976392950650886
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +952,11 @@ PrefabInstance:
 --- !u!4 &2427129095223575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dfbdf8958b5d0a546af196fe7ff0ff02, type: 3}
+  m_PrefabInstance: {fileID: 541036735957966588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6262452792421950317 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: dfbdf8958b5d0a546af196fe7ff0ff02, type: 3}
   m_PrefabInstance: {fileID: 541036735957966588}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5240828344126485630

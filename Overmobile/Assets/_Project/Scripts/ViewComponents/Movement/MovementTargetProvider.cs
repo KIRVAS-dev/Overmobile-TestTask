@@ -1,3 +1,4 @@
+using Core.Gameplay.Movement;
 using Core.Input.Movement;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,10 @@ namespace ViewComponents.Movement
 
             foreach (MovementTarget movementTarget in _movementTargets)
             {
-                inputTargets.Add(new MovementInputTarget(movementTarget.EndpointKey, movementTarget.PointArea.PointerUp));
+                inputTargets.Add(new MovementInputTarget(
+                    movementTarget.EndpointKey,
+                    movementTarget.PointArea.PointerUp,
+                    movementTarget.transform.position));
             }
 
             return inputTargets;

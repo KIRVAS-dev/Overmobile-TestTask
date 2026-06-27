@@ -30,10 +30,10 @@ namespace Core.Input.Movement
 
             foreach (MovementInputTarget inputTarget in inputTargets)
             {
-                string endpointKey = inputTarget.EndpointKey;
-                Bind bind = new Bind(inputTarget.PointerUp);
+                MovementInputTarget capturedTarget = inputTarget;
+                Bind bind = new Bind(capturedTarget.PointerUp);
 
-                bind.OnTriggered += () => OnPointerUp(endpointKey);
+                bind.OnTriggered += () => OnPointerUp(capturedTarget);
                 bind.Enable();
                 _binds.Add(bind);
             }
@@ -56,21 +56,25 @@ namespace Core.Input.Movement
             _binds.Clear();
         }
 
-        private void OnPointerUp(string endpointKey)
+        private void OnPointerUp(MovementInputTarget inputTarget)
         {
             if (_movementService.IsMoving)
             {
                 return;
             }
 
-            MoveToTargetAsync(endpointKey).Forget();
+            MoveToTargetAsync(inputTarget).Forget();
         }
 
-        private async UniTaskVoid MoveToTargetAsync(string endpointKey)
+        private async UniTaskVoid MoveToTargetAsync(MovementInputTarget inputTarget)
         {
             try
             {
-                await _movementService.MoveToAsync(endpointKey, _cancellationTokenSource.Token);
+                await _movementService.MoveToAsync(
+                    inputTarget.EndpointKey,
+                    inputTarget.FacingWorldPosition,
+                    _cancellationTokenSource.Token
+                );
             }
             catch (MovementInProgressException) { }
             catch (OperationCanceledException) { }
