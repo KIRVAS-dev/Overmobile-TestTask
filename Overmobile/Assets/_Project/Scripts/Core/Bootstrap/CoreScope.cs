@@ -1,9 +1,11 @@
 using Core.Gameplay.Movement;
+using Core.Gameplay.Player;
 using Core.Input.Movement;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using ViewComponents.Movement;
+using ViewComponents.Player;
 
 namespace Core.Bootstrap
 {
@@ -18,7 +20,13 @@ namespace Core.Bootstrap
         {
             builder.RegisterEntryPoint<CoreEntryPoint>();
 
+            RegisterPlayer(builder);
             RegisterMovement(builder);
+        }
+
+        private void RegisterPlayer(IContainerBuilder builder)
+        {
+            builder.RegisterComponentInHierarchy<PlayerView>().As<IPlayerUpgradeView>().As<IPlayerSpawnView>();
         }
 
         private void RegisterMovement(IContainerBuilder builder)
@@ -26,11 +34,15 @@ namespace Core.Bootstrap
             builder.RegisterInstance(_movementConfig);
             builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
             builder.RegisterInstance(_movementTargetProvider).As<IMovementInputTargetProvider>();
-            builder.RegisterComponentInHierarchy<MovementView>().As<IMovementView>();
             builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
             builder.Register<MovementModel>(Lifetime.Singleton);
             builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
             builder.Register<MovementInputHandler>(Lifetime.Singleton);
+
+            builder
+               .Register<ActiveMovementViewRegistry>(Lifetime.Singleton)
+               .As<IActiveMovementViewProvider>()
+               .As<IActiveMovementViewRegistry>();
         }
     }
 }

@@ -25,4 +25,16 @@ namespace Core.Gameplay.Movement
         public MovementInProgressException()
             : base("movement-4", "Movement is already in progress") { }
     }
+
+    public sealed class ActiveMovementViewNotRegisteredException : ExtendedException
+    {
+        public ActiveMovementViewNotRegisteredException()
+            : base("movement-5", "Active movement view is not registered") { }
+    }
+
+    public sealed class InvalidActiveMovementViewRegistrationException : ExtendedException
+    {
+        public InvalidActiveMovementViewRegistrationException()
+            : base("movement-6", "Active movement view registration is invalid") { }
+    }
 }

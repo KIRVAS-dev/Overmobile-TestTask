@@ -10,27 +10,25 @@ namespace Core.Gameplay.Movement
         private readonly MovementModel _movementModel;
         private readonly MovementConfig _movementConfig;
         private readonly IMovementRouteRegistry _routeRegistry;
-        private readonly IMovementView _movementView;
+        private readonly IActiveMovementViewProvider _activeMovementViewProvider;
 
         public MovementService(
             MovementModel movementModel,
             MovementConfig movementConfig,
             IMovementRouteRegistry routeRegistry,
-            IMovementView movementView)
+            IActiveMovementViewProvider activeMovementViewProvider)
         {
             _movementModel = movementModel;
             _movementConfig = movementConfig;
             _routeRegistry = routeRegistry;
-            _movementView = movementView;
+            _activeMovementViewProvider = activeMovementViewProvider;
 
             _movementModel.SetCurrentEndpointKey(_routeRegistry.SpawnLocationKey);
         }
 
         public bool IsMoving => _movementModel.IsMoving;
 
-        public async UniTask MoveToAsync(
-            string toEndpointKey,
-            Vector3 destinationFacingWorldPosition,
+        public async UniTask MoveToAsync(string toEndpointKey, Vector3 destinationFacingWorldPosition,
             CancellationToken cancellationToken)
         {
             if (_movementModel.IsMoving)
@@ -54,7 +52,7 @@ namespace Core.Gameplay.Movement
 
                 try
                 {
-                    await _movementView.FaceTowardAsync(
+                    await _activeMovementViewProvider.ActiveMovementView.FaceTowardAsync(
                         destinationFacingWorldPosition,
                         _movementConfig.FacingRotationDuration,
                         cancellationToken
@@ -87,7 +85,7 @@ namespace Core.Gameplay.Movement
 
             try
             {
-                await _movementView.MoveAlongPathAsync(
+                await _activeMovementViewProvider.ActiveMovementView.MoveAlongPathAsync(
                     movementPath,
                     _movementConfig.MoveSpeed,
                     _movementConfig.FacingRotationDuration,

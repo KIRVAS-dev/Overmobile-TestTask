@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 4635797771478905391}
   - component: {fileID: 5776583395254240755}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1185,7 +1185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.45
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
