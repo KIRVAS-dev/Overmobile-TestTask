@@ -85,8 +85,8 @@ Overmobile/Assets/Plugins/FMOD/**/Info.plist text eol=lf
 #
 # Windows:
 # git config --global merge.unityyamlmerge.name "Unity SmartMerge"
-# git config --global merge.unityyamlmerge.driver "\"C:/Program Files/Unity/Hub/Editor/6000.4.x/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p -s file \"%BASE\" \"%REMOTE\" \"%LOCAL\" \"%MERGED\""
+# git config --global merge.unityyamlmerge.driver "\"C:/Program Files/Unity/Hub/Editor/6000.5.x/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p -s file \"%BASE\" \"%REMOTE\" \"%LOCAL\" \"%MERGED\""
 #
 # macOS:
 # git config --global merge.unityyamlmerge.name "Unity SmartMerge"
-# git config --global merge.unityyamlmerge.driver "/Applications/Unity/Hub/Editor/6000.4.x/Unity.app/Contents/Tools/UnityYAMLMerge merge -p -s file \"$BASE\" \"$REMOTE\" \"$LOCAL\" \"$MERGED\""
+# git config --global merge.unityyamlmerge.driver "/Applications/Unity/Hub/Editor/6000.5.x/Unity.app/Contents/Tools/UnityYAMLMerge merge -p -s file \"$BASE\" \"$REMOTE\" \"$LOCAL\" \"$MERGED\""
