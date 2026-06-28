@@ -814,6 +814,8 @@ MonoBehaviour:
   _facingYawOffset: 180
   _pathType: 0
   _pathMode: 2
+  _movementEase: 7
+  _facingRotationEase: 6
   _characterAnimationView: {fileID: 9131473389587698530}
   _footstepsSfx: {fileID: 3194794899493447377}
 --- !u!114 &9131473389587698530

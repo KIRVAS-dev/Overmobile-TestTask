@@ -1,6 +1,7 @@
 using Core.Gameplay.Character;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace Core.Gameplay.Movement
@@ -32,7 +33,10 @@ namespace Core.Gameplay.Movement
 
         public bool IsMoving => _movementModel.IsMoving;
 
-        public async UniTask MoveToAsync(string toEndpointKey, Vector3 destinationFacingWorldPosition)
+        public async UniTask MoveToAsync(
+            string toEndpointKey,
+            Vector3 destinationFacingWorldPosition,
+            CancellationToken cancellationToken)
         {
             if (_movementModel.IsMoving)
             {
@@ -57,7 +61,8 @@ namespace Core.Gameplay.Movement
                 {
                     await _activeCharacterViewProvider.ActiveCharacterView.MovementView.FaceTowardAsync(
                         destinationFacingWorldPosition,
-                        _movementConfig.FacingRotationDuration
+                        _movementConfig.FacingRotationDuration,
+                        cancellationToken
                     );
                 }
                 finally
@@ -76,8 +81,6 @@ namespace Core.Gameplay.Movement
                 throw new InvalidMovementRouteException($"{fromEndpointKey}->{toEndpointKey}", "Path has no waypoints");
             }
 
-            IReadOnlyList<Vector3> movementPath = GetMovementPath(pathPoints);
-
             if (_movementConfig.MoveSpeed <= 0f)
             {
                 throw new InvalidMovementRouteException(nameof(MovementService), "Move speed must be greater than zero");
@@ -90,11 +93,12 @@ namespace Core.Gameplay.Movement
                 _routeDisplayService.OnMovementStarted();
 
                 await _activeCharacterViewProvider.ActiveCharacterView.MovementView.MoveAlongPathAsync(
-                    movementPath,
+                    pathPoints,
                     _movementConfig.MoveSpeed,
                     _movementConfig.FacingRotationDuration,
                     destinationFacingWorldPosition,
-                    _routeDisplayService.OnMovementWaypointReached
+                    _routeDisplayService.OnMovementWaypointReached,
+                    cancellationToken
                 );
 
                 _movementModel.SetCurrentEndpointKey(toEndpointKey);
@@ -104,23 +108,6 @@ namespace Core.Gameplay.Movement
                 _movementModel.SetMoving(false);
                 _routeDisplayService.OnMovementEnded();
             }
-        }
-
-        private IReadOnlyList<Vector3> GetMovementPath(IReadOnlyList<Vector3> pathPoints)
-        {
-            if (pathPoints.Count == 1)
-            {
-                return pathPoints;
-            }
-
-            Vector3[] trimmedPath = new Vector3[pathPoints.Count - 1];
-
-            for (int i = 1; i < pathPoints.Count; i++)
-            {
-                trimmedPath[i - 1] = pathPoints[i];
-            }
-
-            return trimmedPath;
         }
     }
 }

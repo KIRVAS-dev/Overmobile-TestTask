@@ -811,11 +811,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementView
   _facingTransform: {fileID: 4192523190375051584}
-  _characterAnimationView: {fileID: 3528520294824144858}
-  _footstepsSfx: {fileID: 3194794899493447377}
   _facingYawOffset: 180
   _pathType: 0
   _pathMode: 2
+  _movementEase: 7
+  _facingRotationEase: 6
+  _characterAnimationView: {fileID: 3528520294824144858}
+  _footstepsSfx: {fileID: 3194794899493447377}
 --- !u!114 &3528520294824144858
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace ViewComponents.PowerPanel
 {
     [ExecuteAlways]
-    public class PowerPanelView : MonoBehaviour
+    public sealed class PowerPanelView : MonoBehaviour
     {
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private TMP_Text _textLabel;

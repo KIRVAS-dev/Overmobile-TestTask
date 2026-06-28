@@ -1,6 +1,5 @@
 using Core.Animation;
 using Core.Gameplay.Character;
-using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
 using DG.Tweening;
 using UnityEngine;
@@ -22,15 +21,12 @@ namespace ViewComponents.Player
         [SerializeField] private GameObject[] _upgradeTierPrefabs;
 
         private IActiveCharacterViewRegistry _activeCharacterViewRegistry;
-        private IActiveCharacterViewProvider _activeCharacterViewProvider;
+        private Transform _currentTierTransform;
 
         [Inject]
-        public void Construct(
-            IActiveCharacterViewRegistry activeCharacterViewRegistry,
-            IActiveCharacterViewProvider activeCharacterViewProvider)
+        public void Construct(IActiveCharacterViewRegistry activeCharacterViewRegistry)
         {
             _activeCharacterViewRegistry = activeCharacterViewRegistry;
-            _activeCharacterViewProvider = activeCharacterViewProvider;
         }
 
         public void Spawn(int tierIndex)
@@ -50,28 +46,49 @@ namespace ViewComponents.Player
 
         private void SpawnUpgradeTierAtIndex(int tierIndex, bool replaceCurrent)
         {
+            if (tierIndex < 0
+             || tierIndex >= _upgradeTierPrefabs.Length)
+            {
+                throw new UpgradeTierIndexOutOfRangeException(gameObject.name, tierIndex, _upgradeTierPrefabs.Length);
+            }
+
             GameObject tierPrefab = _upgradeTierPrefabs[tierIndex];
+
+            if (tierPrefab == null)
+            {
+                throw new MissingUpgradeTierPrefabException(gameObject.name, tierIndex);
+            }
+
             Vector3 worldPosition = _upgradeTierRoot.position;
             Quaternion worldRotation = _upgradeTierRoot.rotation;
 
             if (replaceCurrent)
             {
-                MovementView currentMovementView =
-                    (MovementView)_activeCharacterViewProvider.ActiveCharacterView.MovementView;
-                Transform currentTierTransform = currentMovementView.transform;
-                worldPosition = currentTierTransform.position;
-                worldRotation = currentTierTransform.rotation;
+                worldPosition = _currentTierTransform.position;
+                worldRotation = _currentTierTransform.rotation;
 
-                currentTierTransform.DOKill();
-                Destroy(currentTierTransform.gameObject);
+                _currentTierTransform.DOKill();
+                Destroy(_currentTierTransform.gameObject);
             }
 
             GameObject tierInstance = Instantiate(tierPrefab, _upgradeTierRoot);
             tierInstance.transform.SetPositionAndRotation(worldPosition, worldRotation);
 
             MovementView movementView = tierInstance.GetComponent<MovementView>();
+
+            if (movementView == null)
+            {
+                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(MovementView));
+            }
+
             CharacterAnimationView characterAnimationView = tierInstance.GetComponent<CharacterAnimationView>();
 
+            if (characterAnimationView == null)
+            {
+                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(CharacterAnimationView));
+            }
+
+            _currentTierTransform = tierInstance.transform;
             _activeCharacterViewRegistry.SetActiveCharacterView(
                 new CharacterViewBinding(characterAnimationView, movementView)
             );

@@ -18,6 +18,8 @@ namespace Core.Bootstrap
         [Header("Movement")]
         [SerializeField] private MovementConfig _movementConfig;
         [SerializeField] private MovementRouteProvider _movementRouteProvider;
+
+        [Header("Interaction")]
         [SerializeField] private InteractableTargetProvider _interactableTargetProvider;
 
         protected override void Configure(IContainerBuilder builder)

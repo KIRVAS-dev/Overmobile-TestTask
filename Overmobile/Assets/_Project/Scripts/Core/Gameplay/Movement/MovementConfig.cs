@@ -6,7 +6,6 @@ namespace Core.Gameplay.Movement
     public sealed class MovementConfig : ScriptableObject
     {
         public float MoveSpeed => _moveSpeed;
-
         public float FacingRotationDuration => _facingRotationDuration;
 
         [SerializeField] private float _moveSpeed = 1f;

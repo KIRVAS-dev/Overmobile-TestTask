@@ -75,6 +75,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{824790bd-caae-4cac-9481-351216ae821a}">
+		<property name="pitch">
+			<value>-7</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{01d92424-73e6-49d3-a70c-b097d77e414e}</destination>
 		</relationship>

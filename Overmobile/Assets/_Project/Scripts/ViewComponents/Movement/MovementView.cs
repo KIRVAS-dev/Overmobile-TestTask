@@ -17,6 +17,8 @@ namespace ViewComponents.Movement
         [SerializeField] private float _facingYawOffset = 180f;
         [SerializeField] private PathType _pathType = PathType.Linear;
         [SerializeField] private PathMode _pathMode = PathMode.TopDown2D;
+        [SerializeField] private Ease _movementEase = Ease.Linear;
+        [SerializeField] private Ease _facingRotationEase = Ease.Linear;
         [SerializeField] private CharacterAnimationView _characterAnimationView;
         [SerializeField] private GameObject _footstepsSfx;
 
@@ -24,43 +26,34 @@ namespace ViewComponents.Movement
             IReadOnlyList<Vector3> pathPoints,
             float moveSpeed, float facingRotationDuration,
             Vector3 destinationFacingWorldPosition,
-            Action<int> onWaypointReached)
+            Action<int> onWaypointReached,
+            CancellationToken cancellationToken)
         {
-            Vector3[] path = new Vector3[pathPoints.Count];
+            Vector3[] movementPath = MovementHelper.BuildMovementPath(pathPoints);
 
-            for (int i = 0; i < pathPoints.Count; i++)
-            {
-                path[i] = pathPoints[i];
-            }
-
-            float duration = CalculatePathLength(path) / moveSpeed;
+            float duration = MovementHelper.CalculatePolylineLength(transform.position, movementPath) / moveSpeed;
 
             BeginRunLocomotion();
 
             try
             {
-                StartFacingRotation(path[0], facingRotationDuration);
+                StartFacingRotation(movementPath[0], facingRotationDuration);
 
                 Tween moveTween = transform
-                   .DOPath(path, duration, _pathType, _pathMode)
-                   .SetEase(Ease.Linear)
-                   .OnWaypointChange(waypointIndex =>
-                        {
-                            onWaypointReached?.Invoke(waypointIndex);
-
-                            int nextWaypointIndex = waypointIndex + 1;
-
-                            if (nextWaypointIndex < path.Length)
-                            {
-                                StartFacingRotation(path[nextWaypointIndex], facingRotationDuration);
-                            }
-                        }
+                   .DOPath(movementPath, duration, _pathType, _pathMode)
+                   .SetEase(_movementEase)
+                   .OnWaypointChange(reachedMovementPathIndex => HandleMovementPathWaypointReached(
+                            reachedMovementPathIndex,
+                            movementPath,
+                            facingRotationDuration,
+                            onWaypointReached
+                        )
                     );
 
-                await AwaitTweenAsync(moveTween);
+                await AwaitTweenAsync(moveTween, cancellationToken);
 
                 EndRunLocomotion();
-                await AwaitFacingRotationAsync(destinationFacingWorldPosition, facingRotationDuration);
+                await AwaitFacingRotationAsync(destinationFacingWorldPosition, facingRotationDuration, cancellationToken);
             }
             finally
             {
@@ -71,59 +64,77 @@ namespace ViewComponents.Movement
             }
         }
 
-        public async UniTask FaceTowardAsync(Vector3 worldPosition, float facingRotationDuration)
+        public async UniTask FaceTowardAsync(Vector3 worldPosition, float facingRotationDuration,
+            CancellationToken cancellationToken)
         {
             EndRunLocomotion();
-            await AwaitFacingRotationAsync(worldPosition, facingRotationDuration);
+            await AwaitFacingRotationAsync(worldPosition, facingRotationDuration, cancellationToken);
+        }
+
+        private void HandleMovementPathWaypointReached(int reachedMovementPathIndex, Vector3[] movementPath,
+            float facingRotationDuration, Action<int> onRouteWaypointReached)
+        {
+            if (MovementHelper.TryMapMovementPathIndexToRouteIndex(
+                reachedMovementPathIndex,
+                movementPath.Length,
+                out int routeWaypointIndex
+            ))
+            {
+                onRouteWaypointReached?.Invoke(routeWaypointIndex);
+            }
+
+            int nextMovementPathIndex = reachedMovementPathIndex + 1;
+
+            if (nextMovementPathIndex < movementPath.Length)
+            {
+                StartFacingRotation(movementPath[nextMovementPathIndex], facingRotationDuration);
+            }
         }
 
         private void BeginRunLocomotion()
         {
             _characterAnimationView.SetIsMoving(true);
-            SetFootstepsActive(true);
+            EnableFootstepsSfx();
         }
 
         private void EndRunLocomotion()
         {
             _characterAnimationView.SetIsMoving(false);
-            SetFootstepsActive(false);
+            DisableFootstepsSfx();
         }
 
-        private void SetFootstepsActive(bool isActive)
+        private void EnableFootstepsSfx()
         {
-            _footstepsSfx.SetActive(isActive);
+            _footstepsSfx.SetActive(true);
         }
 
-        private void StartFacingRotation(Vector3 worldTarget, float facingRotationDuration)
+        private void DisableFootstepsSfx()
         {
-            Tween facingTween = CreateFacingRotationTween(worldTarget, facingRotationDuration);
-
-            facingTween?.SetEase(Ease.Linear);
-        }
-
-        private async UniTask AwaitFacingRotationAsync(Vector3 worldTarget, float facingRotationDuration)
-        {
-            Tween facingTween = CreateFacingRotationTween(worldTarget, facingRotationDuration);
-
-            if (facingTween == null)
-            {
-                return;
-            }
-
-            facingTween.SetEase(Ease.Linear);
-            await AwaitTweenAsync(facingTween);
+            _footstepsSfx.SetActive(false);
         }
 
         private Tween CreateFacingRotationTween(Vector3 worldTarget, float facingRotationDuration)
         {
-            Vector3 travelDirection = GetWorldTravelDirection(worldTarget);
+            Vector3 travelDirection = MovementHelper.CalculatePlanarTravelDirection(worldTarget, _facingTransform.position);
 
             if (travelDirection.sqrMagnitude == 0f)
             {
                 return null;
             }
 
-            float targetLocalY = CalculateLocalFacingY(worldTarget);
+            Transform facingParent = _facingTransform.parent;
+
+            Quaternion? parentWorldRotation = facingParent != null
+                ? facingParent.rotation
+                : null;
+
+            float targetLocalY = MovementHelper.CalculateLocalFacingY(
+                worldTarget,
+                _facingTransform.position,
+                parentWorldRotation,
+                _facingYawOffset
+            );
+
             float currentLocalY = _facingTransform.localEulerAngles.y;
             float shortestTargetLocalY = currentLocalY + Mathf.DeltaAngle(currentLocalY, targetLocalY);
 
@@ -132,21 +143,40 @@ namespace ViewComponents.Movement
             return _facingTransform.DOLocalRotate(new Vector3(x: 0f, shortestTargetLocalY, z: 0f), facingRotationDuration);
         }
 
-        private Vector3 GetWorldTravelDirection(Vector3 worldTarget)
+        private void StartFacingRotation(Vector3 worldTarget, float facingRotationDuration)
         {
-            Vector3 travelDirection = worldTarget - _facingTransform.position;
-            travelDirection.z = 0f;
+            Tween facingTween = CreateFacingRotationTween(worldTarget, facingRotationDuration);
 
-            return travelDirection;
+            facingTween?.SetEase(_facingRotationEase);
         }
 
-        private async UniTask AwaitTweenAsync(Tween tween)
+        private async UniTask AwaitFacingRotationAsync(Vector3 worldTarget, float facingRotationDuration,
+            CancellationToken cancellationToken)
         {
-            CancellationToken cancellationToken = this.GetCancellationTokenOnDestroy();
+            Tween facingTween = CreateFacingRotationTween(worldTarget, facingRotationDuration);
+
+            if (facingTween == null)
+            {
+                return;
+            }
+
+            facingTween.SetEase(_facingRotationEase);
+            await AwaitTweenAsync(facingTween, cancellationToken);
+        }
+
+        private async UniTask AwaitTweenAsync(Tween tween, CancellationToken cancellationToken)
+        {
             Transform movementTransform = transform;
             Transform facingTransform = _facingTransform;
 
-            await using CancellationTokenRegistration registration = cancellationToken.Register(() =>
+            using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                this.GetCancellationTokenOnDestroy()
+            );
+
+            CancellationToken linkedToken = linkedCts.Token;
+
+            await using CancellationTokenRegistration registration = linkedToken.Register(() =>
                 {
                     KillRegisteredTweens(tween, movementTransform, facingTransform);
                 }
@@ -157,7 +187,7 @@ namespace ViewComponents.Movement
                 await UniTask.Yield();
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            linkedToken.ThrowIfCancellationRequested();
         }
 
         private void OnDestroy()
@@ -166,39 +196,7 @@ namespace ViewComponents.Movement
             KillRegisteredTweens(tween: null, movementTransform, _facingTransform);
         }
 
-        private float CalculateLocalFacingY(Vector3 worldTarget)
-        {
-            Vector3 worldDirection = GetWorldTravelDirection(worldTarget);
-
-            Transform parent = _facingTransform.parent;
-
-            if (parent == null)
-            {
-                return Mathf.Atan2(worldDirection.x, worldDirection.y) * Mathf.Rad2Deg + _facingYawOffset;
-            }
-
-            Vector3 localDirection = parent.InverseTransformDirection(worldDirection.normalized);
-            localDirection.z = 0f;
-            float localY = Mathf.Atan2(localDirection.x, localDirection.y) * Mathf.Rad2Deg;
-
-            return localY + _facingYawOffset;
-        }
-
-        private float CalculatePathLength(IReadOnlyList<Vector3> path)
-        {
-            float length = 0f;
-            Vector3 previous = transform.position;
-
-            foreach (Vector3 pathPoint in path)
-            {
-                length += Vector3.Distance(previous, pathPoint);
-                previous = pathPoint;
-            }
-
-            return length;
-        }
-
-        private static void KillRegisteredTweens(Tween tween, Transform movementTransform, Transform facingTransform)
+        private void KillRegisteredTweens(Tween tween, Transform movementTransform, Transform facingTransform)
         {
             tween?.Kill();
 

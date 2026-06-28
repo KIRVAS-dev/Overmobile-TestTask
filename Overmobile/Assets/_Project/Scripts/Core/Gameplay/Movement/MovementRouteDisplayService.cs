@@ -5,9 +5,7 @@ namespace Core.Gameplay.Movement
         private readonly MovementModel _movementModel;
         private readonly IMovementRouteWaypointDisplay _waypointDisplay;
 
-        public MovementRouteDisplayService(
-            MovementModel movementModel,
-            IMovementRouteWaypointDisplay waypointDisplay)
+        public MovementRouteDisplayService(MovementModel movementModel, IMovementRouteWaypointDisplay waypointDisplay)
         {
             _movementModel = movementModel;
             _waypointDisplay = waypointDisplay;
@@ -28,9 +26,9 @@ namespace Core.Gameplay.Movement
             _waypointDisplay.DisableWaypointAtRouteIndex(0);
         }
 
-        public void OnMovementWaypointReached(int trimmedWaypointIndex)
+        public void OnMovementWaypointReached(int routeWaypointIndex)
         {
-            _waypointDisplay.DisableWaypointAtRouteIndex(trimmedWaypointIndex + 1);
+            _waypointDisplay.DisableWaypointAtRouteIndex(routeWaypointIndex);
         }
 
         public void OnMovementEnded()
@@ -39,4 +37,3 @@ namespace Core.Gameplay.Movement
         }
     }
 }
-

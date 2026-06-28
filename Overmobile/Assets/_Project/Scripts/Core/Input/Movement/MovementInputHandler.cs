@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Input.Binds;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Core.Input.Movement
 {
@@ -14,6 +15,7 @@ namespace Core.Input.Movement
         private readonly List<Bind> _binds = new List<Bind>();
 
         private string _pendingEndpointKey;
+        private CancellationTokenSource _movementCancellation;
 
         public MovementInputHandler(
             IMovementService movementService,
@@ -27,6 +29,8 @@ namespace Core.Input.Movement
 
         public void StartListening()
         {
+            _movementCancellation = new CancellationTokenSource();
+
             IReadOnlyList<MovementInputTarget> inputTargets = _movementInputTargetProvider.GetInputTargets();
 
             foreach (MovementInputTarget inputTarget in inputTargets)
@@ -59,6 +63,10 @@ namespace Core.Input.Movement
 
             _binds.Clear();
             _pendingEndpointKey = null;
+
+            _movementCancellation?.Cancel();
+            _movementCancellation?.Dispose();
+            _movementCancellation = null;
         }
 
         private void OnPointerDown(MovementInputTarget inputTarget)
@@ -97,7 +105,11 @@ namespace Core.Input.Movement
         {
             try
             {
-                await _movementService.MoveToAsync(inputTarget.EndpointKey, inputTarget.FacingWorldPosition);
+                await _movementService.MoveToAsync(
+                    inputTarget.EndpointKey,
+                    inputTarget.FacingWorldPosition,
+                    _movementCancellation.Token
+                );
             }
             catch (MovementInProgressException) { }
             catch (OperationCanceledException) { }
