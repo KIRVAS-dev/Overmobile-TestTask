@@ -1,4 +1,4 @@
-using Core.Gameplay.Animation;
+using Core.Animation;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;

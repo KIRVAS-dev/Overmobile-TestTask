@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-namespace Core.Gameplay.Animation
+namespace Core.Animation
 {
     public interface ICharacterAnimationView
     {

@@ -1,4 +1,4 @@
-using Core.Gameplay.Animation;
+using Core.Animation;
 using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;

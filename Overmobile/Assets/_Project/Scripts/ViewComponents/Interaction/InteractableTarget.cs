@@ -1,4 +1,4 @@
-using Core.Gameplay.Animation;
+using Core.Animation;
 using Input;
 using UnityEngine;
 using ViewComponents.Animation;

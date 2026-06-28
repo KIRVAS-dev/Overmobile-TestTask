@@ -1,3 +1,4 @@
+using Core.Camera;
 using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
@@ -5,6 +6,7 @@ using Core.Input.Movement;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using ViewComponents.Camera;
 using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
@@ -22,8 +24,14 @@ namespace Core.Bootstrap
         {
             builder.RegisterEntryPoint<CoreEntryPoint>();
 
+            RegisterCamera(builder);
             RegisterPlayer(builder);
             RegisterMovement(builder);
+        }
+
+        private void RegisterCamera(IContainerBuilder builder)
+        {
+            builder.RegisterComponentInHierarchy<CameraTransitionView>().As<ICameraTransitionView>();
         }
 
         private void RegisterPlayer(IContainerBuilder builder)

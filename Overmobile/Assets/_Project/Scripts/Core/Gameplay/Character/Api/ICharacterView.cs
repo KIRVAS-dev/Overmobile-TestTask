@@ -1,4 +1,4 @@
-using Core.Gameplay.Animation;
+using Core.Animation;
 using Core.Gameplay.Movement;
 
 namespace Core.Gameplay.Character

@@ -1,4 +1,4 @@
-namespace Core.Gameplay.Animation
+namespace Core.Animation
 {
     public enum CharacterAnimationSlot
     {

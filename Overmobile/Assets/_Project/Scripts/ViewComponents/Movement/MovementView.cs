@@ -144,26 +144,19 @@ namespace ViewComponents.Movement
 
         private async UniTask AwaitTweenAsync(Tween tween, CancellationToken cancellationToken)
         {
-            CancellationTokenRegistration registration = cancellationToken.Register(() =>
+            await using CancellationTokenRegistration registration = cancellationToken.Register(() =>
                 {
                     transform.DOKill();
                     _facingTransform.DOKill();
                 }
             );
 
-            try
+            while (tween.IsActive())
             {
-                while (tween.IsActive())
-                {
-                    await UniTask.Yield();
-                }
+                await UniTask.Yield();
+            }
 
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-            finally
-            {
-                registration.Dispose();
-            }
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
         private float CalculateLocalFacingY(Vector3 worldTarget)

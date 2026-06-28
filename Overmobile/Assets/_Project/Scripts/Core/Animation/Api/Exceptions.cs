@@ -1,6 +1,6 @@
 using ExtendedExceptions;
 
-namespace Core.Gameplay.Animation
+namespace Core.Animation
 {
     public sealed class CharacterAnimationSlotNotMappedException : ExtendedException
     {
