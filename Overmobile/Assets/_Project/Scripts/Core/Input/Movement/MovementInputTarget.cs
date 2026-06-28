@@ -6,17 +6,21 @@ namespace Core.Input.Movement
     public readonly struct MovementInputTarget
     {
         public string EndpointKey { get; }
-
+        public ITrigger PointerDown { get; }
+        public ITrigger PointerExit { get; }
         public ITrigger PointerUp { get; }
-
         public Vector3 FacingWorldPosition { get; }
 
         public MovementInputTarget(
             string endpointKey,
+            ITrigger pointerDown,
+            ITrigger pointerExit,
             ITrigger pointerUp,
             Vector3 facingWorldPosition)
         {
             EndpointKey = endpointKey;
+            PointerDown = pointerDown;
+            PointerExit = pointerExit;
             PointerUp = pointerUp;
             FacingWorldPosition = facingWorldPosition;
         }

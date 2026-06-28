@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using Input.Binds;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Core.Input.Movement
 {
@@ -11,58 +10,86 @@ namespace Core.Input.Movement
     {
         private readonly IMovementService _movementService;
         private readonly IMovementInputTargetProvider _movementInputTargetProvider;
+        private readonly MovementRouteDisplayService _routeDisplayService;
         private readonly List<Bind> _binds = new List<Bind>();
 
-        private CancellationTokenSource _cancellationTokenSource;
+        private string _pendingEndpointKey;
 
         public MovementInputHandler(
             IMovementService movementService,
-            IMovementInputTargetProvider movementInputTargetProvider)
+            IMovementInputTargetProvider movementInputTargetProvider,
+            MovementRouteDisplayService routeDisplayService)
         {
             _movementService = movementService;
             _movementInputTargetProvider = movementInputTargetProvider;
+            _routeDisplayService = routeDisplayService;
         }
 
         public void StartListening()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
             IReadOnlyList<MovementInputTarget> inputTargets = _movementInputTargetProvider.GetInputTargets();
 
             foreach (MovementInputTarget inputTarget in inputTargets)
             {
                 MovementInputTarget capturedTarget = inputTarget;
-                Bind bind = new Bind(capturedTarget.PointerUp);
 
-                bind.OnTriggered += () => OnPointerUp(capturedTarget);
-                bind.Enable();
-                _binds.Add(bind);
+                Bind pointerDownBind = new Bind(capturedTarget.PointerDown);
+                pointerDownBind.OnTriggered += () => OnPointerDown(capturedTarget);
+                pointerDownBind.Enable();
+                _binds.Add(pointerDownBind);
+
+                Bind pointerExitBind = new Bind(capturedTarget.PointerExit);
+                pointerExitBind.OnTriggered += () => OnPointerExit(capturedTarget);
+                pointerExitBind.Enable();
+                _binds.Add(pointerExitBind);
+
+                Bind pointerUpBind = new Bind(capturedTarget.PointerUp);
+                pointerUpBind.OnTriggered += () => OnPointerUp(capturedTarget);
+                pointerUpBind.Enable();
+                _binds.Add(pointerUpBind);
             }
         }
 
         public void StopListening()
         {
-            if (_cancellationTokenSource != null)
-            {
-                _cancellationTokenSource.Cancel();
-                _cancellationTokenSource.Dispose();
-                _cancellationTokenSource = null;
-            }
-
             foreach (Bind bind in _binds)
             {
                 bind.Disable();
             }
 
             _binds.Clear();
+            _pendingEndpointKey = null;
         }
 
-        private void OnPointerUp(MovementInputTarget inputTarget)
+        private void OnPointerDown(MovementInputTarget inputTarget)
         {
             if (_movementService.IsMoving)
             {
                 return;
             }
 
+            _pendingEndpointKey = inputTarget.EndpointKey;
+            _routeDisplayService.PreviewRouteTo(inputTarget.EndpointKey);
+        }
+
+        private void OnPointerExit(MovementInputTarget inputTarget)
+        {
+            if (_pendingEndpointKey == inputTarget.EndpointKey)
+            {
+                _pendingEndpointKey = null;
+                _routeDisplayService.ClearPreview();
+            }
+        }
+
+        private void OnPointerUp(MovementInputTarget inputTarget)
+        {
+            if (_movementService.IsMoving
+             || _pendingEndpointKey != inputTarget.EndpointKey)
+            {
+                return;
+            }
+
+            _pendingEndpointKey = null;
             MoveToTargetAsync(inputTarget).Forget();
         }
 
@@ -70,11 +97,7 @@ namespace Core.Input.Movement
         {
             try
             {
-                await _movementService.MoveToAsync(
-                    inputTarget.EndpointKey,
-                    inputTarget.FacingWorldPosition,
-                    _cancellationTokenSource.Token
-                );
+                await _movementService.MoveToAsync(inputTarget.EndpointKey, inputTarget.FacingWorldPosition);
             }
             catch (MovementInProgressException) { }
             catch (OperationCanceledException) { }

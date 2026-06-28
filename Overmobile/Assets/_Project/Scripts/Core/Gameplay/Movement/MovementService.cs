@@ -1,7 +1,6 @@
 using Core.Gameplay.Character;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 namespace Core.Gameplay.Movement
@@ -13,24 +12,27 @@ namespace Core.Gameplay.Movement
         private readonly IMovementRouteRegistry _routeRegistry;
         private readonly IActiveCharacterViewProvider _activeCharacterViewProvider;
 
+        private readonly MovementRouteDisplayService _routeDisplayService;
+
         public MovementService(
             MovementModel movementModel,
             MovementConfig movementConfig,
             IMovementRouteRegistry routeRegistry,
-            IActiveCharacterViewProvider activeCharacterViewProvider)
+            IActiveCharacterViewProvider activeCharacterViewProvider,
+            MovementRouteDisplayService routeDisplayService)
         {
             _movementModel = movementModel;
             _movementConfig = movementConfig;
             _routeRegistry = routeRegistry;
             _activeCharacterViewProvider = activeCharacterViewProvider;
+            _routeDisplayService = routeDisplayService;
 
             _movementModel.SetCurrentEndpointKey(_routeRegistry.SpawnLocationKey);
         }
 
         public bool IsMoving => _movementModel.IsMoving;
 
-        public async UniTask MoveToAsync(string toEndpointKey, Vector3 destinationFacingWorldPosition,
-            CancellationToken cancellationToken)
+        public async UniTask MoveToAsync(string toEndpointKey, Vector3 destinationFacingWorldPosition)
         {
             if (_movementModel.IsMoving)
             {
@@ -55,8 +57,7 @@ namespace Core.Gameplay.Movement
                 {
                     await _activeCharacterViewProvider.ActiveCharacterView.MovementView.FaceTowardAsync(
                         destinationFacingWorldPosition,
-                        _movementConfig.FacingRotationDuration,
-                        cancellationToken
+                        _movementConfig.FacingRotationDuration
                     );
                 }
                 finally
@@ -86,12 +87,14 @@ namespace Core.Gameplay.Movement
 
             try
             {
+                _routeDisplayService.OnMovementStarted();
+
                 await _activeCharacterViewProvider.ActiveCharacterView.MovementView.MoveAlongPathAsync(
                     movementPath,
                     _movementConfig.MoveSpeed,
                     _movementConfig.FacingRotationDuration,
                     destinationFacingWorldPosition,
-                    cancellationToken
+                    _routeDisplayService.OnMovementWaypointReached
                 );
 
                 _movementModel.SetCurrentEndpointKey(toEndpointKey);
@@ -99,6 +102,7 @@ namespace Core.Gameplay.Movement
             finally
             {
                 _movementModel.SetMoving(false);
+                _routeDisplayService.OnMovementEnded();
             }
         }
 

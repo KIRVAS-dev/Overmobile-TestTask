@@ -1,6 +1,7 @@
 using Core.Gameplay.Movement;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -19,14 +20,12 @@ namespace ViewComponents.Movement
         [SerializeField] private CharacterAnimationView _characterAnimationView;
         [SerializeField] private GameObject _footstepsSfx;
 
-        public async UniTask MoveAlongPathAsync(IReadOnlyList<Vector3> pathPoints, float moveSpeed, float facingRotationDuration,
-            Vector3 destinationFacingWorldPosition, CancellationToken cancellationToken)
+        public async UniTask MoveAlongPathAsync(
+            IReadOnlyList<Vector3> pathPoints,
+            float moveSpeed, float facingRotationDuration,
+            Vector3 destinationFacingWorldPosition,
+            Action<int> onWaypointReached)
         {
-            if (_facingTransform == null)
-            {
-                throw new MovementFacingTransformMissingException(gameObject.name);
-            }
-
             Vector3[] path = new Vector3[pathPoints.Count];
 
             for (int i = 0; i < pathPoints.Count; i++)
@@ -47,6 +46,8 @@ namespace ViewComponents.Movement
                    .SetEase(Ease.Linear)
                    .OnWaypointChange(waypointIndex =>
                         {
+                            onWaypointReached?.Invoke(waypointIndex);
+
                             int nextWaypointIndex = waypointIndex + 1;
 
                             if (nextWaypointIndex < path.Length)
@@ -56,26 +57,24 @@ namespace ViewComponents.Movement
                         }
                     );
 
-                await AwaitTweenAsync(moveTween, cancellationToken);
+                await AwaitTweenAsync(moveTween);
+
                 EndRunLocomotion();
-                await AwaitFacingRotationAsync(destinationFacingWorldPosition, facingRotationDuration, cancellationToken);
+                await AwaitFacingRotationAsync(destinationFacingWorldPosition, facingRotationDuration);
             }
             finally
             {
-                EndRunLocomotion();
+                if (this != null)
+                {
+                    EndRunLocomotion();
+                }
             }
         }
 
-        public async UniTask FaceTowardAsync(Vector3 worldPosition, float facingRotationDuration,
-            CancellationToken cancellationToken)
+        public async UniTask FaceTowardAsync(Vector3 worldPosition, float facingRotationDuration)
         {
-            if (_facingTransform == null)
-            {
-                throw new MovementFacingTransformMissingException(gameObject.name);
-            }
-
             EndRunLocomotion();
-            await AwaitFacingRotationAsync(worldPosition, facingRotationDuration, cancellationToken);
+            await AwaitFacingRotationAsync(worldPosition, facingRotationDuration);
         }
 
         private void BeginRunLocomotion()
@@ -102,8 +101,7 @@ namespace ViewComponents.Movement
             facingTween?.SetEase(Ease.Linear);
         }
 
-        private async UniTask AwaitFacingRotationAsync(Vector3 worldTarget, float facingRotationDuration,
-            CancellationToken cancellationToken)
+        private async UniTask AwaitFacingRotationAsync(Vector3 worldTarget, float facingRotationDuration)
         {
             Tween facingTween = CreateFacingRotationTween(worldTarget, facingRotationDuration);
 
@@ -113,7 +111,7 @@ namespace ViewComponents.Movement
             }
 
             facingTween.SetEase(Ease.Linear);
-            await AwaitTweenAsync(facingTween, cancellationToken);
+            await AwaitTweenAsync(facingTween);
         }
 
         private Tween CreateFacingRotationTween(Vector3 worldTarget, float facingRotationDuration)
@@ -142,12 +140,15 @@ namespace ViewComponents.Movement
             return travelDirection;
         }
 
-        private async UniTask AwaitTweenAsync(Tween tween, CancellationToken cancellationToken)
+        private async UniTask AwaitTweenAsync(Tween tween)
         {
+            CancellationToken cancellationToken = this.GetCancellationTokenOnDestroy();
+            Transform movementTransform = transform;
+            Transform facingTransform = _facingTransform;
+
             await using CancellationTokenRegistration registration = cancellationToken.Register(() =>
                 {
-                    transform.DOKill();
-                    _facingTransform.DOKill();
+                    KillRegisteredTweens(tween, movementTransform, facingTransform);
                 }
             );
 
@@ -157,6 +158,12 @@ namespace ViewComponents.Movement
             }
 
             cancellationToken.ThrowIfCancellationRequested();
+        }
+
+        private void OnDestroy()
+        {
+            Transform movementTransform = transform;
+            KillRegisteredTweens(tween: null, movementTransform, _facingTransform);
         }
 
         private float CalculateLocalFacingY(Vector3 worldTarget)
@@ -189,6 +196,21 @@ namespace ViewComponents.Movement
             }
 
             return length;
+        }
+
+        private static void KillRegisteredTweens(Tween tween, Transform movementTransform, Transform facingTransform)
+        {
+            tween?.Kill();
+
+            if (movementTransform != null)
+            {
+                movementTransform.DOKill();
+            }
+
+            if (facingTransform != null)
+            {
+                facingTransform.DOKill();
+            }
         }
     }
 }

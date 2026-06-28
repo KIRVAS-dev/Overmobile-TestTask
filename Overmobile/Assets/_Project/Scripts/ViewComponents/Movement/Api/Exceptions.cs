@@ -7,10 +7,4 @@ namespace ViewComponents.Movement
         public InvalidMovementRouteViewException(string routeName, string reason)
             : base("movement-view-1", $"Invalid movement route '{routeName}': {reason}") { }
     }
-
-    public sealed class MovementFacingTransformMissingException : ExtendedException
-    {
-        public MovementFacingTransformMissingException(string objectName)
-            : base("movement-view-2", $"Facing transform is not assigned on '{objectName}'") { }
-    }
 }

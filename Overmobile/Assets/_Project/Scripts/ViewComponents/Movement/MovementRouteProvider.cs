@@ -37,5 +37,30 @@ namespace ViewComponents.Movement
 
             return routes;
         }
+
+        public bool TryFindRoute(string fromEndpointKey, string toEndpointKey, out MovementRoute route)
+        {
+            if (_movementRoutes == null)
+            {
+                route = null;
+                return false;
+            }
+
+            foreach (MovementRoute movementRoute in _movementRoutes)
+            {
+                if (movementRoute == null
+                 || movementRoute.FromEndpointKey != fromEndpointKey
+                 || movementRoute.ToEndpointKey != toEndpointKey)
+                {
+                    continue;
+                }
+
+                route = movementRoute;
+                return true;
+            }
+
+            route = null;
+            return false;
+        }
     }
 }

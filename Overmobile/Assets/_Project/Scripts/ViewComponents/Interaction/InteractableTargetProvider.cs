@@ -20,6 +20,8 @@ namespace ViewComponents.Interaction
             {
                 inputTargets.Add(new MovementInputTarget(
                     interactableTarget.EndpointKey,
+                    interactableTarget.PointArea.PointerDown,
+                    interactableTarget.PointArea.PointerExit,
                     interactableTarget.PointArea.PointerUp,
                     interactableTarget.transform.position));
             }

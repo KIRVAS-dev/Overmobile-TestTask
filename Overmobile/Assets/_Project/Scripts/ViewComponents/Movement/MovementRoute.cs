@@ -6,8 +6,17 @@ namespace ViewComponents.Movement
     public sealed class MovementRoute : MonoBehaviour
     {
         public string FromEndpointKey => GetEndpointKeyAt(0);
-
         public string ToEndpointKey => GetEndpointKeyAt(_waypoints.Length - 1);
+
+        public IReadOnlyList<MovementWaypoint> Waypoints
+        {
+            get
+            {
+                ValidateRoute(minimumWaypointCount: 1);
+
+                return _waypoints;
+            }
+        }
 
         [SerializeField] private MovementWaypoint[] _waypoints;
 

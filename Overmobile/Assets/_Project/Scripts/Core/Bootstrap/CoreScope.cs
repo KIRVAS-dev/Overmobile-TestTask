@@ -49,8 +49,10 @@ namespace Core.Bootstrap
             builder.RegisterInstance(_movementConfig);
             builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
             builder.RegisterInstance(_interactableTargetProvider).As<IMovementInputTargetProvider>();
+            builder.RegisterComponentInHierarchy<MovementRouteWaypointDisplay>().As<IMovementRouteWaypointDisplay>();
             builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
             builder.Register<MovementModel>(Lifetime.Singleton);
+            builder.Register<MovementRouteDisplayService>(Lifetime.Singleton);
             builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
             builder.Register<MovementInputHandler>(Lifetime.Singleton);
         }
