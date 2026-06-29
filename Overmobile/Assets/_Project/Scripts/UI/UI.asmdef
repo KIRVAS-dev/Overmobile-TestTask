@@ -1,21 +1,20 @@
 {
-    "name": "Bootstrap",
-    "rootNamespace": "Core.Bootstrap",
+    "name": "UI",
+    "rootNamespace": "UI",
     "references": [
         "ExtendedExceptions",
-        "VContainer",
-        "UniTask",
-        "Core",
-        "Core.Input",
+        "DOTween.Modules",
         "Input",
-        "UI",
-        "ViewComponents"
+        "Unity.ugui",
+        "VContainer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "DOTween.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

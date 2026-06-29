@@ -11,6 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b28f2790c1fe5294fabc12e1e3baa96d, type: 3}
   m_Name: Neutral
-  m_EditorClassIdentifier: ViewComponents::ViewComponents.PowerPanel.PowerPanelConfig
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelConfig
   _backgroundColor: {r: 0, g: 0, b: 0, a: 0}
   _textColor: {r: 1, g: 1, b: 0, a: 1}

@@ -27,8 +27,9 @@ namespace Core.Bootstrap
         void IStartable.Start()
         {
             _playerSpawnView.Spawn(0);
+            _movementInputHandler.StartListening();
 
-            StartCameraAndInputAsync().Forget();
+            StartCameraTransitionAsync().Forget();
         }
 
         void IDisposable.Dispose()
@@ -36,11 +37,9 @@ namespace Core.Bootstrap
             _movementInputHandler.StopListening();
         }
 
-        private async UniTaskVoid StartCameraAndInputAsync()
+        private async UniTaskVoid StartCameraTransitionAsync()
         {
             await _cameraTransitionView.PlayTransitionAsync(CancellationToken.None);
-
-            _movementInputHandler.StartListening();
         }
     }
 }

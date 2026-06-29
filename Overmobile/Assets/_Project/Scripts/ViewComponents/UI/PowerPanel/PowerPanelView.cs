@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ViewComponents.PowerPanel
+namespace ViewComponents.UI.PowerPanel
 {
     [ExecuteAlways]
     public sealed class PowerPanelView : MonoBehaviour

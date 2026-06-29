@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ViewComponents.PowerPanel
+namespace ViewComponents.UI.PowerPanel
 {
     [CreateAssetMenu(fileName = "PowerPanelConfig", menuName = "Project/Configs/UI/Power Panel Config")]
     public class PowerPanelConfig : ScriptableObject

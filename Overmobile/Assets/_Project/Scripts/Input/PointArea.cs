@@ -11,8 +11,11 @@ namespace Input
 
         public ITrigger PointerExit => _pointerExitTrigger;
 
+        public ITrigger PointerEnter => _pointerEnterTrigger;
+
         [SerializeField] private PointerDownTrigger _pointerDownTrigger;
         [SerializeField] private PointerUpTrigger _pointerUpTrigger;
         [SerializeField] private PointerExitTrigger _pointerExitTrigger;
+        [SerializeField] private PointerEnterTrigger _pointerEnterTrigger;
     }
 }

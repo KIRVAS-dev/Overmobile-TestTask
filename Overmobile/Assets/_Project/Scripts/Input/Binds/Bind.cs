@@ -4,9 +4,15 @@ namespace Input.Binds
 {
     public sealed class Bind
     {
-        public event Action OnTriggered;
+        private Action onTriggered;
 
         private readonly ITrigger _trigger;
+
+        public event Action OnTriggered
+        {
+            add => onTriggered += value;
+            remove => onTriggered -= value;
+        }
 
         public Bind(ITrigger trigger)
         {
@@ -21,11 +27,12 @@ namespace Input.Binds
         public void Disable()
         {
             _trigger.OnTriggered -= HandleTrigger;
+            onTriggered = null;
         }
 
         private void HandleTrigger()
         {
-            OnTriggered?.Invoke();
+            onTriggered?.Invoke();
         }
     }
 }

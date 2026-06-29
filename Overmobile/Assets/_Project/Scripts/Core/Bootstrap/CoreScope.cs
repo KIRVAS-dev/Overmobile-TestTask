@@ -2,7 +2,10 @@ using Core.Camera;
 using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
+using Core.Input;
 using Core.Input.Movement;
+using Input;
+using UI.TapIndicator;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,12 +18,15 @@ namespace Core.Bootstrap
 {
     public sealed class CoreScope : LifetimeScope
     {
-        [Header("Movement")]
-        [SerializeField] private MovementConfig _movementConfig;
-        [SerializeField] private MovementRouteProvider _movementRouteProvider;
+        [Header("Input")]
+        [SerializeField] private PlayerPointerInput _playerPointerInput;
 
         [Header("Interaction")]
         [SerializeField] private InteractableTargetProvider _interactableTargetProvider;
+
+        [Header("Movement")]
+        [SerializeField] private MovementRouteProvider _movementRouteProvider;
+        [SerializeField] private MovementConfig _movementConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -28,6 +34,7 @@ namespace Core.Bootstrap
 
             RegisterCamera(builder);
             RegisterPlayer(builder);
+            RegisterInput(builder);
             RegisterMovement(builder);
         }
 
@@ -44,6 +51,13 @@ namespace Core.Bootstrap
                .Register<ActiveCharacterViewRegistry>(Lifetime.Singleton)
                .As<IActiveCharacterViewProvider>()
                .As<IActiveCharacterViewRegistry>();
+        }
+
+        private void RegisterInput(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(_playerPointerInput);
+            builder.Register<PlayerPointerInputFilter>(Lifetime.Singleton).As<IPlayerPointerInput>();
+            builder.RegisterComponentInHierarchy<TapIndicator>();
         }
 
         private void RegisterMovement(IContainerBuilder builder)

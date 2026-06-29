@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8f4b6c1a9e7035f2c8d4b6a1e9f3c7, type: 3}
+  m_Name: TapIndicatorConfig
+  m_EditorClassIdentifier: UI::UI.TapIndicator.TapIndicatorConfig
+  _sprite: {fileID: 1070493675581441731, guid: b5e577b6292bee4498ca9577a3049a49, type: 3}
+  _scaleInDuration: 0.01
+  _fadeInEase: 1
+  _scaleOutDuration: 0.1
+  _fadeOutEase: 1

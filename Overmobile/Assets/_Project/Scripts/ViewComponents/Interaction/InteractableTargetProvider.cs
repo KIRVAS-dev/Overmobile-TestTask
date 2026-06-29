@@ -22,6 +22,7 @@ namespace ViewComponents.Interaction
                     interactableTarget.EndpointKey,
                     interactableTarget.PointArea.PointerDown,
                     interactableTarget.PointArea.PointerExit,
+                    interactableTarget.PointArea.PointerEnter,
                     interactableTarget.PointArea.PointerUp,
                     interactableTarget.transform.position));
             }

@@ -377,7 +377,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f337f54e948eb14fa9bd1a51eb7ce0f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: ViewComponents::ViewComponents.PowerPanel.PowerPanelView
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelView
   _backgroundImage: {fileID: 2941379763131386318}
   _textLabel: {fileID: 3917992765719720251}
   _config: {fileID: 0}
