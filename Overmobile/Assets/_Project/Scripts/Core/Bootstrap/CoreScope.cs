@@ -2,6 +2,7 @@ using Core;
 using Core.Camera;
 using Core.Gameplay.Character;
 using Core.Gameplay.Interaction;
+using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
 using Core.Input;
@@ -40,6 +41,7 @@ namespace Core.Bootstrap
             RegisterInput(builder);
             RegisterInteraction(builder);
             RegisterMovement(builder);
+            RegisterInventory(builder);
         }
 
         private void RegisterScopeCancellation(IContainerBuilder builder)
@@ -88,6 +90,12 @@ namespace Core.Bootstrap
             builder.Register<MovementRouteDisplayService>(Lifetime.Singleton);
             builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
             builder.Register<MovementInputHandler>(Lifetime.Singleton);
+        }
+
+        private void RegisterInventory(IContainerBuilder builder)
+        {
+            builder.Register<InventoryModel>(Lifetime.Singleton);
+            builder.Register<InventoryService>(Lifetime.Singleton).As<IInventory>();
         }
     }
 }
