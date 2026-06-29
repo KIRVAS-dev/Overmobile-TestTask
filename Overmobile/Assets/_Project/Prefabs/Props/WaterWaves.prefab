@@ -101,6 +101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3533705733921558433}
+  - component: {fileID: 7438291056483928175}
   m_Layer: 0
   m_Name: WaterWaves
   m_TagString: Untagged
@@ -124,3 +125,17 @@ Transform:
   - {fileID: 4212122973329685935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7438291056483928175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9209936580867841070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b9e2d3f5a6c708192a3b4c5d6e7f809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.WaterWaves.WaterWavesInstance
+  _config: {fileID: 11400000, guid: 9a3c6e7f0b1d425364758697a8b9c0d1, type: 2}
+  _spriteRenderer: {fileID: 812985000949338377}
