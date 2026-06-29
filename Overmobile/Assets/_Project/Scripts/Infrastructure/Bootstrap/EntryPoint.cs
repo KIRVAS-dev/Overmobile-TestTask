@@ -1,13 +1,13 @@
-using System.Threading;
 using Core.Bootstrap;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using VContainer.Unity;
 
 namespace Infrastructure.Bootstrap
 {
     public sealed class EntryPoint : IStartable
     {
-        const string CORE_SCENE_NAME = "Core";
+        private const string CORE_SCENE_NAME = "Core";
 
         private readonly ISceneLoader _sceneLoader;
 

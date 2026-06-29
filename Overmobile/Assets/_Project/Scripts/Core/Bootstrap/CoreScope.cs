@@ -1,5 +1,7 @@
+using Core;
 using Core.Camera;
 using Core.Gameplay.Character;
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
 using Core.Input;
@@ -32,10 +34,17 @@ namespace Core.Bootstrap
         {
             builder.RegisterEntryPoint<CoreEntryPoint>();
 
+            RegisterScopeCancellation(builder);
             RegisterCamera(builder);
             RegisterPlayer(builder);
             RegisterInput(builder);
+            RegisterInteraction(builder);
             RegisterMovement(builder);
+        }
+
+        private void RegisterScopeCancellation(IContainerBuilder builder)
+        {
+            builder.Register<CoreCancellationSource>(Lifetime.Singleton).As<ICoreScopeCancellation>().AsSelf();
         }
 
         private void RegisterCamera(IContainerBuilder builder)
@@ -46,6 +55,7 @@ namespace Core.Bootstrap
         private void RegisterPlayer(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<PlayerView>().As<IPlayerUpgradeView>().As<IPlayerSpawnView>();
+            builder.Register<PlayerUpgradeService>(Lifetime.Singleton).As<IPlayerUpgradeService>();
 
             builder
                .Register<ActiveCharacterViewRegistry>(Lifetime.Singleton)
@@ -55,16 +65,23 @@ namespace Core.Bootstrap
 
         private void RegisterInput(IContainerBuilder builder)
         {
-            builder.RegisterComponent(_playerPointerInput);
-            builder.Register<PlayerPointerInputFilter>(Lifetime.Singleton).As<IPlayerPointerInput>();
+            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>();
+            builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
             builder.RegisterComponentInHierarchy<TapIndicator>();
+        }
+
+        private void RegisterInteraction(IContainerBuilder builder)
+        {
+            builder
+               .RegisterInstance(_interactableTargetProvider)
+               .As<IInteractableTargetProvider>()
+               .As<IMovementInputTargetProvider>();
         }
 
         private void RegisterMovement(IContainerBuilder builder)
         {
             builder.RegisterInstance(_movementConfig);
             builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
-            builder.RegisterInstance(_interactableTargetProvider).As<IMovementInputTargetProvider>();
             builder.RegisterComponentInHierarchy<MovementRouteWaypointDisplay>().As<IMovementRouteWaypointDisplay>();
             builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
             builder.Register<MovementModel>(Lifetime.Singleton);

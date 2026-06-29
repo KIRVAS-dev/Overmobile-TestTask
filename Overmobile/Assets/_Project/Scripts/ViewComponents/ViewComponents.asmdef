@@ -3,7 +3,6 @@
     "rootNamespace": "ViewComponents",
     "references": [
         "Core",
-        "Core.Input",
         "ExtendedExceptions",
         "Input",
         "UniTask",

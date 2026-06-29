@@ -20,9 +20,23 @@ namespace Input
         public event Action Pressed;
         public event Action Released;
 
+        public void Enable()
+        {
+            _click.Enable();
+            _point.Enable();
+        }
+
+        public void Disable()
+        {
+            ReleaseActivePress();
+            _click.Disable();
+            _point.Disable();
+        }
+
         private void Awake()
         {
             Validate();
+            Enable();
         }
 
         private void OnEnable()

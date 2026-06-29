@@ -1,7 +1,8 @@
 using Core.Animation;
+using Core.Gameplay.Character;
 using Core.Gameplay.Movement;
 
-namespace Core.Gameplay.Character
+namespace ViewComponents.Player
 {
     public sealed class CharacterViewBinding : ICharacterView
     {

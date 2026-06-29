@@ -1,7 +1,7 @@
 using Input;
 using UnityEngine;
 
-namespace Core.Input.Movement
+namespace Core.Gameplay.Movement
 {
     public readonly struct MovementInputTarget
     {

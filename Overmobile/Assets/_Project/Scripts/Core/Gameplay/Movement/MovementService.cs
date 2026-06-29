@@ -1,3 +1,4 @@
+using Core;
 using Core.Gameplay.Character;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
@@ -12,21 +13,23 @@ namespace Core.Gameplay.Movement
         private readonly MovementConfig _movementConfig;
         private readonly IMovementRouteRegistry _routeRegistry;
         private readonly IActiveCharacterViewProvider _activeCharacterViewProvider;
-
         private readonly MovementRouteDisplayService _routeDisplayService;
+        private readonly IGameplayInputBlock _gameplayInputBlock;
 
         public MovementService(
             MovementModel movementModel,
             MovementConfig movementConfig,
             IMovementRouteRegistry routeRegistry,
             IActiveCharacterViewProvider activeCharacterViewProvider,
-            MovementRouteDisplayService routeDisplayService)
+            MovementRouteDisplayService routeDisplayService,
+            IGameplayInputBlock gameplayInputBlock)
         {
             _movementModel = movementModel;
             _movementConfig = movementConfig;
             _routeRegistry = routeRegistry;
             _activeCharacterViewProvider = activeCharacterViewProvider;
             _routeDisplayService = routeDisplayService;
+            _gameplayInputBlock = gameplayInputBlock;
 
             _movementModel.SetCurrentEndpointKey(_routeRegistry.SpawnLocationKey);
         }
@@ -43,6 +46,23 @@ namespace Core.Gameplay.Movement
                 throw new MovementInProgressException();
             }
 
+            _gameplayInputBlock.Block();
+
+            try
+            {
+                await MoveToInternalAsync(toEndpointKey, destinationFacingWorldPosition, cancellationToken);
+            }
+            finally
+            {
+                _gameplayInputBlock.Unblock();
+            }
+        }
+
+        private async UniTask MoveToInternalAsync(
+            string toEndpointKey,
+            Vector3 destinationFacingWorldPosition,
+            CancellationToken cancellationToken)
+        {
             string fromEndpointKey = _movementModel.CurrentEndpointKey;
 
             if (_movementConfig.FacingRotationDuration <= 0f)

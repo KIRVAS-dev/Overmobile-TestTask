@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Core.Input.Movement
+namespace Core.Gameplay.Movement
 {
     public interface IMovementInputTargetProvider
     {

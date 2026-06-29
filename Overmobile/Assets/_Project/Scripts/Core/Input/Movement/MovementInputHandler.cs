@@ -1,4 +1,6 @@
+using Core;
 using Core.Gameplay.Movement;
+using Core.Input;
 using Cysharp.Threading.Tasks;
 using Input;
 using Input.Binds;
@@ -10,33 +12,44 @@ namespace Core.Input.Movement
 {
     public sealed class MovementInputHandler
     {
+        private readonly ICoreScopeCancellation _coreScopeCancellation;
+        private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly IPlayerPointerInput _pointerInput;
-        private readonly IMovementService _movementService;
         private readonly IMovementInputTargetProvider _movementInputTargetProvider;
+        private readonly IMovementService _movementService;
         private readonly MovementRouteDisplayService _routeDisplayService;
         private readonly List<Bind> _binds = new List<Bind>();
 
-        private bool _isPointerPressed;
-        private bool _isPointerOverTarget;
         private MovementInputTarget? _pendingTarget;
         private MovementInputTarget? _pointerDownTarget;
         private CancellationTokenSource _movementCancellation;
+        private bool _isPointerPressed;
+        private bool _isPointerOverTarget;
 
         public MovementInputHandler(
+            ICoreScopeCancellation coreScopeCancellation,
+            IGameplayInputBlock gameplayInputBlock,
             IPlayerPointerInput pointerInput,
-            IMovementService movementService,
             IMovementInputTargetProvider movementInputTargetProvider,
+            IMovementService movementService,
             MovementRouteDisplayService routeDisplayService)
         {
+            _coreScopeCancellation = coreScopeCancellation;
+            _gameplayInputBlock = gameplayInputBlock;
             _pointerInput = pointerInput;
-            _movementService = movementService;
             _movementInputTargetProvider = movementInputTargetProvider;
+            _movementService = movementService;
             _routeDisplayService = routeDisplayService;
         }
 
         public void StartListening()
         {
-            _movementCancellation = new CancellationTokenSource();
+            if (_movementCancellation != null)
+            {
+                throw new MovementInputHandlerAlreadyListeningException();
+            }
+
+            _movementCancellation = CancellationTokenSource.CreateLinkedTokenSource(_coreScopeCancellation.Token);
 
             _pointerInput.Pressed += OnGlobalPointerPressed;
             _pointerInput.Released += OnPointerUp;
@@ -47,20 +60,9 @@ namespace Core.Input.Movement
             {
                 MovementInputTarget capturedTarget = inputTarget;
 
-                Bind pointerDownBind = new Bind(capturedTarget.PointerDown);
-                pointerDownBind.OnTriggered += () => OnPointerDown(capturedTarget);
-                pointerDownBind.Enable();
-                _binds.Add(pointerDownBind);
-
-                Bind pointerEnterBind = new Bind(capturedTarget.PointerEnter);
-                pointerEnterBind.OnTriggered += () => OnPointerEnter(capturedTarget);
-                pointerEnterBind.Enable();
-                _binds.Add(pointerEnterBind);
-
-                Bind pointerExitBind = new Bind(capturedTarget.PointerExit);
-                pointerExitBind.OnTriggered += () => OnPointerExit(capturedTarget);
-                pointerExitBind.Enable();
-                _binds.Add(pointerExitBind);
+                AddBind(capturedTarget.PointerDown, () => OnPointerDown(capturedTarget));
+                AddBind(capturedTarget.PointerEnter, () => OnPointerEnter(capturedTarget));
+                AddBind(capturedTarget.PointerExit, () => OnPointerExit(capturedTarget));
             }
         }
 
@@ -75,25 +77,44 @@ namespace Core.Input.Movement
             }
 
             _binds.Clear();
-            ResetPointerState();
 
             _movementCancellation?.Cancel();
             _movementCancellation?.Dispose();
             _movementCancellation = null;
+
+            ResetPointerState();
+        }
+
+        private void AddBind(ITrigger trigger, Action handler)
+        {
+            Bind bind = new Bind(trigger);
+
+            bind.OnTriggered += () =>
+            {
+                if (_gameplayInputBlock.IsBlocked)
+                {
+                    return;
+                }
+
+                handler();
+            };
+
+            bind.Enable();
+            _binds.Add(bind);
         }
 
         private void OnGlobalPointerPressed()
         {
+            if (_gameplayInputBlock.IsBlocked)
+            {
+                return;
+            }
+
             _isPointerPressed = true;
         }
 
         private void OnPointerDown(MovementInputTarget inputTarget)
         {
-            if (_movementService.IsMoving)
-            {
-                return;
-            }
-
             _pointerDownTarget = inputTarget;
             _isPointerOverTarget = true;
             _pendingTarget = inputTarget;
@@ -102,8 +123,7 @@ namespace Core.Input.Movement
 
         private void OnPointerEnter(MovementInputTarget inputTarget)
         {
-            if (!_isPointerPressed
-             || _movementService.IsMoving)
+            if (!_isPointerPressed)
             {
                 return;
             }
@@ -133,7 +153,7 @@ namespace Core.Input.Movement
         {
             _isPointerPressed = false;
 
-            if (_movementService.IsMoving)
+            if (_gameplayInputBlock.IsBlocked)
             {
                 ClearPendingPreview();
                 _pointerDownTarget = null;

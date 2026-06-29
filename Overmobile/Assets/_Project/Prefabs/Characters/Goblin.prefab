@@ -201,7 +201,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2069127016291750437}
   - component: {fileID: 4914371018067680657}
-  - component: {fileID: 654493932898075962}
   - component: {fileID: 4355730437235926077}
   m_Layer: 0
   m_Name: Goblin
@@ -245,22 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f9e37ca6c455748a1ec336b25d80a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.InteractableTarget
+  _entityKey:
   _pointArea: {fileID: 1012956945655186846}
-  _movementTarget: {fileID: 654493932898075962}
   _characterAnimationView: {fileID: 4355730437235926077}
---- !u!114 &654493932898075962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793627057752628137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd26ccc36f092f546ab6ac8871a14d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementTarget
-  _endpointKey: 
 --- !u!114 &4355730437235926077
 MonoBehaviour:
   m_ObjectHideFlags: 0

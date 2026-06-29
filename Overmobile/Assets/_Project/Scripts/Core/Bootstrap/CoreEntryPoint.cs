@@ -1,9 +1,9 @@
+using Core;
 using Core.Camera;
 using Core.Gameplay.Player;
 using Core.Input.Movement;
 using Cysharp.Threading.Tasks;
 using System;
-using System.Threading;
 using VContainer.Unity;
 
 namespace Core.Bootstrap
@@ -13,23 +13,27 @@ namespace Core.Bootstrap
         private readonly ICameraTransitionView _cameraTransitionView;
         private readonly IPlayerSpawnView _playerSpawnView;
         private readonly MovementInputHandler _movementInputHandler;
+        private readonly CoreCancellationSource _coreCancellation;
+        private readonly IGameplayInputBlock _gameplayInputBlock;
 
         public CoreEntryPoint(
             ICameraTransitionView cameraTransitionView,
             IPlayerSpawnView playerSpawnView,
-            MovementInputHandler movementInputHandler)
+            MovementInputHandler movementInputHandler,
+            CoreCancellationSource coreCancellation,
+            IGameplayInputBlock gameplayInputBlock)
         {
             _cameraTransitionView = cameraTransitionView;
             _playerSpawnView = playerSpawnView;
             _movementInputHandler = movementInputHandler;
+            _coreCancellation = coreCancellation;
+            _gameplayInputBlock = gameplayInputBlock;
         }
 
         void IStartable.Start()
         {
             _playerSpawnView.Spawn(0);
-            _movementInputHandler.StartListening();
-
-            StartCameraTransitionAsync().Forget();
+            StartIntroAsync().Forget();
         }
 
         void IDisposable.Dispose()
@@ -37,9 +41,20 @@ namespace Core.Bootstrap
             _movementInputHandler.StopListening();
         }
 
-        private async UniTaskVoid StartCameraTransitionAsync()
+        private async UniTaskVoid StartIntroAsync()
         {
-            await _cameraTransitionView.PlayTransitionAsync(CancellationToken.None);
+            _gameplayInputBlock.Block();
+
+            try
+            {
+                await _cameraTransitionView.PlayTransitionAsync(_coreCancellation.Token);
+            }
+            finally
+            {
+                _gameplayInputBlock.Unblock();
+            }
+
+            _movementInputHandler.StartListening();
         }
     }
 }

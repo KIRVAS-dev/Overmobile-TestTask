@@ -507,10 +507,6 @@ PrefabInstance:
       propertyPath: _pointArea
       value: 
       objectReference: {fileID: 2408691713758737686}
-    - target: {fileID: 6792487275450750900, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
-      propertyPath: _movementTarget
-      value: 
-      objectReference: {fileID: 6401493306872623819}
     - target: {fileID: 6945448183636639949, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
       propertyPath: _textLabel
       value: 
@@ -607,17 +603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59160a74a6970d44b0a1eff1819dfe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Input::Input.Triggers.PointerDownTrigger
---- !u!114 &6401493306872623819 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -613619496037156590, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
-  m_PrefabInstance: {fileID: 3435490529421134809}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd26ccc36f092f546ab6ac8871a14d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementTarget
 --- !u!114 &6401996393082526577 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8607827648629543080, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
