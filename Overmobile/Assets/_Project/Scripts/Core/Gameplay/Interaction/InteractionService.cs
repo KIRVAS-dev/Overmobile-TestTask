@@ -42,7 +42,7 @@ namespace Core.Gameplay.Interaction
 
             foreach (string guardEntityId in targetData.GuardEntityIds)
             {
-                if (_powerRegistry.IsResolved(guardEntityId) == false)
+                if (!_powerRegistry.IsResolved(guardEntityId))
                 {
                     return false;
                 }
@@ -54,7 +54,7 @@ namespace Core.Gameplay.Interaction
         public async UniTask InteractAsync(string endpointKey, string entityId, Vector3 facingWorldPosition,
             CancellationToken cancellationToken)
         {
-            if (CanInteract(entityId) == false)
+            if (!CanInteract(entityId))
             {
                 return;
             }
@@ -87,11 +87,11 @@ namespace Core.Gameplay.Interaction
             switch (targetData.Type)
             {
                 case EntityType.Enemy:
-                    ResolveEnemyInteraction(entityId, targetData.RequiredItem);
+                    ResolveEnemyInteraction(entityId, targetData);
                     break;
 
                 case EntityType.Ally:
-                    _powerRegistry.TransferPowerToPlayer(entityId, requirePlayerPowerGreater: false);
+                    ResolveAllyInteraction(entityId, targetData);
                     break;
 
                 case EntityType.Player:
@@ -102,15 +102,47 @@ namespace Core.Gameplay.Interaction
             }
         }
 
-        private void ResolveEnemyInteraction(string entityId, ItemType? requiredItem)
+        private void ResolveEnemyInteraction(string entityId, InteractableTargetData targetData)
         {
-            if (requiredItem.HasValue
-             && !_inventory.Get(requiredItem.Value))
+            if (targetData.RequiredItem.HasValue
+             && !_inventory.Get(targetData.RequiredItem.Value))
             {
                 return;
             }
 
-            _powerRegistry.TransferPowerToPlayer(entityId, requirePlayerPowerGreater: true);
+            if (!_powerRegistry.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: true))
+            {
+                return;
+            }
+
+            GrantLoot(targetData);
+        }
+
+        private void ResolveAllyInteraction(string entityId, InteractableTargetData targetData)
+        {
+            if (!_powerRegistry.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: false))
+            {
+                return;
+            }
+
+            GrantLoot(targetData);
+        }
+
+        private void GrantLoot(InteractableTargetData targetData)
+        {
+            if (!targetData.LootItem.HasValue)
+            {
+                return;
+            }
+
+            ItemType lootItem = targetData.LootItem.Value;
+
+            if (_inventory.Get(lootItem))
+            {
+                return;
+            }
+
+            _inventory.Add(lootItem);
         }
 
         private void ValidateEntityGuards()

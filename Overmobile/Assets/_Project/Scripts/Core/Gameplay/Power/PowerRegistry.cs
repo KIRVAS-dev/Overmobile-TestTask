@@ -45,27 +45,29 @@ namespace Core.Gameplay.Power
 
         public bool IsResolved(string entityId)
         {
-            return GetModel(entityId).IsResolved;
+            return GetModel(entityId).IsResolved.CurrentValue;
         }
 
-        public void TransferPowerToPlayer(string sourceEntityId, bool requirePlayerPowerGreater)
+        public bool TryTransferPowerToPlayer(string sourceEntityId, bool requirePlayerPowerGreater)
         {
             PowerEntityModel source = GetModel(sourceEntityId);
 
-            if (source.IsResolved)
+            if (source.IsResolved.CurrentValue)
             {
-                return;
+                return false;
             }
 
             PowerEntityModel player = GetModel(PlayerEntityId);
 
             if (requirePlayerPowerGreater && player.Power.CurrentValue <= source.Power.CurrentValue)
             {
-                return;
+                return false;
             }
 
             player.AddPower(source.Power.CurrentValue);
             source.MarkResolved();
+
+            return true;
         }
 
         private PowerEntityModel GetModel(string entityId)

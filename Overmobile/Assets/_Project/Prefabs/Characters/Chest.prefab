@@ -485,6 +485,8 @@ GameObject:
   - component: {fileID: 8812345678901234521}
   - component: {fileID: 8812345678901234520}
   - component: {fileID: 231559650654762687}
+  - component: {fileID: 5715284359974792943}
+  - component: {fileID: 2923980733885820885}
   - component: {fileID: 2144828550189270077}
   - component: {fileID: 8812345678901234523}
   m_Layer: 0
@@ -583,6 +585,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.InteractableTarget
   _pointArea: {fileID: 6461102168753952537}
   _characterAnimationView: {fileID: 2144828550189270077}
+--- !u!114 &5715284359974792943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394460846507662745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c5d6e7f8a94012b3c4d5e6f7a8b9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.Drop
+  _lootItemPrefab: {fileID: 5252027452711444130}
+--- !u!114 &2923980733885820885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394460846507662745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5c8f2869b14ce41ace4ab8416ed83f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.DropView
+  _dropAnchor: {fileID: 8008779074533469251}
+  _hideOnLoot: {fileID: 6331296901984231379}
 --- !u!114 &2144828550189270077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -824,6 +853,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f37e46fd764655b4483f82f315920e18, type: 3}
+--- !u!114 &5252027452711444130 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6111420352360742363, guid: f37e46fd764655b4483f82f315920e18, type: 3}
+  m_PrefabInstance: {fileID: 2031918696862770041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5849ef7e5b12cbc4db1c88fa61743744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Inventory.Item
 --- !u!4 &8008779074533469251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8292874487945023290, guid: f37e46fd764655b4483f82f315920e18, type: 3}

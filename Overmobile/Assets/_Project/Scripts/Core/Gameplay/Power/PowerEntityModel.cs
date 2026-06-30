@@ -5,6 +5,7 @@ namespace Core.Gameplay.Power
     public sealed class PowerEntityModel : IPowerEntity
     {
         private readonly ReactiveProperty<int> _power;
+        private readonly ReactiveProperty<bool> _isResolved = new ReactiveProperty<bool>(false);
 
         public PowerEntityModel(string entityId, int initialPower)
         {
@@ -13,8 +14,8 @@ namespace Core.Gameplay.Power
         }
 
         public ReadOnlyReactiveProperty<int> Power => _power;
+        public ReadOnlyReactiveProperty<bool> IsResolved => _isResolved;
         public string EntityId { get; }
-        public bool IsResolved { get; private set; }
 
         public void AddPower(int amount)
         {
@@ -23,7 +24,7 @@ namespace Core.Gameplay.Power
 
         public void MarkResolved()
         {
-            IsResolved = true;
+            _isResolved.Value = true;
         }
     }
 }

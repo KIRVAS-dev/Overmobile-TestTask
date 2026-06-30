@@ -12,6 +12,7 @@ namespace Core.Gameplay.Interaction
         public ICharacterAnimationView AnimationView { get; }
         public EntityType Type { get; }
         public ItemType? RequiredItem { get; }
+        public ItemType? LootItem { get; }
         public IReadOnlyList<string> GuardEntityIds { get; }
 
         public InteractableTargetData(
@@ -20,6 +21,7 @@ namespace Core.Gameplay.Interaction
             ICharacterAnimationView animationView,
             EntityType type,
             ItemType? requiredItem,
+            ItemType? lootItem,
             IReadOnlyList<string> guardEntityIds)
         {
             EntityKey = entityKey;
@@ -27,6 +29,7 @@ namespace Core.Gameplay.Interaction
             AnimationView = animationView;
             Type = type;
             RequiredItem = requiredItem;
+            LootItem = lootItem;
             GuardEntityIds = guardEntityIds;
         }
     }

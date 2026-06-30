@@ -70,6 +70,7 @@ namespace Core.Bootstrap
                .As<IGameplayInputTargetProvider>();
 
             builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
+            builder.Register<DropBinder>(Lifetime.Singleton).As<IDropBinder>();
         }
 
         private void RegisterInventory(IContainerBuilder builder)

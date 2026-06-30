@@ -1,12 +1,14 @@
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
+using Core.Gameplay.Power;
 using Core.Input;
 using Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ViewComponents.Entity;
+using ViewComponents.Inventory;
+using EntityId = ViewComponents.Entity.EntityId;
 
 namespace ViewComponents.Interaction
 {
@@ -61,6 +63,23 @@ namespace ViewComponents.Interaction
             throw new InteractableTargetNotFoundByEntityIdException(entityId);
         }
 
+        public void BindLootDrops(IPowerRegistry powerRegistry)
+        {
+            ValidateInteractableTargets();
+
+            foreach (InteractableTarget interactableTarget in _interactableTargets)
+            {
+                DropView dropView = interactableTarget.GetComponent<DropView>();
+
+                if (dropView == null)
+                {
+                    continue;
+                }
+
+                dropView.Bind(powerRegistry, interactableTarget.EntityId);
+            }
+        }
+
         public IReadOnlyList<GameplayInputTarget> GetGameplayInputTargets()
         {
             ValidateInteractableTargets();
@@ -81,13 +100,15 @@ namespace ViewComponents.Interaction
             return inputTargets;
         }
 
-        private static InteractableTargetData BuildInteractableTargetData(InteractableTarget interactableTarget)
+        private InteractableTargetData BuildInteractableTargetData(InteractableTarget interactableTarget)
         {
             InteractionRequiredItem requiredItemComponent = interactableTarget.GetComponent<InteractionRequiredItem>();
 
             ItemType? requiredItem = requiredItemComponent == null
                 ? null
                 : requiredItemComponent.RequiredItem;
+
+            ItemType? lootItem = ResolveLootItem(interactableTarget);
 
             IReadOnlyList<string> guardEntityIds = ResolveGuardEntityIds(interactableTarget);
 
@@ -97,11 +118,35 @@ namespace ViewComponents.Interaction
                 interactableTarget.AnimationView,
                 interactableTarget.Type,
                 requiredItem,
+                lootItem,
                 guardEntityIds
             );
         }
 
-        private static IReadOnlyList<string> ResolveGuardEntityIds(InteractableTarget interactableTarget)
+        private ItemType? ResolveLootItem(InteractableTarget interactableTarget)
+        {
+            Drop drop = interactableTarget.GetComponent<Drop>();
+
+            if (drop == null)
+            {
+                return null;
+            }
+
+            Item lootItemPrefab = drop.LootItemPrefab;
+
+            if (lootItemPrefab == null)
+            {
+                throw new InvalidDropException(interactableTarget.name, "Loot item prefab is not assigned");
+            }
+
+            ItemType lootItem = lootItemPrefab.ItemType;
+
+            return !Enum.IsDefined(typeof(ItemType), lootItem)
+                ? throw new InvalidDropException(interactableTarget.name, $"Loot item prefab has invalid item type '{lootItem}'")
+                : lootItem;
+        }
+
+        private IReadOnlyList<string> ResolveGuardEntityIds(InteractableTarget interactableTarget)
         {
             InteractionEntityGuards entityGuards = interactableTarget.GetComponent<InteractionEntityGuards>();
 
@@ -110,15 +155,12 @@ namespace ViewComponents.Interaction
                 return Array.Empty<string>();
             }
 
-            string hostEntityId = interactableTarget.GetComponent<ViewComponents.Entity.EntityId>().Id;
+            string hostEntityId = interactableTarget.GetComponent<EntityId>().Id;
 
             return entityGuards.GetGuardEntityIds(hostEntityId);
         }
 
-        private static MovementInputTarget BuildMovementInputTarget(
-            string endpointKey,
-            PointArea pointArea,
-            Vector3 facingWorldPosition)
+        private MovementInputTarget BuildMovementInputTarget(string endpointKey, PointArea pointArea, Vector3 facingWorldPosition)
         {
             return new MovementInputTarget(
                 endpointKey,

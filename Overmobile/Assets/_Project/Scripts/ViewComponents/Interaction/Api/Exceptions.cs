@@ -13,4 +13,10 @@ namespace ViewComponents.Interaction
         public InvalidInteractionEntityGuardsException(string objectName, string reason)
             : base("interaction-view-2", $"Invalid interaction entity guards on '{objectName}': {reason}") { }
     }
+
+    public sealed class InvalidDropException : ExtendedException
+    {
+        public InvalidDropException(string objectName, string reason)
+            : base("interaction-view-3", $"Invalid drop on '{objectName}': {reason}") { }
+    }
 }
