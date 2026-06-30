@@ -1,6 +1,8 @@
+using Core.Gameplay.Entity;
 using Core.Gameplay.Power;
 using System.Collections.Generic;
 using UnityEngine;
+using ViewComponents.Entity;
 
 namespace ViewComponents.Power
 {
@@ -10,7 +12,8 @@ namespace ViewComponents.Power
     {
         [SerializeField] private EntityPower[] _entityPowers;
 
-        public string HeroPowerId => EntityPowerSceneHelper.ResolveHeroEntityPower(_entityPowers, gameObject.name).PowerId;
+        public string PlayerEntityId =>
+            EntityPowerSceneHelper.ResolvePlayerEntityPower(_entityPowers, gameObject.name).EntityId;
 
         public IReadOnlyList<EntityPowerData> GetEntityPowers()
         {
@@ -20,7 +23,17 @@ namespace ViewComponents.Power
 
             foreach (EntityPower entityPower in entityPowerComponents)
             {
-                entityPowers.Add(new EntityPowerData(entityPower.PowerId, entityPower.InitialPower));
+                EntityRole entityRole = entityPower.GetComponent<EntityRole>();
+
+                if (entityRole == null)
+                {
+                    throw new InvalidEntityPowerProviderException(
+                        entityPower.gameObject.name,
+                        "Entity role is not assigned"
+                    );
+                }
+
+                entityPowers.Add(new EntityPowerData(entityPower.EntityId, entityPower.InitialPower, entityRole.Type));
             }
 
             return entityPowers;

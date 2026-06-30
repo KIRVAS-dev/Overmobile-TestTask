@@ -200,6 +200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2069127016291750437}
+  - component: {fileID: 8216761843044790241}
   - component: {fileID: 8812345678901234504}
   - component: {fileID: 8812345678901234503}
   - component: {fileID: 8812345678901234501}
@@ -237,6 +238,19 @@ Transform:
   - {fileID: 1102072288433020731}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8216761843044790241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793627057752628137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f7a6b5c4d34e2f9a0b1c2d3e4f5061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Entity.EntityId
+  _id: 
 --- !u!114 &8812345678901234504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
-  _powerId: 
+  _entityId: {fileID: 8216761843044790241}
   _initialPower: 0
 --- !u!114 &4914371018067680657
 MonoBehaviour:
@@ -333,7 +347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c4d5e6f7a84990b1c2d3e4f5061720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPowerView
-  _powerPanelView: {fileID: 8812345678901234506}
 --- !u!1 &4716099593165831685
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,17 +779,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
---- !u!114 &8812345678901234506 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9048789708736905276, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
-  m_PrefabInstance: {fileID: 196264340779594725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f337f54e948eb14fa9bd1a51eb7ce0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelView
 --- !u!224 &7475418050952144859 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}

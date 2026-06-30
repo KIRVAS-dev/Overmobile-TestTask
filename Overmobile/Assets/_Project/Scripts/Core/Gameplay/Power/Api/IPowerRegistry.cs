@@ -1,1 +1,8 @@
-namespace Core.Gameplay.Power{    public interface IPowerRegistry    {        string HeroPowerId { get; }        IPowerEntity Get(string powerId);    }}
+namespace Core.Gameplay.Power
+{
+    public interface IPowerRegistry
+    {
+        string PlayerEntityId { get; }
+        IPowerEntity Get(string entityId);
+    }
+}

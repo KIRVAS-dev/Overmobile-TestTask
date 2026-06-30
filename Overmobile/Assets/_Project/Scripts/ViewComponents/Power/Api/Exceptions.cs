@@ -2,10 +2,10 @@ using ExtendedExceptions;
 
 namespace ViewComponents.Power
 {
-    public sealed class MissingPowerIdException : ExtendedException
+    public sealed class MissingEntityPowerEntityIdReferenceException : ExtendedException
     {
-        public MissingPowerIdException(string objectName)
-            : base("entity-power-1", $"Power id is not assigned on '{objectName}'") { }
+        public MissingEntityPowerEntityIdReferenceException(string objectName)
+            : base("entity-power-1", $"Entity id reference is not assigned on '{objectName}'") { }
     }
 
     public sealed class InvalidEntityPowerProviderException : ExtendedException

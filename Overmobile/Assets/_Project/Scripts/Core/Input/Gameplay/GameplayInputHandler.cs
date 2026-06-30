@@ -114,6 +114,11 @@ namespace Core.Input.Gameplay
 
         private void OnPointerDown(GameplayInputTarget inputTarget)
         {
+            if (!_interactionService.CanInteract(inputTarget.EntityId))
+            {
+                return;
+            }
+
             _pointerDownTarget = inputTarget;
             _isPointerOverTarget = true;
             _pendingTarget = inputTarget;
@@ -123,6 +128,11 @@ namespace Core.Input.Gameplay
         private void OnPointerEnter(GameplayInputTarget inputTarget)
         {
             if (!_isPointerPressed)
+            {
+                return;
+            }
+
+            if (!_interactionService.CanInteract(inputTarget.EntityId))
             {
                 return;
             }
@@ -142,7 +152,7 @@ namespace Core.Input.Gameplay
             }
 
             if (_pendingTarget.HasValue
-             && _pendingTarget.Value.PowerId == inputTarget.PowerId)
+             && _pendingTarget.Value.EntityId == inputTarget.EntityId)
             {
                 ClearPendingPreview();
             }
@@ -161,7 +171,7 @@ namespace Core.Input.Gameplay
 
             bool canInteract = _pendingTarget.HasValue
              && (_isPointerOverTarget
-                 || _pointerDownTarget.HasValue && _pointerDownTarget.Value.PowerId == _pendingTarget.Value.PowerId);
+                 || _pointerDownTarget.HasValue && _pointerDownTarget.Value.EntityId == _pendingTarget.Value.EntityId);
 
             if (!canInteract)
             {
@@ -171,6 +181,14 @@ namespace Core.Input.Gameplay
             }
 
             GameplayInputTarget pendingTarget = _pendingTarget.Value;
+
+            if (!_interactionService.CanInteract(pendingTarget.EntityId))
+            {
+                ClearPendingPreview();
+                _pointerDownTarget = null;
+                return;
+            }
+
             _pendingTarget = null;
             _pointerDownTarget = null;
 
@@ -197,7 +215,7 @@ namespace Core.Input.Gameplay
             {
                 await _interactionService.InteractAsync(
                     inputTarget.Movement.EndpointKey,
-                    inputTarget.PowerId,
+                    inputTarget.EntityId,
                     inputTarget.Movement.FacingWorldPosition,
                     _interactionCancellation.Token
                 );

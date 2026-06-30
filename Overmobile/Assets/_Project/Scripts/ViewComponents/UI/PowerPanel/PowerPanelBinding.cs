@@ -8,9 +8,9 @@ namespace ViewComponents.UI.PowerPanel
     {
         private readonly IDisposable _powerSubscription;
 
-        public PowerPanelBinding(IPowerRegistry powerRegistry, string powerId, IPowerPanelView powerPanelView)
+        public PowerPanelBinding(IPowerRegistry powerRegistry, string entityId, IPowerPanelView powerPanelView)
         {
-            IPowerEntity powerEntity = powerRegistry.Get(powerId);
+            IPowerEntity powerEntity = powerRegistry.Get(entityId);
             powerPanelView.SetPower(powerEntity.Power.CurrentValue);
             _powerSubscription = powerEntity.Power.Subscribe(powerPanelView.SetPower);
         }

@@ -1,1 +1,78 @@
-using System.Collections.Generic;namespace Core.Gameplay.Power{    public sealed class PowerRegistry : IPowerRegistry    {        private readonly Dictionary<string, PowerEntityModel> _entities = new Dictionary<string, PowerEntityModel>();        public PowerRegistry(IEntityPowerProvider entityPowerProvider)        {            HeroPowerId = entityPowerProvider.HeroPowerId;            if (string.IsNullOrWhiteSpace(HeroPowerId))            {                throw new InvalidEntityPowerProviderException(nameof(entityPowerProvider), "Hero power id is not assigned");            }            IReadOnlyList<EntityPowerData> entityPowers = entityPowerProvider.GetEntityPowers();            foreach (EntityPowerData entityPowerData in entityPowers)            {                if (_entities.ContainsKey(entityPowerData.PowerId))                {                    throw new DuplicatePowerIdException(entityPowerData.PowerId);                }                _entities.Add(                    entityPowerData.PowerId,                    new PowerEntityModel(entityPowerData.PowerId, entityPowerData.InitialPower)                );            }            if (!_entities.ContainsKey(HeroPowerId))            {                throw new HeroPowerIdNotFoundException(HeroPowerId);            }        }        public string HeroPowerId { get; }        public IPowerEntity Get(string powerId)        {            return GetModel(powerId);        }        public bool IsResolved(string powerId)        {            return GetModel(powerId).IsResolved;        }        public void TransferPowerToHero(string sourcePowerId, bool requireHeroPowerGreater)        {            PowerEntityModel source = GetModel(sourcePowerId);            if (source.IsResolved)            {                return;            }            PowerEntityModel hero = GetModel(HeroPowerId);            if (requireHeroPowerGreater && hero.Power.CurrentValue <= source.Power.CurrentValue)            {                return;            }            hero.AddPower(source.Power.CurrentValue);            source.MarkResolved();        }        private PowerEntityModel GetModel(string powerId)        {            return !_entities.TryGetValue(powerId, out PowerEntityModel entity)                ? throw new EntityPowerNotFoundException(powerId)                : entity;        }    }}
+using System.Collections.Generic;
+
+namespace Core.Gameplay.Power
+{
+    public sealed class PowerRegistry : IPowerRegistry
+    {
+        private readonly Dictionary<string, PowerEntityModel> _entities = new Dictionary<string, PowerEntityModel>();
+
+        public PowerRegistry(IEntityPowerProvider entityPowerProvider)
+        {
+            PlayerEntityId = entityPowerProvider.PlayerEntityId;
+
+            if (string.IsNullOrWhiteSpace(PlayerEntityId))
+            {
+                throw new InvalidEntityPowerProviderException(nameof(entityPowerProvider), "Player entity id is not assigned");
+            }
+
+            IReadOnlyList<EntityPowerData> entityPowers = entityPowerProvider.GetEntityPowers();
+
+            foreach (EntityPowerData entityPowerData in entityPowers)
+            {
+                if (_entities.ContainsKey(entityPowerData.EntityId))
+                {
+                    throw new DuplicateEntityIdException(entityPowerData.EntityId);
+                }
+
+                _entities.Add(
+                    entityPowerData.EntityId,
+                    new PowerEntityModel(entityPowerData.EntityId, entityPowerData.InitialPower)
+                );
+            }
+
+            if (!_entities.ContainsKey(PlayerEntityId))
+            {
+                throw new PlayerEntityNotFoundException();
+            }
+        }
+
+        public string PlayerEntityId { get; }
+
+        public IPowerEntity Get(string entityId)
+        {
+            return GetModel(entityId);
+        }
+
+        public bool IsResolved(string entityId)
+        {
+            return GetModel(entityId).IsResolved;
+        }
+
+        public void TransferPowerToPlayer(string sourceEntityId, bool requirePlayerPowerGreater)
+        {
+            PowerEntityModel source = GetModel(sourceEntityId);
+
+            if (source.IsResolved)
+            {
+                return;
+            }
+
+            PowerEntityModel player = GetModel(PlayerEntityId);
+
+            if (requirePlayerPowerGreater && player.Power.CurrentValue <= source.Power.CurrentValue)
+            {
+                return;
+            }
+
+            player.AddPower(source.Power.CurrentValue);
+            source.MarkResolved();
+        }
+
+        private PowerEntityModel GetModel(string entityId)
+        {
+            return !_entities.TryGetValue(entityId, out PowerEntityModel entity)
+                ? throw new EntityPowerNotFoundException(entityId)
+                : entity;
+        }
+    }
+}

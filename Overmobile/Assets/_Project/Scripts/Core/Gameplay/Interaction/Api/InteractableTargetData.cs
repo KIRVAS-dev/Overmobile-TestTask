@@ -1,29 +1,33 @@
 using Core.Animation;
 using Core.Gameplay.Entity;
 using Core.Gameplay.Inventory;
+using System.Collections.Generic;
 
 namespace Core.Gameplay.Interaction
 {
     public readonly struct InteractableTargetData
     {
         public string EntityKey { get; }
-        public string PowerId { get; }
+        public string EntityId { get; }
         public ICharacterAnimationView AnimationView { get; }
         public EntityType Type { get; }
         public ItemType? RequiredItem { get; }
+        public IReadOnlyList<string> GuardEntityIds { get; }
 
         public InteractableTargetData(
             string entityKey,
-            string powerId,
+            string entityId,
             ICharacterAnimationView animationView,
             EntityType type,
-            ItemType? requiredItem)
+            ItemType? requiredItem,
+            IReadOnlyList<string> guardEntityIds)
         {
             EntityKey = entityKey;
-            PowerId = powerId;
+            EntityId = entityId;
             AnimationView = animationView;
             Type = type;
             RequiredItem = requiredItem;
+            GuardEntityIds = guardEntityIds;
         }
     }
 }

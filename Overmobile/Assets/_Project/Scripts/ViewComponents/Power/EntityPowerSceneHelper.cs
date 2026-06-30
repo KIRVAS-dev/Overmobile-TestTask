@@ -8,38 +8,38 @@ namespace ViewComponents.Power
 {
     public static class EntityPowerSceneHelper
     {
+        public static EntityPower ResolvePlayerEntityPower(EntityPower[] serializedEntityPowers, string providerName)
+        {
+            EntityPower[] entityPowerComponents = GetValidatedEntityPowers(serializedEntityPowers, providerName);
+
+            EntityPower playerEntityPower = null;
+
+            foreach (EntityPower entityPower in entityPowerComponents)
+            {
+                if (!IsPlayerEntityPower(entityPower))
+                {
+                    continue;
+                }
+
+                if (playerEntityPower != null)
+                {
+                    throw new InvalidEntityPowerProviderException(providerName, "Multiple player entity powers are assigned");
+                }
+
+                playerEntityPower = entityPower;
+            }
+
+            return playerEntityPower == null
+                ? throw new InvalidEntityPowerProviderException(providerName, "Player entity power is not assigned")
+                : playerEntityPower;
+        }
+
         public static EntityPower[] GetValidatedEntityPowers(EntityPower[] serializedEntityPowers, string providerName)
         {
             EntityPower[] entityPowerComponents = ResolveEntityPowerComponents(serializedEntityPowers);
             ValidateEntityPowers(entityPowerComponents, providerName);
 
             return entityPowerComponents;
-        }
-
-        public static EntityPower ResolveHeroEntityPower(EntityPower[] serializedEntityPowers, string providerName)
-        {
-            EntityPower[] entityPowerComponents = GetValidatedEntityPowers(serializedEntityPowers, providerName);
-
-            EntityPower heroEntityPower = null;
-
-            foreach (EntityPower entityPower in entityPowerComponents)
-            {
-                if (!IsHeroEntityPower(entityPower))
-                {
-                    continue;
-                }
-
-                if (heroEntityPower != null)
-                {
-                    throw new InvalidEntityPowerProviderException(providerName, "Multiple hero entity powers are assigned");
-                }
-
-                heroEntityPower = entityPower;
-            }
-
-            return heroEntityPower == null
-                ? throw new InvalidEntityPowerProviderException(providerName, "Hero entity power is not assigned")
-                : heroEntityPower;
         }
 
         public static IReadOnlyList<EntityPowerView> GetInteractableEntityPowerViews(EntityPower[] serializedEntityPowers,
@@ -50,7 +50,7 @@ namespace ViewComponents.Power
 
             foreach (EntityPower entityPower in entityPowerComponents)
             {
-                if (IsHeroEntityPower(entityPower))
+                if (IsPlayerEntityPower(entityPower))
                 {
                     continue;
                 }
@@ -61,7 +61,7 @@ namespace ViewComponents.Power
             return entityPowerViews;
         }
 
-        private static bool IsHeroEntityPower(EntityPower entityPower)
+        private static bool IsPlayerEntityPower(EntityPower entityPower)
         {
             EntityRole entityRole = entityPower.GetComponent<EntityRole>();
 
@@ -86,7 +86,7 @@ namespace ViewComponents.Power
                 throw new InvalidEntityPowerProviderException(providerName, "Entity powers are not assigned");
             }
 
-            HashSet<string> powerIds = new HashSet<string>();
+            HashSet<string> entityIds = new HashSet<string>();
 
             for (int i = 0; i < entityPowerComponents.Length; i++)
             {
@@ -97,11 +97,11 @@ namespace ViewComponents.Power
                     throw new InvalidEntityPowerProviderException(providerName, $"Entity power at index {i} is missing");
                 }
 
-                string powerId = entityPower.PowerId;
+                string entityId = entityPower.EntityId;
 
-                if (!powerIds.Add(powerId))
+                if (!entityIds.Add(entityId))
                 {
-                    throw new InvalidEntityPowerProviderException(providerName, $"Duplicate power id '{powerId}'");
+                    throw new InvalidEntityPowerProviderException(providerName, $"Duplicate entity id '{entityId}'");
                 }
 
                 ValidateEntityPowerPlacement(entityPower);
@@ -110,16 +110,16 @@ namespace ViewComponents.Power
 
         private static void ValidateEntityPowerPlacement(EntityPower entityPower)
         {
-            bool isHero = IsHeroEntityPower(entityPower);
+            bool isPlayer = IsPlayerEntityPower(entityPower);
             bool hasEntityPowerViewOnSameObject = entityPower.GetComponent<EntityPowerView>() != null;
 
-            if (isHero)
+            if (isPlayer)
             {
                 if (entityPower.GetComponent<MovementView>() != null)
                 {
                     throw new InvalidEntityPowerProviderException(
                         entityPower.gameObject.name,
-                        "Hero entity power must be on player, not on character tier"
+                        "Player entity power must be on player, not on character tier"
                     );
                 }
 
@@ -127,7 +127,7 @@ namespace ViewComponents.Power
                 {
                     throw new InvalidEntityPowerProviderException(
                         entityPower.gameObject.name,
-                        "Hero entity power must not share a game object with entity power view"
+                        "Player entity power must not share a game object with entity power view"
                     );
                 }
 

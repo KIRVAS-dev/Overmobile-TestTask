@@ -6,6 +6,6 @@ namespace Core.Gameplay.Interaction
     {
         IReadOnlyList<InteractableTargetData> GetInteractableTargets();
         InteractableTargetData GetTargetByEntityKey(string entityKey);
-        InteractableTargetData GetTargetByPowerId(string powerId);
+        InteractableTargetData GetTargetByEntityId(string entityId);
     }
 }

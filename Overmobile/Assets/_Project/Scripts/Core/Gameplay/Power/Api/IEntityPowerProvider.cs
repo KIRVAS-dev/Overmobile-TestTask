@@ -1,1 +1,10 @@
-using System.Collections.Generic;namespace Core.Gameplay.Power{    public interface IEntityPowerProvider    {        string HeroPowerId { get; }        IReadOnlyList<EntityPowerData> GetEntityPowers();    }}
+using System.Collections.Generic;
+
+namespace Core.Gameplay.Power
+{
+    public interface IEntityPowerProvider
+    {
+        string PlayerEntityId { get; }
+        IReadOnlyList<EntityPowerData> GetEntityPowers();
+    }
+}

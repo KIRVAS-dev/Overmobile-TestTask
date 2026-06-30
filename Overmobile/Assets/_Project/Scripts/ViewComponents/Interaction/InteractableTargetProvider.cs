@@ -3,8 +3,10 @@ using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
 using Core.Input;
 using Input;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ViewComponents.Entity;
 
 namespace ViewComponents.Interaction
 {
@@ -44,19 +46,19 @@ namespace ViewComponents.Interaction
             throw new InteractableTargetNotFoundException(entityKey);
         }
 
-        public InteractableTargetData GetTargetByPowerId(string powerId)
+        public InteractableTargetData GetTargetByEntityId(string entityId)
         {
             ValidateInteractableTargets();
 
             foreach (InteractableTarget interactableTarget in _interactableTargets)
             {
-                if (interactableTarget.PowerId == powerId)
+                if (interactableTarget.EntityId == entityId)
                 {
                     return BuildInteractableTargetData(interactableTarget);
                 }
             }
 
-            throw new InteractableTargetNotFoundByPowerIdException(powerId);
+            throw new InteractableTargetNotFoundByEntityIdException(entityId);
         }
 
         public IReadOnlyList<GameplayInputTarget> GetGameplayInputTargets()
@@ -73,7 +75,7 @@ namespace ViewComponents.Interaction
                     interactableTarget.transform.position
                 );
 
-                inputTargets.Add(new GameplayInputTarget(movementInputTarget, interactableTarget.PowerId));
+                inputTargets.Add(new GameplayInputTarget(movementInputTarget, interactableTarget.EntityId));
             }
 
             return inputTargets;
@@ -87,13 +89,30 @@ namespace ViewComponents.Interaction
                 ? null
                 : requiredItemComponent.RequiredItem;
 
+            IReadOnlyList<string> guardEntityIds = ResolveGuardEntityIds(interactableTarget);
+
             return new InteractableTargetData(
                 interactableTarget.EntityKey,
-                interactableTarget.PowerId,
+                interactableTarget.EntityId,
                 interactableTarget.AnimationView,
                 interactableTarget.Type,
-                requiredItem
+                requiredItem,
+                guardEntityIds
             );
+        }
+
+        private static IReadOnlyList<string> ResolveGuardEntityIds(InteractableTarget interactableTarget)
+        {
+            InteractionEntityGuards entityGuards = interactableTarget.GetComponent<InteractionEntityGuards>();
+
+            if (entityGuards == null)
+            {
+                return Array.Empty<string>();
+            }
+
+            string hostEntityId = interactableTarget.GetComponent<ViewComponents.Entity.EntityId>().Id;
+
+            return entityGuards.GetGuardEntityIds(hostEntityId);
         }
 
         private static MovementInputTarget BuildMovementInputTarget(

@@ -25,11 +25,11 @@ namespace ViewComponents.Power
 
             EntityPower entityPower = entityPowerView.GetComponent<EntityPower>();
 
-            string powerId = entityPower != null
-                ? entityPower.PowerId
-                : _entityPowerProvider.HeroPowerId;
+            string entityId = entityPower != null
+                ? entityPower.EntityId
+                : _entityPowerProvider.PlayerEntityId;
 
-            entityPowerView.BindPowerPanel(_powerRegistry, powerId);
+            entityPowerView.BindPowerPanel(_powerRegistry, entityId);
         }
     }
 }

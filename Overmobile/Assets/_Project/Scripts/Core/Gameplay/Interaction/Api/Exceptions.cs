@@ -8,9 +8,9 @@ namespace Core.Gameplay.Interaction
             : base("interaction-1", $"Interactable target not found for key '{entityKey}'") { }
     }
 
-    public sealed class InteractableTargetNotFoundByPowerIdException : ExtendedException
+    public sealed class InteractableTargetNotFoundByEntityIdException : ExtendedException
     {
-        public InteractableTargetNotFoundByPowerIdException(string powerId)
-            : base("interaction-2", $"Interactable target not found for power id '{powerId}'") { }
+        public InteractableTargetNotFoundByEntityIdException(string entityId)
+            : base("interaction-2", $"Interactable target not found for entity id '{entityId}'") { }
     }
 }

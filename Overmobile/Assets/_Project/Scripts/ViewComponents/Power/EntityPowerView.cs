@@ -11,10 +11,10 @@ namespace ViewComponents.Power
         private PowerPanelView _powerPanelView;
         private IDisposable _binding;
 
-        public void BindPowerPanel(IPowerRegistry powerRegistry, string powerId)
+        public void BindPowerPanel(IPowerRegistry powerRegistry, string entityId)
         {
             _binding?.Dispose();
-            _binding = new PowerPanelBinding(powerRegistry, powerId, ResolvePowerPanelView());
+            _binding = new PowerPanelBinding(powerRegistry, entityId, ResolvePowerPanelView());
         }
 
         private PowerPanelView ResolvePowerPanelView()

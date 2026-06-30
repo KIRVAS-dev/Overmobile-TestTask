@@ -5,12 +5,12 @@ namespace Core.Input
     public readonly struct GameplayInputTarget
     {
         public MovementInputTarget Movement { get; }
-        public string PowerId { get; }
+        public string EntityId { get; }
 
-        public GameplayInputTarget(MovementInputTarget movement, string powerId)
+        public GameplayInputTarget(MovementInputTarget movement, string entityId)
         {
             Movement = movement;
-            PowerId = powerId;
+            EntityId = entityId;
         }
     }
 }

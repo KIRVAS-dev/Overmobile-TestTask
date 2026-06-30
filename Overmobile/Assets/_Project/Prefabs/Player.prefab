@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6238788189541788199}
+  - component: {fileID: 6008516098266198410}
   - component: {fileID: 8812345678901234512}
   - component: {fileID: 8812345678901234510}
   - component: {fileID: 4624356426769529732}
@@ -35,6 +36,19 @@ Transform:
   - {fileID: 1648276373146446756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6008516098266198410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613738151313737111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f7a6b5c4d34e2f9a0b1c2d3e4f5061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Entity.EntityId
+  _id: 
 --- !u!114 &8812345678901234512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
-  _powerId: 
+  _entityId: {fileID: 6008516098266198410}
   _initialPower: 0
 --- !u!114 &4624356426769529732
 MonoBehaviour:

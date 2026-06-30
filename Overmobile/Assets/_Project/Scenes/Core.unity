@@ -3259,6 +3259,18 @@ PrefabInstance:
       propertyPath: _endpointKey
       value: FishL
       objectReference: {fileID: 0}
+    - target: {fileID: 6908879180943190867, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: _guardEntityIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908879180943190867, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: '_guardEntityIds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1076337775}
+    - target: {fileID: 8272190244053793847, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: _id
+      value: 568105589213742838
+      objectReference: {fileID: 0}
     - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
       propertyPath: _key
       value: FishL
@@ -8572,10 +8584,10 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _playerPointerInput: {fileID: 663580182}
-  _entityPowerProvider: {fileID: 8812345678901234550}
   _interactableTargetProvider: {fileID: 1036685244}
   _movementRouteProvider: {fileID: 1297179013}
   _movementConfig: {fileID: 11400000, guid: 00389743ab9215c4fa9b8e2e844bbd3e, type: 2}
+  _entityPowerProvider: {fileID: 8812345678901234550}
 --- !u!1 &632574533
 GameObject:
   m_ObjectHideFlags: 0
@@ -10447,6 +10459,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin (M)
       objectReference: {fileID: 0}
+    - target: {fileID: 8216761843044790241, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _id
+      value: 568105589213742322
+      objectReference: {fileID: 0}
     - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _powerId
       value: 568105589213717908
@@ -11920,6 +11936,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8216761843044790241, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _id
+      value: 568105589213743806
+      objectReference: {fileID: 0}
     - target: {fileID: 8808148426834437603, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11982,6 +12002,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
+--- !u!114 &934072038 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8216761843044790241, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+  m_PrefabInstance: {fileID: 934072033}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f7a6b5c4d34e2f9a0b1c2d3e4f5061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Entity.EntityId
 --- !u!114 &934072039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13619,6 +13650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin (L)
       objectReference: {fileID: 0}
+    - target: {fileID: 8216761843044790241, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _id
+      value: 568105589213743218
+      objectReference: {fileID: 0}
     - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _powerId
       value: 568105589213716922
@@ -13669,6 +13704,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
+--- !u!114 &1076337775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8216761843044790241, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+  m_PrefabInstance: {fileID: 1076337771}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f7a6b5c4d34e2f9a0b1c2d3e4f5061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Entity.EntityId
 --- !u!114 &1076337776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18478,6 +18524,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1036685243}
     m_Modifications:
+    - target: {fileID: 213775458002387893, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: _id
+      value: 568105589213742604
+      objectReference: {fileID: 0}
     - target: {fileID: 727680530478582852, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.021
@@ -24327,6 +24377,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1036685243}
     m_Modifications:
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
+      value: FishR
+      objectReference: {fileID: 0}
     - target: {fileID: 2988144014708780846, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.27
@@ -24387,9 +24441,17 @@ PrefabInstance:
       propertyPath: _endpointKey
       value: FishR
       objectReference: {fileID: 0}
-    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
-      propertyPath: _key
-      value: FishR
+    - target: {fileID: 6908879180943190867, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: _guardEntityIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908879180943190867, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: '_guardEntityIds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 934072038}
+    - target: {fileID: 8272190244053793847, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: _id
+      value: 568105589213743428
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25629,6 +25691,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1036685243}
     m_Modifications:
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
+      value: FishL
+      objectReference: {fileID: 0}
     - target: {fileID: 2988144014708780846, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.36
@@ -25689,9 +25755,17 @@ PrefabInstance:
       propertyPath: _endpointKey
       value: FishL
       objectReference: {fileID: 0}
-    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
-      propertyPath: _key
-      value: FishL
+    - target: {fileID: 6908879180943190867, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: _guardEntityIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908879180943190867, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: '_guardEntityIds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1076337775}
+    - target: {fileID: 8272190244053793847, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: _id
+      value: 568105589213743302
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27019,6 +27093,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1036685243}
     m_Modifications:
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
+      value: FishR
+      objectReference: {fileID: 0}
     - target: {fileID: 2988144014708780846, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.37
@@ -27079,9 +27157,17 @@ PrefabInstance:
       propertyPath: _endpointKey
       value: FishR
       objectReference: {fileID: 0}
-    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
-      propertyPath: _key
-      value: FishR
+    - target: {fileID: 6908879180943190867, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: _guardEntityIds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908879180943190867, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: '_guardEntityIds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 934072038}
+    - target: {fileID: 8272190244053793847, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: _id
+      value: 568105589213742754
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29133,6 +29219,10 @@ PrefabInstance:
       propertyPath: '_upgradeTierPrefabs.Array.data[1]'
       value: 
       objectReference: {fileID: 755789286029249522, guid: af5303eb2d1a0a545b0c1867daa65f83, type: 3}
+    - target: {fileID: 6008516098266198410, guid: 7192f40b89c66a04ca9ad0b5d2af6eb8, type: 3}
+      propertyPath: _id
+      value: 568105589213742616
+      objectReference: {fileID: 0}
     - target: {fileID: 6238788189541788199, guid: 7192f40b89c66a04ca9ad0b5d2af6eb8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.176

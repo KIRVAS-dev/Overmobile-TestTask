@@ -1,1 +1,1 @@
-using R3;namespace Core.Gameplay.Power{    public interface IPowerEntity    {        string PowerId { get; }        ReadOnlyReactiveProperty<int> Power { get; }    }}
+using R3;namespace Core.Gameplay.Power{    public interface IPowerEntity    {        string EntityId { get; }        ReadOnlyReactiveProperty<int> Power { get; }    }}
