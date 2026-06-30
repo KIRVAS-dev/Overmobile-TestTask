@@ -219,6 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5859402943051637174}
+  - component: {fileID: -3404450112770989912}
   m_Layer: 0
   m_Name: Liquid_Explosion
   m_TagString: Untagged
@@ -243,3 +244,16 @@ Transform:
   - {fileID: 7964127501881242425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3404450112770989912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8178426991434335036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4183fa26439e5b43bdd2c3fec6b4180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Vfx.OneShotAnimatedVfxView
+  _animator: {fileID: 5392959171496275997}

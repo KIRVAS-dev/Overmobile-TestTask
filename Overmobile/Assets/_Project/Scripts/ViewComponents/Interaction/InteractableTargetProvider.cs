@@ -1,7 +1,6 @@
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
-using Core.Gameplay.Power;
 using Core.Input;
 using Input;
 using System;
@@ -19,10 +18,15 @@ namespace ViewComponents.Interaction
     {
         [SerializeField] private InteractableTarget[] _interactableTargets;
 
+        internal IReadOnlyList<InteractableTarget> InteractableTargets => _interactableTargets;
+
+        private void Awake()
+        {
+            Validate();
+        }
+
         public IReadOnlyList<InteractableTargetData> GetInteractableTargets()
         {
-            ValidateInteractableTargets();
-
             List<InteractableTargetData> interactableTargets = new List<InteractableTargetData>(_interactableTargets.Length);
 
             foreach (InteractableTarget interactableTarget in _interactableTargets)
@@ -35,8 +39,6 @@ namespace ViewComponents.Interaction
 
         public InteractableTargetData GetTargetByEntityKey(string entityKey)
         {
-            ValidateInteractableTargets();
-
             foreach (InteractableTarget interactableTarget in _interactableTargets)
             {
                 if (interactableTarget.EntityKey == entityKey)
@@ -50,8 +52,6 @@ namespace ViewComponents.Interaction
 
         public InteractableTargetData GetTargetByEntityId(string entityId)
         {
-            ValidateInteractableTargets();
-
             foreach (InteractableTarget interactableTarget in _interactableTargets)
             {
                 if (interactableTarget.EntityId == entityId)
@@ -63,27 +63,8 @@ namespace ViewComponents.Interaction
             throw new InteractableTargetNotFoundByEntityIdException(entityId);
         }
 
-        public void BindLootDrops(IPowerRegistry powerRegistry)
-        {
-            ValidateInteractableTargets();
-
-            foreach (InteractableTarget interactableTarget in _interactableTargets)
-            {
-                DropView dropView = interactableTarget.GetComponent<DropView>();
-
-                if (dropView == null)
-                {
-                    continue;
-                }
-
-                dropView.Bind(powerRegistry, interactableTarget.EntityId);
-            }
-        }
-
         public IReadOnlyList<GameplayInputTarget> GetGameplayInputTargets()
         {
-            ValidateInteractableTargets();
-
             List<GameplayInputTarget> inputTargets = new List<GameplayInputTarget>(_interactableTargets.Length);
 
             foreach (InteractableTarget interactableTarget in _interactableTargets)
@@ -172,7 +153,7 @@ namespace ViewComponents.Interaction
             );
         }
 
-        private void ValidateInteractableTargets()
+        private void Validate()
         {
             if (_interactableTargets == null
              || _interactableTargets.Length == 0)

@@ -14,6 +14,7 @@ namespace Core.Bootstrap
         private readonly ICameraTransitionView _cameraTransitionView;
         private readonly IPlayerSpawnView _playerSpawnView;
         private readonly IDropBinder _dropBinder;
+        private readonly IInteractionViewBinder _interactionViewBinder;
         private readonly IEntityPowerPanelBinder _entityPowerPanelBinder;
         private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly GameplayInputHandler _gameplayInputHandler;
@@ -24,16 +25,17 @@ namespace Core.Bootstrap
             ICameraTransitionView cameraTransitionView,
             IPlayerSpawnView playerSpawnView,
             IDropBinder dropBinder,
+            IInteractionViewBinder interactionViewBinder,
             IEntityPowerPanelBinder entityPowerPanelBinder,
             IGameplayInputBlock gameplayInputBlock,
             GameplayInputHandler gameplayInputHandler,
             EntityPowerProvider entityPowerProvider,
-
             CoreCancellationSource coreCancellation)
         {
             _cameraTransitionView = cameraTransitionView;
             _playerSpawnView = playerSpawnView;
             _dropBinder = dropBinder;
+            _interactionViewBinder = interactionViewBinder;
             _entityPowerPanelBinder = entityPowerPanelBinder;
             _gameplayInputBlock = gameplayInputBlock;
             _gameplayInputHandler = gameplayInputHandler;
@@ -45,6 +47,7 @@ namespace Core.Bootstrap
         {
             _playerSpawnView.Spawn(0);
             _dropBinder.BindLootDrops();
+            _interactionViewBinder.BindInteractionViews();
 
             foreach (EntityPowerView entityPowerView in _entityPowerProvider.GetInteractableEntityPowerViews())
             {
@@ -62,17 +65,25 @@ namespace Core.Bootstrap
         private async UniTaskVoid StartIntroAsync()
         {
             _gameplayInputBlock.Block();
+            bool isCancelled = false;
 
             try
             {
                 await _cameraTransitionView.PlayTransitionAsync(_coreCancellation.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                isCancelled = true;
             }
             finally
             {
                 _gameplayInputBlock.Unblock();
             }
 
-            _gameplayInputHandler.StartListening();
+            if (!isCancelled)
+            {
+                _gameplayInputHandler.StartListening();
+            }
         }
     }
 }

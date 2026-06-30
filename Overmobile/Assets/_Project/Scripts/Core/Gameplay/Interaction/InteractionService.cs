@@ -33,6 +33,11 @@ namespace Core.Gameplay.Interaction
 
         public bool CanInteract(string entityId)
         {
+            if (_powerRegistry.IsResolved(entityId))
+            {
+                return false;
+            }
+
             InteractableTargetData targetData = _interactableTargetProvider.GetTargetByEntityId(entityId);
 
             if (targetData.GuardEntityIds.Count == 0)

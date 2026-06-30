@@ -8,5 +8,6 @@ namespace Core.Animation
         Open = 3,
         Upgrade = 4,
         Celebrate = 5,
+        TakeDamage = 6,
     }
 }

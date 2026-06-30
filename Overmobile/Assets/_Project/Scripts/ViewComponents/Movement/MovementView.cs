@@ -185,7 +185,7 @@ namespace ViewComponents.Movement
 
             while (tween.IsActive())
             {
-                await UniTask.Yield();
+                await UniTask.Yield(linkedToken);
             }
 
             linkedToken.ThrowIfCancellationRequested();

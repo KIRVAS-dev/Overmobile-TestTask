@@ -15,7 +15,17 @@ namespace ViewComponents.Interaction
 
         public void BindLootDrops()
         {
-            _interactableTargetProvider.BindLootDrops(_powerRegistry);
+            foreach (InteractableTarget interactableTarget in _interactableTargetProvider.InteractableTargets)
+            {
+                DropView dropView = interactableTarget.GetComponent<DropView>();
+
+                if (dropView == null)
+                {
+                    continue;
+                }
+
+                dropView.Bind(_powerRegistry, interactableTarget.EntityId);
+            }
         }
     }
 }

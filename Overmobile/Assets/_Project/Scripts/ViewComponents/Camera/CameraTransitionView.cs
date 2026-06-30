@@ -16,10 +16,13 @@ namespace ViewComponents.Camera
         [SerializeField] private UnityCamera _camera;
         [SerializeField] private CameraTransitionConfig _config;
 
-        public async UniTask PlayTransitionAsync(CancellationToken cancellationToken)
+        private void Awake()
         {
             Validate();
+        }
 
+        public async UniTask PlayTransitionAsync(CancellationToken cancellationToken)
+        {
             _camera.transform.DOKill();
             _camera.DOKill();
 
@@ -38,26 +41,49 @@ namespace ViewComponents.Camera
 
         private void OnDestroy()
         {
-            _camera.transform.DOKill();
-            _camera.DOKill();
+            KillRegisteredTweens(tween: null, _camera.transform, _camera);
         }
 
         private async UniTask AwaitTweensAsync(Tween moveTween, Tween sizeTween, CancellationToken cancellationToken)
         {
-            await using CancellationTokenRegistration registration = cancellationToken.Register(() =>
+            Transform cameraTransform = _camera.transform;
+            UnityCamera camera = _camera;
+
+            using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                this.GetCancellationTokenOnDestroy()
+            );
+
+            CancellationToken linkedToken = linkedCts.Token;
+
+            await using CancellationTokenRegistration registration = linkedToken.Register(() =>
                 {
-                    _camera.transform.DOKill();
-                    _camera.DOKill();
+                    KillRegisteredTweens(tween: null, cameraTransform, camera);
                 }
             );
 
             while (moveTween.IsActive()
              || sizeTween.IsActive())
             {
-                await UniTask.Yield();
+                await UniTask.Yield(linkedToken);
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            linkedToken.ThrowIfCancellationRequested();
+        }
+
+        private void KillRegisteredTweens(Tween tween, Transform cameraTransform, UnityCamera camera)
+        {
+            tween?.Kill();
+
+            if (cameraTransform != null)
+            {
+                cameraTransform.DOKill();
+            }
+
+            if (camera != null)
+            {
+                camera.DOKill();
+            }
         }
 
         private float CalculateTransitionDuration()

@@ -17,6 +17,8 @@ using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
 using ViewComponents.Power;
+using ViewComponents.Presentation;
+using ViewComponents.Presentation.Player;
 
 namespace Core.Bootstrap
 {
@@ -71,6 +73,7 @@ namespace Core.Bootstrap
 
             builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
             builder.Register<DropBinder>(Lifetime.Singleton).As<IDropBinder>();
+            builder.Register<InteractionViewBinder>(Lifetime.Singleton).As<IInteractionViewBinder>();
         }
 
         private void RegisterInventory(IContainerBuilder builder)
@@ -92,13 +95,27 @@ namespace Core.Bootstrap
 
         private void RegisterPlayer(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<PlayerView>().As<IPlayerUpgradeView>().As<IPlayerSpawnView>();
+            builder
+               .RegisterComponentInHierarchy<PlayerView>()
+               .As<IPlayerUpgradeView>()
+               .As<IPlayerSpawnView>();
+
             builder.Register<PlayerUpgradeService>(Lifetime.Singleton).As<IPlayerUpgradeService>();
 
             builder
                .Register<ActiveCharacterViewRegistry>(Lifetime.Singleton)
                .As<IActiveCharacterViewProvider>()
                .As<IActiveCharacterViewRegistry>();
+
+            builder
+               .Register<ActiveCharacterPresentationProvider>(Lifetime.Singleton)
+               .As<IActiveCharacterPresentationProvider>()
+               .AsSelf();
+
+            builder
+               .Register<ActivePresentationSectionMapProvider>(Lifetime.Singleton)
+               .As<IActivePresentationSectionMapProvider>()
+               .AsSelf();
         }
 
         private void RegisterPower(IContainerBuilder builder)

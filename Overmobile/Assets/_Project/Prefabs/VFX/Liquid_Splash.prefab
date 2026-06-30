@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8275234984127736272}
+  - component: {fileID: -2033452697400385434}
   m_Layer: 0
   m_Name: Liquid_Splash
   m_TagString: Untagged
@@ -33,6 +34,19 @@ Transform:
   - {fileID: 373285220688036499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2033452697400385434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6818663621242220693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4183fa26439e5b43bdd2c3fec6b4180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Vfx.OneShotAnimatedVfxView
+  _animator: {fileID: 6552269462551485091}
 --- !u!1 &7211538338632564927
 GameObject:
   m_ObjectHideFlags: 0

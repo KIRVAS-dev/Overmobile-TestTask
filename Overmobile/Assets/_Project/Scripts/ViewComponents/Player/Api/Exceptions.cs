@@ -19,4 +19,10 @@ namespace ViewComponents.Player
         public MissingCharacterViewComponentException(string prefabName, string componentName)
             : base("player-view-3", $"Upgrade tier prefab '{prefabName}' is missing required component '{componentName}'") { }
     }
+
+    public sealed class MissingActiveCharacterAnchorViewException : ExtendedException
+    {
+        public MissingActiveCharacterAnchorViewException(string prefabName)
+            : base("player-view-4", $"Upgrade tier prefab '{prefabName}' is missing required component 'ActiveCharacterAnchorView'") { }
+    }
 }

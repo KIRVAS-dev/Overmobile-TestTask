@@ -4,13 +4,13 @@ namespace ViewComponents.Power
 {
     public sealed class EntityPowerPanelBinder : IEntityPowerPanelBinder
     {
-        private readonly EntityPowerProvider _entityPowerProvider;
         private readonly IPowerRegistry _powerRegistry;
+        private readonly EntityPowerProvider _entityPowerProvider;
 
-        public EntityPowerPanelBinder(EntityPowerProvider entityPowerProvider, IPowerRegistry powerRegistry)
+        public EntityPowerPanelBinder(IPowerRegistry powerRegistry, EntityPowerProvider entityPowerProvider)
         {
-            this._entityPowerProvider = entityPowerProvider;
-            this._powerRegistry = powerRegistry;
+            _powerRegistry = powerRegistry;
+            _entityPowerProvider = entityPowerProvider;
         }
 
         public void BindPowerPanel(EntityPowerView entityPowerView)

@@ -1,12 +1,10 @@
-using Core.Animation;
 using Core.Gameplay.Character;
 using Core.Gameplay.Player;
 using DG.Tweening;
 using UnityEngine;
 using VContainer;
-using ViewComponents.Animation;
-using ViewComponents.Movement;
 using ViewComponents.Power;
+using ViewComponents.Presentation;
 
 namespace ViewComponents.Player
 {
@@ -24,15 +22,24 @@ namespace ViewComponents.Player
 
         private IActiveCharacterViewRegistry _activeCharacterViewRegistry;
         private IEntityPowerPanelBinder _entityPowerPanelBinder;
+        private IActiveCharacterPresentationProvider _activeCharacterPresentationProvider;
+        private IActivePresentationSectionMapProvider _activePresentationSectionMapProvider;
+        private IObjectResolver _objectResolver;
         private Transform _currentTierTransform;
 
         [Inject]
         public void Construct(
             IActiveCharacterViewRegistry activeCharacterViewRegistry,
-            IEntityPowerPanelBinder entityPowerPanelBinder)
+            IEntityPowerPanelBinder entityPowerPanelBinder,
+            IActiveCharacterPresentationProvider activeCharacterPresentationProvider,
+            IActivePresentationSectionMapProvider activePresentationSectionMapProvider,
+            IObjectResolver objectResolver)
         {
             _activeCharacterViewRegistry = activeCharacterViewRegistry;
             _entityPowerPanelBinder = entityPowerPanelBinder;
+            _activeCharacterPresentationProvider = activeCharacterPresentationProvider;
+            _activePresentationSectionMapProvider = activePresentationSectionMapProvider;
+            _objectResolver = objectResolver;
         }
 
         public void Spawn(int tierIndex)
@@ -48,71 +55,70 @@ namespace ViewComponents.Player
             }
 
             SpawnUpgradeTierAtIndex(CurrentTierIndex + 1, replaceCurrent: true);
+            _activePresentationSectionMapProvider.PlaySection(PresentationSectionKey.Upgrade);
         }
 
         private void SpawnUpgradeTierAtIndex(int tierIndex, bool replaceCurrent)
         {
-            if (tierIndex < 0
-             || tierIndex >= _upgradeTierPrefabs.Length)
+            GameObject tierPrefab = PlayerUpgradeTierHelper.ResolveTierPrefab(
+                _upgradeTierPrefabs,
+                tierIndex,
+                gameObject.name
+            );
+
+            (Vector3 worldPosition, Quaternion worldRotation) = ResolveTierSpawnPose(replaceCurrent);
+
+            DestroyCurrentTierIfReplacing(replaceCurrent);
+
+            GameObject tierInstance = PlayerUpgradeTierHelper.InstantiateTier(
+                tierPrefab,
+                _upgradeTierRoot,
+                worldPosition,
+                worldRotation,
+                _objectResolver
+            );
+
+            PlayerUpgradeTierComponents tierComponents =
+                PlayerUpgradeTierHelper.ResolveTierComponents(tierInstance, tierPrefab.name);
+
+            ApplyTierRegistration(tierIndex, tierInstance.transform, tierComponents);
+        }
+
+        private (Vector3 worldPosition, Quaternion worldRotation) ResolveTierSpawnPose(bool replaceCurrent)
+        {
+            if (!replaceCurrent
+             || _currentTierTransform == null)
             {
-                throw new UpgradeTierIndexOutOfRangeException(gameObject.name, tierIndex, _upgradeTierPrefabs.Length);
+                return (_upgradeTierRoot.position, _upgradeTierRoot.rotation);
             }
 
-            GameObject tierPrefab = _upgradeTierPrefabs[tierIndex];
+            return (_currentTierTransform.position, _currentTierTransform.rotation);
+        }
 
-            if (tierPrefab == null)
+        private void DestroyCurrentTierIfReplacing(bool replaceCurrent)
+        {
+            if (!replaceCurrent)
             {
-                throw new MissingUpgradeTierPrefabException(gameObject.name, tierIndex);
+                return;
             }
 
-            Vector3 worldPosition = _upgradeTierRoot.position;
-            Quaternion worldRotation = _upgradeTierRoot.rotation;
+            _currentTierTransform.DOKill();
+            Destroy(_currentTierTransform.gameObject);
+        }
 
-            if (replaceCurrent)
-            {
-                worldPosition = _currentTierTransform.position;
-                worldRotation = _currentTierTransform.rotation;
-
-                _currentTierTransform.DOKill();
-                Destroy(_currentTierTransform.gameObject);
-            }
-
-            GameObject tierInstance = Instantiate(tierPrefab, _upgradeTierRoot);
-            tierInstance.transform.SetPositionAndRotation(worldPosition, worldRotation);
-
-            MovementView movementView = tierInstance.GetComponent<MovementView>();
-
-            if (movementView == null)
-            {
-                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(MovementView));
-            }
-
-            CharacterAnimationView characterAnimationView = tierInstance.GetComponent<CharacterAnimationView>();
-
-            if (characterAnimationView == null)
-            {
-                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(CharacterAnimationView));
-            }
-
-            _currentTierTransform = tierInstance.transform;
+        private void ApplyTierRegistration(
+            int tierIndex,
+            Transform tierTransform,
+            PlayerUpgradeTierComponents tierComponents)
+        {
+            _currentTierTransform = tierTransform;
             _activeCharacterViewRegistry.SetActiveCharacterView(
-                new CharacterViewBinding(characterAnimationView, movementView)
+                new ActiveCharacterViewBinding(tierComponents.CharacterAnimationView, tierComponents.MovementView)
             );
             CurrentTierIndex = tierIndex;
-
-            EntityPowerView entityPowerView = tierInstance.GetComponent<EntityPowerView>();
-
-            if (entityPowerView == null)
-            {
-                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(EntityPowerView));
-            }
-
-            _entityPowerPanelBinder.BindPowerPanel(entityPowerView);
-
-            if (replaceCurrent)
-            {
-                characterAnimationView.FireAnimation(CharacterAnimationSlot.Upgrade);
-            }
+            _entityPowerPanelBinder.BindPowerPanel(tierComponents.EntityPowerView);
+            _activeCharacterPresentationProvider.Register(tierComponents.ActiveCharacterAnchorView);
+            _activePresentationSectionMapProvider.Register(tierComponents.PresentationSectionMap);
         }
     }
 }

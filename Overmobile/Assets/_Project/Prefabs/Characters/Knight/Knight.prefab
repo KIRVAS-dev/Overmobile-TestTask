@@ -34,73 +34,8 @@ Transform:
   - {fileID: 8496148367029448877}
   - {fileID: 1240274217033941055}
   - {fileID: 6039255455328488350}
-  - {fileID: 8529963906801200297}
-  - {fileID: 2576184274713448110}
   m_Father: {fileID: 4635797771478905391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &759364439616662072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8529963906801200297}
-  - component: {fileID: 570733990697203365}
-  m_Layer: 0
-  m_Name: PowerUp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8529963906801200297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759364439616662072}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3150117600021450199}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &570733990697203365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759364439616662072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -281584712
-      Data2: 1173408497
-      Data3: 1419380616
-      Data4: -410461555
-    Path: event:/SFX/PowerUp
-  Event: 
-  EventPlayTrigger: 11
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &1549048153503586289
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +47,7 @@ GameObject:
   - component: {fileID: 6039255455328488350}
   - component: {fileID: 3871358717024484516}
   m_Layer: 0
-  m_Name: PickUp
+  m_Name: PickUp_SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,6 +99,40 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!1 &2422986067586661819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6204599512545138570}
+  m_Layer: 0
+  m_Name: PresentationSections
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6204599512545138570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2422986067586661819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1806543931918404446}
+  - {fileID: 6380539342320486832}
+  - {fileID: 3807768963032056273}
+  m_Father: {fileID: 4635797771478905391}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3194794899493447377
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +144,7 @@ GameObject:
   - component: {fileID: 1240274217033941055}
   - component: {fileID: 6855014139549429201}
   m_Layer: 0
-  m_Name: Footsteps
+  m_Name: Footsteps_SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,6 +228,103 @@ Transform:
   - {fileID: 2427129095223575}
   m_Father: {fileID: 6419559312993085858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4595923044143682399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3807768963032056273}
+  - component: {fileID: 2000696963008408926}
+  m_Layer: 0
+  m_Name: PowerUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3807768963032056273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595923044143682399}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6204599512545138570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2000696963008408926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595923044143682399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e090696c3337d3742a5ec5011efa22f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.PresentationStepSequence
+  _playOnEnable: 0
+  _playOnStart: 0
+  _stopOnDisable: 0
+  _steps:
+  - rid: 8495214786329871043
+  - rid: 7800052088764891261
+  references:
+    version: 2
+    RefIds:
+    - rid: 7800052088764891261
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 0
+        _targets:
+        - {fileID: 4942516889839823092}
+        - {fileID: 2794573414591681992}
+    - rid: 8495214786329871043
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 1
+        _targets:
+        - {fileID: 4942516889839823092}
+--- !u!1 &4776655329781803953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1628790597903768405}
+  m_Layer: 0
+  m_Name: Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1628790597903768405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4776655329781803953}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 0.8, z: -1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4635797771478905391}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4942516889839823092
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530392296765603352}
   m_Layer: 0
-  m_Name: Upgrade
+  m_Name: PowerUp_VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,7 +368,7 @@ GameObject:
   - component: {fileID: 8496148367029448877}
   - component: {fileID: 2579927041936508755}
   m_Layer: 0
-  m_Name: DisplayDamage
+  m_Name: DisplayDamage_SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -446,7 +512,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!1 &6451625173322302187
+--- !u!1 &5998873331029105126
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -454,61 +520,66 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2576184274713448110}
-  - component: {fileID: 5016487230230145420}
+  - component: {fileID: 6380539342320486832}
+  - component: {fileID: 7965749646640358518}
   m_Layer: 0
-  m_Name: Upgrade
+  m_Name: PickUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2576184274713448110
+  m_IsActive: 1
+--- !u!4 &6380539342320486832
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6451625173322302187}
+  m_GameObject: {fileID: 5998873331029105126}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3150117600021450199}
+  m_Father: {fileID: 6204599512545138570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5016487230230145420
+--- !u!114 &7965749646640358518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6451625173322302187}
+  m_GameObject: {fileID: 5998873331029105126}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: e090696c3337d3742a5ec5011efa22f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1455378516
-      Data2: 1237898045
-      Data3: 2070053546
-      Data4: 1993134682
-    Path: event:/SFX/Upgrade
-  Event: 
-  EventPlayTrigger: 11
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.PresentationStepSequence
+  _playOnEnable: 0
+  _playOnStart: 0
+  _stopOnDisable: 0
+  _steps:
+  - rid: 7800052088764891253
+  - rid: 7800052095566479528
+  references:
+    version: 2
+    RefIds:
+    - rid: 7800052088764891253
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 1
+        _targets:
+        - {fileID: 7288097911838497064}
+        - {fileID: 1549048153503586289}
+    - rid: 7800052095566479528
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 0
+        _targets:
+        - {fileID: 7288097911838497064}
+        - {fileID: 1549048153503586289}
+        - {fileID: 7886622482482328271}
 --- !u!1 &6578076123111924033
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +683,7 @@ GameObject:
   - component: {fileID: 5698394427505519143}
   - component: {fileID: 2972047691183910454}
   m_Layer: 0
-  m_Name: Achievement
+  m_Name: Achievement_SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -674,7 +745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2865438772122083184}
   m_Layer: 0
-  m_Name: PickUp
+  m_Name: PickUp_VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,7 +778,7 @@ GameObject:
   - component: {fileID: 1124302989820278618}
   - component: {fileID: 3451408173199255634}
   m_Layer: 0
-  m_Name: Death
+  m_Name: Death_SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -770,6 +841,8 @@ GameObject:
   - component: {fileID: 4635797771478905391}
   - component: {fileID: 5776583395254240755}
   - component: {fileID: 3528520294824144858}
+  - component: {fileID: 452244593932209052}
+  - component: {fileID: 7326635556052041001}
   - component: {fileID: 6882444945104046698}
   m_Layer: 0
   m_Name: Knight
@@ -795,8 +868,10 @@ Transform:
   - {fileID: 6419559312993085858}
   - {fileID: 1221031695069264380}
   - {fileID: 747326561424719133}
+  - {fileID: 6204599512545138570}
   - {fileID: 7712852937837562334}
   - {fileID: 3150117600021450199}
+  - {fileID: 1628790597903768405}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5776583395254240755
@@ -842,6 +917,41 @@ MonoBehaviour:
     TriggerName: CelebrateTrigger
   - AnimationSlot: 2
     TriggerName: DefeatTrigger
+--- !u!114 &452244593932209052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001716404040914708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb611a7f6914fb439bfec8a7d880c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.PresentationSectionMap
+  _sections:
+  - _key: 0
+    _sequence: {fileID: 6282054514706916755}
+  - _key: 1
+    _sequence: {fileID: 7965749646640358518}
+  - _key: 2
+    _sequence: {fileID: 2000696963008408926}
+--- !u!114 &7326635556052041001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001716404040914708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f368f41a888815f46a0880123ec7a5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.Player.ActiveCharacterAnchorView
+  _powerPanelView: {fileID: 3047393548620568376}
+  _anchors:
+  - Key: Anchor
+    Anchor: {fileID: 1628790597903768405}
 --- !u!114 &6882444945104046698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,6 +964,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c4d5e6f7a84990b1c2d3e4f5061720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPowerView
+--- !u!1 &8330808332613846598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1806543931918404446}
+  - component: {fileID: 6282054514706916755}
+  m_Layer: 0
+  m_Name: Upgrade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1806543931918404446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8330808332613846598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6204599512545138570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6282054514706916755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8330808332613846598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e090696c3337d3742a5ec5011efa22f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.PresentationStepSequence
+  _playOnEnable: 0
+  _playOnStart: 0
+  _stopOnDisable: 0
+  _steps:
+  - rid: 7800052088764891246
+  - rid: 7800052088764891260
+  - rid: 7800052088764891250
+  - rid: 7800052088764891252
+  references:
+    version: 2
+    RefIds:
+    - rid: 7800052088764891246
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 1
+        _targets:
+        - {fileID: 6940630335645614201}
+    - rid: 7800052088764891250
+      type: {class: DelayStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _durationSeconds: 1.04
+    - rid: 7800052088764891252
+      type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _mode: 0
+        _targets:
+        - {fileID: 6940630335645614201}
+    - rid: 7800052088764891260
+      type: {class: PlayAnimationStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _animationView: {fileID: 3528520294824144858}
+        _animationSlot: 4
+        _waitForCompletion: 0
 --- !u!1 &8573976392950650886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,6 +1250,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6ff93baec1e2b14fbe9ca5d34134ab8, type: 3}
+--- !u!1 &2794573414591681992 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7958837090409111990, guid: a6ff93baec1e2b14fbe9ca5d34134ab8, type: 3}
+  m_PrefabInstance: {fileID: 5240828344126485630}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8579879211951423152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4587746574027344590, guid: a6ff93baec1e2b14fbe9ca5d34134ab8, type: 3}
@@ -1137,6 +1329,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6136abb27696f74589a109843989939, type: 3}
+--- !u!1 &7886622482482328271 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2868294533538779477, guid: d6136abb27696f74589a109843989939, type: 3}
+  m_PrefabInstance: {fileID: 5385412293837317018}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8128605185813025241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4211508504528777795, guid: d6136abb27696f74589a109843989939, type: 3}
@@ -1150,9 +1347,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4635797771478905391}
     m_Modifications:
+    - target: {fileID: 1534066459005671413, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941379763131386318, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941379763131386318, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.11764729
+      objectReference: {fileID: 0}
     - target: {fileID: 2941379763131386318, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
       propertyPath: m_Color.r
-      value: 0.11764706
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3877883379883453151, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
       propertyPath: m_Name
@@ -1251,6 +1460,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+--- !u!114 &3047393548620568376 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9048789708736905276, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 6330167739744900868}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f337f54e948eb14fa9bd1a51eb7ce0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelView
 --- !u!224 &3665374267254768442 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}

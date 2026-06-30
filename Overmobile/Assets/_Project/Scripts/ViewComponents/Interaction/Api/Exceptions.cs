@@ -19,4 +19,10 @@ namespace ViewComponents.Interaction
         public InvalidDropException(string objectName, string reason)
             : base("interaction-view-3", $"Invalid drop on '{objectName}': {reason}") { }
     }
+
+    public sealed class InvalidInteractionViewException : ExtendedException
+    {
+        public InvalidInteractionViewException(string objectName, string reason)
+            : base("interaction-view-4", $"Invalid interaction view on '{objectName}': {reason}") { }
+    }
 }

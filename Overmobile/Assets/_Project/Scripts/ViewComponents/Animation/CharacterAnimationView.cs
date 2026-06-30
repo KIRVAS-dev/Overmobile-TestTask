@@ -58,20 +58,50 @@ namespace ViewComponents.Animation
             int stateHashBeforeTrigger = _animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer).fullPathHash;
             _hasEnteredActionState = false;
 
+            using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                this.GetCancellationTokenOnDestroy()
+            );
+
+            CancellationToken linkedToken = linkedCts.Token;
+
             try
             {
                 FireAnimation(slot);
 
+                if (_animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer).fullPathHash == stateHashBeforeTrigger)
+                {
+                    _hasEnteredActionState = true;
+                }
+
                 await UniTask.WaitUntil(
                     () => IsActionAnimationComplete(stateHashBeforeTrigger),
                     PlayerLoopTiming.Update,
-                    cancellationToken
+                    linkedToken
                 );
+
+                linkedToken.ThrowIfCancellationRequested();
             }
             finally
             {
+                if (this != null)
+                {
+                    _animator.ResetTrigger(mapItem.TriggerName);
+                    CurrentAnimationSlot = CharacterAnimationSlot.None;
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_triggersMap == null)
+            {
+                return;
+            }
+
+            foreach (TriggerNamesMapItem mapItem in _triggersMap.Values)
+            {
                 _animator.ResetTrigger(mapItem.TriggerName);
-                CurrentAnimationSlot = CharacterAnimationSlot.None;
             }
         }
 
