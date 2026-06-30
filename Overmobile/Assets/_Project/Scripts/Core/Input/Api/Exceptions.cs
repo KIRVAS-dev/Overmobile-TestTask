@@ -8,9 +8,15 @@ namespace Core.Input
             : base("core-input-1", "Gameplay input block was released without an active block") { }
     }
 
+    public sealed class GameplayInputHandlerAlreadyListeningException : ExtendedException
+    {
+        public GameplayInputHandlerAlreadyListeningException()
+            : base("core-input-2", "Gameplay input handler is already listening") { }
+    }
+
     public sealed class MovementInputHandlerAlreadyListeningException : ExtendedException
     {
         public MovementInputHandlerAlreadyListeningException()
-            : base("core-input-2", "Movement input handler is already listening") { }
+            : base("core-input-3", "Movement input handler is already listening") { }
     }
 }

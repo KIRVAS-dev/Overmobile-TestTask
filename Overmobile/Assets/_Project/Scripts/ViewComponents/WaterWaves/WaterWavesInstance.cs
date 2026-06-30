@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace ViewComponents.WaterWaves
 {
+    [DisallowMultipleComponent]
     public sealed class WaterWavesInstance : MonoBehaviour
     {
         private const float HIDDEN_ALPHA = 0f;

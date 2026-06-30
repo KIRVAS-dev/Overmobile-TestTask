@@ -1,6 +1,5 @@
-using Core;
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Movement;
-using Core.Input;
 using Cysharp.Threading.Tasks;
 using Input;
 using Input.Binds;
@@ -8,61 +7,61 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Core.Input.Movement
+namespace Core.Input.Gameplay
 {
-    public sealed class MovementInputHandler
+    public sealed class GameplayInputHandler
     {
         private readonly ICoreScopeCancellation _coreScopeCancellation;
-        private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly IPlayerPointerInput _pointerInput;
-        private readonly IMovementInputTargetProvider _movementInputTargetProvider;
-        private readonly IMovementService _movementService;
+        private readonly IGameplayInputBlock _gameplayInputBlock;
+        private readonly IGameplayInputTargetProvider _gameplayInputTargetProvider;
+        private readonly IInteractionService _interactionService;
         private readonly MovementRouteDisplayService _routeDisplayService;
         private readonly List<Bind> _binds = new List<Bind>();
 
-        private MovementInputTarget? _pendingTarget;
-        private MovementInputTarget? _pointerDownTarget;
-        private CancellationTokenSource _movementCancellation;
+        private GameplayInputTarget? _pendingTarget;
+        private GameplayInputTarget? _pointerDownTarget;
+        private CancellationTokenSource _interactionCancellation;
         private bool _isPointerPressed;
         private bool _isPointerOverTarget;
 
-        public MovementInputHandler(
+        public GameplayInputHandler(
             ICoreScopeCancellation coreScopeCancellation,
-            IGameplayInputBlock gameplayInputBlock,
             IPlayerPointerInput pointerInput,
-            IMovementInputTargetProvider movementInputTargetProvider,
-            IMovementService movementService,
+            IGameplayInputBlock gameplayInputBlock,
+            IGameplayInputTargetProvider gameplayInputTargetProvider,
+            IInteractionService interactionService,
             MovementRouteDisplayService routeDisplayService)
         {
             _coreScopeCancellation = coreScopeCancellation;
-            _gameplayInputBlock = gameplayInputBlock;
             _pointerInput = pointerInput;
-            _movementInputTargetProvider = movementInputTargetProvider;
-            _movementService = movementService;
+            _gameplayInputBlock = gameplayInputBlock;
+            _gameplayInputTargetProvider = gameplayInputTargetProvider;
+            _interactionService = interactionService;
             _routeDisplayService = routeDisplayService;
         }
 
         public void StartListening()
         {
-            if (_movementCancellation != null)
+            if (_interactionCancellation != null)
             {
-                throw new MovementInputHandlerAlreadyListeningException();
+                throw new GameplayInputHandlerAlreadyListeningException();
             }
 
-            _movementCancellation = CancellationTokenSource.CreateLinkedTokenSource(_coreScopeCancellation.Token);
+            _interactionCancellation = CancellationTokenSource.CreateLinkedTokenSource(_coreScopeCancellation.Token);
 
             _pointerInput.Pressed += OnGlobalPointerPressed;
             _pointerInput.Released += OnPointerUp;
 
-            IReadOnlyList<MovementInputTarget> inputTargets = _movementInputTargetProvider.GetInputTargets();
+            IReadOnlyList<GameplayInputTarget> inputTargets = _gameplayInputTargetProvider.GetGameplayInputTargets();
 
-            foreach (MovementInputTarget inputTarget in inputTargets)
+            foreach (GameplayInputTarget inputTarget in inputTargets)
             {
-                MovementInputTarget capturedTarget = inputTarget;
+                GameplayInputTarget capturedTarget = inputTarget;
 
-                AddBind(capturedTarget.PointerDown, () => OnPointerDown(capturedTarget));
-                AddBind(capturedTarget.PointerEnter, () => OnPointerEnter(capturedTarget));
-                AddBind(capturedTarget.PointerExit, () => OnPointerExit(capturedTarget));
+                AddBind(capturedTarget.Movement.PointerDown, () => OnPointerDown(capturedTarget));
+                AddBind(capturedTarget.Movement.PointerEnter, () => OnPointerEnter(capturedTarget));
+                AddBind(capturedTarget.Movement.PointerExit, () => OnPointerExit(capturedTarget));
             }
         }
 
@@ -78,9 +77,9 @@ namespace Core.Input.Movement
 
             _binds.Clear();
 
-            _movementCancellation?.Cancel();
-            _movementCancellation?.Dispose();
-            _movementCancellation = null;
+            _interactionCancellation?.Cancel();
+            _interactionCancellation?.Dispose();
+            _interactionCancellation = null;
 
             ResetPointerState();
         }
@@ -113,15 +112,15 @@ namespace Core.Input.Movement
             _isPointerPressed = true;
         }
 
-        private void OnPointerDown(MovementInputTarget inputTarget)
+        private void OnPointerDown(GameplayInputTarget inputTarget)
         {
             _pointerDownTarget = inputTarget;
             _isPointerOverTarget = true;
             _pendingTarget = inputTarget;
-            _routeDisplayService.PreviewRouteTo(inputTarget.EndpointKey);
+            _routeDisplayService.PreviewRouteTo(inputTarget.Movement.EndpointKey);
         }
 
-        private void OnPointerEnter(MovementInputTarget inputTarget)
+        private void OnPointerEnter(GameplayInputTarget inputTarget)
         {
             if (!_isPointerPressed)
             {
@@ -130,10 +129,10 @@ namespace Core.Input.Movement
 
             _isPointerOverTarget = true;
             _pendingTarget = inputTarget;
-            _routeDisplayService.PreviewRouteTo(inputTarget.EndpointKey);
+            _routeDisplayService.PreviewRouteTo(inputTarget.Movement.EndpointKey);
         }
 
-        private void OnPointerExit(MovementInputTarget inputTarget)
+        private void OnPointerExit(GameplayInputTarget inputTarget)
         {
             if (_isPointerPressed)
             {
@@ -143,7 +142,7 @@ namespace Core.Input.Movement
             }
 
             if (_pendingTarget.HasValue
-             && _pendingTarget.Value.EndpointKey == inputTarget.EndpointKey)
+             && _pendingTarget.Value.PowerId == inputTarget.PowerId)
             {
                 ClearPendingPreview();
             }
@@ -160,22 +159,22 @@ namespace Core.Input.Movement
                 return;
             }
 
-            bool canMove = _pendingTarget.HasValue
+            bool canInteract = _pendingTarget.HasValue
              && (_isPointerOverTarget
-                 || _pointerDownTarget.HasValue && _pointerDownTarget.Value.EndpointKey == _pendingTarget.Value.EndpointKey);
+                 || _pointerDownTarget.HasValue && _pointerDownTarget.Value.PowerId == _pendingTarget.Value.PowerId);
 
-            if (!canMove)
+            if (!canInteract)
             {
                 ClearPendingPreview();
                 _pointerDownTarget = null;
                 return;
             }
 
-            MovementInputTarget pendingTarget = _pendingTarget.Value;
+            GameplayInputTarget pendingTarget = _pendingTarget.Value;
             _pendingTarget = null;
             _pointerDownTarget = null;
 
-            MoveToTargetAsync(pendingTarget).Forget();
+            InteractWithTargetAsync(pendingTarget).Forget();
         }
 
         private void ClearPendingPreview()
@@ -192,14 +191,15 @@ namespace Core.Input.Movement
             _pointerDownTarget = null;
         }
 
-        private async UniTaskVoid MoveToTargetAsync(MovementInputTarget inputTarget)
+        private async UniTaskVoid InteractWithTargetAsync(GameplayInputTarget inputTarget)
         {
             try
             {
-                await _movementService.MoveToAsync(
-                    inputTarget.EndpointKey,
-                    inputTarget.FacingWorldPosition,
-                    _movementCancellation.Token
+                await _interactionService.InteractAsync(
+                    inputTarget.Movement.EndpointKey,
+                    inputTarget.PowerId,
+                    inputTarget.Movement.FacingWorldPosition,
+                    _interactionCancellation.Token
                 );
             }
             catch (MovementInProgressException) { }

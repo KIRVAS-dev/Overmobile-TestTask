@@ -1,12 +1,12 @@
-using Core;
 using Core.Camera;
 using Core.Gameplay.Character;
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
 using Core.Gameplay.Player;
+using Core.Gameplay.Power;
 using Core.Input;
-using Core.Input.Movement;
+using Core.Input.Gameplay;
 using Input;
 using UI.TapIndicator;
 using UnityEngine;
@@ -16,6 +16,7 @@ using ViewComponents.Camera;
 using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
+using ViewComponents.Power;
 
 namespace Core.Bootstrap
 {
@@ -31,27 +32,61 @@ namespace Core.Bootstrap
         [SerializeField] private MovementRouteProvider _movementRouteProvider;
         [SerializeField] private MovementConfig _movementConfig;
 
+        [Header("Power")]
+        [SerializeField] private EntityPowerProvider _entityPowerProvider;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<CoreEntryPoint>();
 
-            RegisterScopeCancellation(builder);
             RegisterCamera(builder);
-            RegisterPlayer(builder);
             RegisterInput(builder);
             RegisterInteraction(builder);
-            RegisterMovement(builder);
             RegisterInventory(builder);
-        }
-
-        private void RegisterScopeCancellation(IContainerBuilder builder)
-        {
-            builder.Register<CoreCancellationSource>(Lifetime.Singleton).As<ICoreScopeCancellation>().AsSelf();
+            RegisterMovement(builder);
+            RegisterPlayer(builder);
+            RegisterPower(builder);
+            RegisterScopeCancellation(builder);
         }
 
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<CameraTransitionView>().As<ICameraTransitionView>();
+        }
+
+        private void RegisterInput(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>();
+            builder.RegisterComponentInHierarchy<TapIndicator>();
+            builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
+            builder.Register<GameplayInputHandler>(Lifetime.Singleton);
+        }
+
+        private void RegisterInteraction(IContainerBuilder builder)
+        {
+            builder
+               .RegisterInstance(_interactableTargetProvider)
+               .As<IInteractableTargetProvider>()
+               .As<IGameplayInputTargetProvider>();
+
+            builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
+        }
+
+        private void RegisterInventory(IContainerBuilder builder)
+        {
+            builder.Register<InventoryModel>(Lifetime.Singleton);
+            builder.Register<InventoryService>(Lifetime.Singleton).As<IInventory>();
+        }
+
+        private void RegisterMovement(IContainerBuilder builder)
+        {
+            builder.RegisterInstance(_movementConfig);
+            builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
+            builder.RegisterComponentInHierarchy<MovementRouteWaypointDisplay>().As<IMovementRouteWaypointDisplay>();
+            builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
+            builder.Register<MovementModel>(Lifetime.Singleton);
+            builder.Register<MovementRouteDisplayService>(Lifetime.Singleton);
+            builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
         }
 
         private void RegisterPlayer(IContainerBuilder builder)
@@ -65,37 +100,16 @@ namespace Core.Bootstrap
                .As<IActiveCharacterViewRegistry>();
         }
 
-        private void RegisterInput(IContainerBuilder builder)
+        private void RegisterPower(IContainerBuilder builder)
         {
-            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>();
-            builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
-            builder.RegisterComponentInHierarchy<TapIndicator>();
+            builder.RegisterInstance(_entityPowerProvider).As<IEntityPowerProvider>().AsSelf();
+            builder.Register<PowerRegistry>(Lifetime.Singleton).As<IPowerRegistry>().AsSelf();
+            builder.Register<EntityPowerPanelBinder>(Lifetime.Singleton).As<IEntityPowerPanelBinder>();
         }
 
-        private void RegisterInteraction(IContainerBuilder builder)
+        private void RegisterScopeCancellation(IContainerBuilder builder)
         {
-            builder
-               .RegisterInstance(_interactableTargetProvider)
-               .As<IInteractableTargetProvider>()
-               .As<IMovementInputTargetProvider>();
-        }
-
-        private void RegisterMovement(IContainerBuilder builder)
-        {
-            builder.RegisterInstance(_movementConfig);
-            builder.RegisterInstance(_movementRouteProvider).As<IMovementRouteProvider>();
-            builder.RegisterComponentInHierarchy<MovementRouteWaypointDisplay>().As<IMovementRouteWaypointDisplay>();
-            builder.Register<MovementRouteRegistry>(Lifetime.Singleton).As<IMovementRouteRegistry>();
-            builder.Register<MovementModel>(Lifetime.Singleton);
-            builder.Register<MovementRouteDisplayService>(Lifetime.Singleton);
-            builder.Register<MovementService>(Lifetime.Singleton).As<IMovementService>();
-            builder.Register<MovementInputHandler>(Lifetime.Singleton);
-        }
-
-        private void RegisterInventory(IContainerBuilder builder)
-        {
-            builder.Register<InventoryModel>(Lifetime.Singleton);
-            builder.Register<InventoryService>(Lifetime.Singleton).As<IInventory>();
+            builder.Register<CoreCancellationSource>(Lifetime.Singleton).As<ICoreScopeCancellation>().AsSelf();
         }
     }
 }

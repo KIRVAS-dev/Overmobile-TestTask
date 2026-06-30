@@ -1,0 +1,18 @@
+{
+    "name": "ViewComponents.Editor",
+    "rootNamespace": "ViewComponents.Editor",
+    "references": [
+        "ViewComponents"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

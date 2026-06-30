@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ViewComponents.Inventory
 {
+    [DisallowMultipleComponent]
     public sealed class Item
         : MonoBehaviour,
           IItem

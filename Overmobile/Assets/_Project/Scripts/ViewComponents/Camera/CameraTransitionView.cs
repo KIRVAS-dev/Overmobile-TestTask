@@ -8,6 +8,7 @@ using UnityCamera = UnityEngine.Camera;
 
 namespace ViewComponents.Camera
 {
+    [DisallowMultipleComponent]
     public sealed class CameraTransitionView
         : MonoBehaviour,
           ICameraTransitionView

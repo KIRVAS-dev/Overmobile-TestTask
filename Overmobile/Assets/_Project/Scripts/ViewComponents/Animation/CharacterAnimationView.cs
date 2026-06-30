@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ViewComponents.Animation
 {
+    [DisallowMultipleComponent]
     public sealed class CharacterAnimationView
         : MonoBehaviour,
           ICharacterAnimationView

@@ -9,6 +9,7 @@ using ViewComponents.Animation;
 
 namespace ViewComponents.Movement
 {
+    [DisallowMultipleComponent]
     public sealed class MovementView
         : MonoBehaviour,
           IMovementView

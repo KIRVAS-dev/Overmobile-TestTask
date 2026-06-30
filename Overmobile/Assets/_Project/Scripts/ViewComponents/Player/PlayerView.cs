@@ -6,9 +6,11 @@ using UnityEngine;
 using VContainer;
 using ViewComponents.Animation;
 using ViewComponents.Movement;
+using ViewComponents.Power;
 
 namespace ViewComponents.Player
 {
+    [DisallowMultipleComponent]
     public sealed class PlayerView
         : MonoBehaviour,
           IPlayerUpgradeView,
@@ -21,12 +23,16 @@ namespace ViewComponents.Player
         [SerializeField] private GameObject[] _upgradeTierPrefabs;
 
         private IActiveCharacterViewRegistry _activeCharacterViewRegistry;
+        private IEntityPowerPanelBinder _entityPowerPanelBinder;
         private Transform _currentTierTransform;
 
         [Inject]
-        public void Construct(IActiveCharacterViewRegistry activeCharacterViewRegistry)
+        public void Construct(
+            IActiveCharacterViewRegistry activeCharacterViewRegistry,
+            IEntityPowerPanelBinder entityPowerPanelBinder)
         {
             _activeCharacterViewRegistry = activeCharacterViewRegistry;
+            _entityPowerPanelBinder = entityPowerPanelBinder;
         }
 
         public void Spawn(int tierIndex)
@@ -93,6 +99,15 @@ namespace ViewComponents.Player
                 new CharacterViewBinding(characterAnimationView, movementView)
             );
             CurrentTierIndex = tierIndex;
+
+            EntityPowerView entityPowerView = tierInstance.GetComponent<EntityPowerView>();
+
+            if (entityPowerView == null)
+            {
+                throw new MissingCharacterViewComponentException(tierPrefab.name, nameof(EntityPowerView));
+            }
+
+            _entityPowerPanelBinder.BindPowerPanel(entityPowerView);
 
             if (replaceCurrent)
             {

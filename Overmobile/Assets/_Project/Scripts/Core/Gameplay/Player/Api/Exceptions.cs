@@ -1,4 +1,3 @@
-using Core.Gameplay.Movement;
 using ExtendedExceptions;
 
 namespace Core.Gameplay.Player

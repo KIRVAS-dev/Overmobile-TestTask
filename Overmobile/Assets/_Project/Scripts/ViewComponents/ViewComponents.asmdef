@@ -3,6 +3,7 @@
     "rootNamespace": "ViewComponents",
     "references": [
         "Core",
+        "Core.Input",
         "ExtendedExceptions",
         "Input",
         "UniTask",
@@ -16,7 +17,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "DOTween.dll"
+        "DOTween.dll",
+        "R3.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

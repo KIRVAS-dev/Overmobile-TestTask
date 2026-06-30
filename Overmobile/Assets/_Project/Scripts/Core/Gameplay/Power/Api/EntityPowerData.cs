@@ -1,0 +1,1 @@
+namespace Core.Gameplay.Power{    public readonly struct EntityPowerData    {        public string PowerId { get; }        public int InitialPower { get; }        public EntityPowerData(string powerId, int initialPower)        {            PowerId = powerId;            InitialPower = initialPower;        }    }}

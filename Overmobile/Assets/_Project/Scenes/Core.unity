@@ -3243,12 +3243,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish_Stingray
       objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: _powerId
+      value: 568105589213716462
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: _initialPower
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225598, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+      propertyPath: _key
+      value: FishL
+      objectReference: {fileID: 0}
     - target: {fileID: 6401493306872623819, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
       propertyPath: _endpointKey
       value: FishL
       objectReference: {fileID: 0}
-    - target: {fileID: 8209661208614657133, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
       value: FishL
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3272,6 +3284,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2988144014708780846, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
   m_PrefabInstance: {fileID: 295704671}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &295704674 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6189896265934225595, guid: ab6cdc5fd9940a1439e3cafc5014b354, type: 3}
+  m_PrefabInstance: {fileID: 295704671}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!1 &298504495
 GameObject:
   m_ObjectHideFlags: 0
@@ -8549,6 +8572,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _playerPointerInput: {fileID: 663580182}
+  _entityPowerProvider: {fileID: 8812345678901234550}
   _interactableTargetProvider: {fileID: 1036685244}
   _movementRouteProvider: {fileID: 1297179013}
   _movementConfig: {fileID: 11400000, guid: 00389743ab9215c4fa9b8e2e844bbd3e, type: 2}
@@ -10423,8 +10447,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin (M)
       objectReference: {fileID: 0}
-    - target: {fileID: 4914371018067680657, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _powerId
+      value: 568105589213717908
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _initialPower
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234503, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _key
       value: GoblinM
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10454,6 +10486,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3992519150297045306, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
   m_PrefabInstance: {fileID: 772479983}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &772479986 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+  m_PrefabInstance: {fileID: 772479983}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!114 &772479988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11869,10 +11912,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4914371018067680657, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
-      propertyPath: _entityKey
-      value: GoblinR
-      objectReference: {fileID: 0}
     - target: {fileID: 8079834135041331125, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -11884,6 +11923,18 @@ PrefabInstance:
     - target: {fileID: 8808148426834437603, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _powerId
+      value: 568105589213717384
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _initialPower
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234503, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _key
+      value: GoblinR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11920,6 +11971,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3992519150297045306, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
   m_PrefabInstance: {fileID: 934072033}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &934072037 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+  m_PrefabInstance: {fileID: 934072033}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!114 &934072039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12891,6 +12953,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1036685243}
   - component: {fileID: 1036685244}
+  - component: {fileID: 8812345678901234550}
   m_Layer: 0
   m_Name: InteractableTargets
   m_TagString: Untagged
@@ -13556,8 +13619,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin (L)
       objectReference: {fileID: 0}
-    - target: {fileID: 4914371018067680657, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _powerId
+      value: 568105589213716922
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _initialPower
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234503, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _key
       value: GoblinL
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -13587,6 +13658,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3992519150297045306, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
   m_PrefabInstance: {fileID: 1076337771}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1076337774 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8812345678901234501, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+  m_PrefabInstance: {fileID: 1076337771}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!114 &1076337776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18396,10 +18478,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1036685243}
     m_Modifications:
-    - target: {fileID: 231559650654762687, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
-      propertyPath: _entityKey
-      value: Chest
-      objectReference: {fileID: 0}
     - target: {fileID: 727680530478582852, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.021
@@ -18456,6 +18534,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234520, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: _powerId
+      value: 568105589213718188
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234520, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: _initialPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234521, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: _key
+      value: Chest
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18472,6 +18562,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f9e37ca6c455748a1ec336b25d80a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Interaction.InteractableTarget
+--- !u!114 &1413325215 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8812345678901234520, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+  m_PrefabInstance: {fileID: 1413325213}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!1 &1417803412
 GameObject:
   m_ObjectHideFlags: 0
@@ -24270,12 +24371,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish_Sprut
       objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: _powerId
+      value: 568105589213717504
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: _initialPower
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225598, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: _key
+      value: FishR
+      objectReference: {fileID: 0}
     - target: {fileID: 6401493306872623819, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
       propertyPath: _endpointKey
       value: FishR
       objectReference: {fileID: 0}
-    - target: {fileID: 8209661208614657133, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
       value: FishR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -24299,6 +24412,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2988144014708780846, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
   m_PrefabInstance: {fileID: 1784764398}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1784764401 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6189896265934225595, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+  m_PrefabInstance: {fileID: 1784764398}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!1 &1789799828
 GameObject:
   m_ObjectHideFlags: 0
@@ -25549,12 +25673,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish_Shark
       objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: _powerId
+      value: 568105589213717004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: _initialPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225598, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+      propertyPath: _key
+      value: FishL
+      objectReference: {fileID: 0}
     - target: {fileID: 6401493306872623819, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
       propertyPath: _endpointKey
       value: FishL
       objectReference: {fileID: 0}
-    - target: {fileID: 8209661208614657133, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
       value: FishL
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -25578,6 +25714,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2988144014708780846, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
   m_PrefabInstance: {fileID: 1855680304}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1855680307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6189896265934225595, guid: 17506efdbc5d69247b3d7abbc2cab387, type: 3}
+  m_PrefabInstance: {fileID: 1855680304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!1 &1874524379
 GameObject:
   m_ObjectHideFlags: 0
@@ -26916,12 +27063,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish_Jellyfish
       objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: _powerId
+      value: 568105589213716544
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225595, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: _initialPower
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189896265934225598, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+      propertyPath: _key
+      value: FishR
+      objectReference: {fileID: 0}
     - target: {fileID: 6401493306872623819, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
       propertyPath: _endpointKey
       value: FishR
       objectReference: {fileID: 0}
-    - target: {fileID: 8209661208614657133, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
-      propertyPath: _entityKey
+    - target: {fileID: 8812345678901234535, guid: 6d89cdc1c68340640a64631eef5fdcc5, type: 3}
+      propertyPath: _key
       value: FishR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -26945,6 +27104,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2988144014708780846, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
   m_PrefabInstance: {fileID: 2065423185}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2065423188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6189896265934225595, guid: 17655576ca2facb43816200ff65b9ca6, type: 3}
+  m_PrefabInstance: {fileID: 2065423185}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
 --- !u!1 &2067379192
 GameObject:
   m_ObjectHideFlags: 0
@@ -29003,11 +29173,48 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8812345678901234510, guid: 7192f40b89c66a04ca9ad0b5d2af6eb8, type: 3}
+      propertyPath: _powerId
+      value: 568105589213700022
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7192f40b89c66a04ca9ad0b5d2af6eb8, type: 3}
+--- !u!114 &7288479293067334267 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8812345678901234510, guid: 7192f40b89c66a04ca9ad0b5d2af6eb8, type: 3}
+  m_PrefabInstance: {fileID: 7288479293067334266}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e4f1b23c5d4890e1f2a3b4c5d6e7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPower
+--- !u!114 &8812345678901234550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036685241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f5a2c34d6e4901f2a3b4c5d6e7f809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPowerProvider
+  _entityPowers:
+  - {fileID: 1076337774}
+  - {fileID: 772479986}
+  - {fileID: 934072037}
+  - {fileID: 1413325215}
+  - {fileID: 1855680307}
+  - {fileID: 295704674}
+  - {fileID: 2065423188}
+  - {fileID: 1784764401}
+  - {fileID: 7288479293067334267}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

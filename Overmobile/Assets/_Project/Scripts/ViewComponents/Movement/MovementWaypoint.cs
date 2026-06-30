@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ViewComponents.Movement
 {
+    [DisallowMultipleComponent]
     public sealed class MovementWaypoint : MonoBehaviour
     {
         public bool HasEndpointKey => !string.IsNullOrWhiteSpace(_endpointKey);

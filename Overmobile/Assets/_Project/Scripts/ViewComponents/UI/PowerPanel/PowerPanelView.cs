@@ -1,3 +1,4 @@
+using Core.Gameplay.Power;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,7 +6,9 @@ using UnityEngine.UI;
 namespace ViewComponents.UI.PowerPanel
 {
     [ExecuteAlways]
-    public sealed class PowerPanelView : MonoBehaviour
+    public sealed class PowerPanelView
+        : MonoBehaviour,
+          IPowerPanelView
     {
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private TMP_Text _textLabel;
@@ -19,6 +22,11 @@ namespace ViewComponents.UI.PowerPanel
         private void Awake()
         {
             ApplyConfig(isConfigRequired: Application.isPlaying);
+        }
+
+        public void SetPower(int power)
+        {
+            _textLabel.text = power.ToString();
         }
 
         private void ApplyConfig(bool isConfigRequired)

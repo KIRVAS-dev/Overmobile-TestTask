@@ -1,0 +1,1 @@
+using Cysharp.Threading.Tasks;using System.Threading;using UnityEngine;namespace Core.Gameplay.Interaction{    public interface IInteractionService    {        UniTask InteractAsync(string endpointKey, string powerId, Vector3 facingWorldPosition,            CancellationToken cancellationToken);    }}

@@ -6,11 +6,8 @@ namespace Input
     public sealed class PointArea : MonoBehaviour
     {
         public ITrigger PointerDown => _pointerDownTrigger;
-
         public ITrigger PointerUp => _pointerUpTrigger;
-
         public ITrigger PointerExit => _pointerExitTrigger;
-
         public ITrigger PointerEnter => _pointerEnterTrigger;
 
         [SerializeField] private PointerDownTrigger _pointerDownTrigger;
