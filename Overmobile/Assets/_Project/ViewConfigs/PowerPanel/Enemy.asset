@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f2790c1fe5294fabc12e1e3baa96d, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelConfig
-  _backgroundColor: {r: 0.78431374, g: 0.11764706, b: 0.14509805, a: 1}
+  _backgroundColor: {r: 1, g: 0, b: 0.041176558, a: 1}
   _textColor: {r: 1, g: 1, b: 1, a: 1}

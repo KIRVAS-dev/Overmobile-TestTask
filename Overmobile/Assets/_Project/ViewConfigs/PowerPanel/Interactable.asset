@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f2790c1fe5294fabc12e1e3baa96d, type: 3}
   m_Name: Interactable
   m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelConfig
-  _backgroundColor: {r: 0.11764706, g: 0.78431374, b: 0.2, a: 1}
+  _backgroundColor: {r: 0, g: 1, b: 0.123529375, a: 1}
   _textColor: {r: 1, g: 1, b: 1, a: 1}
