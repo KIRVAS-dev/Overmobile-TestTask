@@ -15,6 +15,7 @@ namespace ViewComponents.Interaction
 
         public void Bind(
             IPowerRegistry powerRegistry,
+            IInteractionPhaseSource interactionPhaseSource,
             string entityId,
             IGameplayInputBlock gameplayInputBlock,
             IInteractionTargetPresentation interactionTargetPresentation)
@@ -28,6 +29,7 @@ namespace ViewComponents.Interaction
 
             _binding = new InteractionViewBinding(
                 powerRegistry,
+                interactionPhaseSource,
                 entityId,
                 gameplayInputBlock,
                 interactionTargetPresentation,

@@ -60,11 +60,7 @@ namespace ViewComponents.Player
 
         private void SpawnUpgradeTierAtIndex(int tierIndex, bool replaceCurrent)
         {
-            GameObject tierPrefab = PlayerUpgradeTierHelper.ResolveTierPrefab(
-                _upgradeTierPrefabs,
-                tierIndex,
-                gameObject.name
-            );
+            GameObject tierPrefab = PlayerUpgradeTierHelper.ResolveTierPrefab(_upgradeTierPrefabs, tierIndex, gameObject.name);
 
             (Vector3 worldPosition, Quaternion worldRotation) = ResolveTierSpawnPose(replaceCurrent);
 
@@ -112,9 +108,15 @@ namespace ViewComponents.Player
             PlayerUpgradeTierComponents tierComponents)
         {
             _currentTierTransform = tierTransform;
+
             _activeCharacterViewRegistry.SetActiveCharacterView(
-                new ActiveCharacterViewBinding(tierComponents.CharacterAnimationView, tierComponents.MovementView)
+                new ActiveCharacterViewBinding(
+                    tierComponents.CharacterAnimationView,
+                    tierComponents.AttackView,
+                    tierComponents.MovementView
+                )
             );
+
             CurrentTierIndex = tierIndex;
             _entityPowerPanelBinder.BindPowerPanel(tierComponents.EntityPowerView);
             _activeCharacterPresentationProvider.Register(tierComponents.ActiveCharacterAnchorView);

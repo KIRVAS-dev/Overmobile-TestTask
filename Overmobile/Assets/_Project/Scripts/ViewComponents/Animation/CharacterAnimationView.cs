@@ -22,6 +22,11 @@ namespace ViewComponents.Animation
             public string TriggerName;
         }
 
+        private sealed class AnimationPhaseTracker
+        {
+            public bool HasEnteredActionState;
+        }
+
         public CharacterAnimationSlot CurrentAnimationSlot { get; private set; }
 
         [Header("Animator parameters")]
@@ -31,7 +36,6 @@ namespace ViewComponents.Animation
         [SerializeField] private TriggerNamesMapItem[] _rawTriggersMap;
 
         private Dictionary<CharacterAnimationSlot, TriggerNamesMapItem> _triggersMap;
-        private bool _hasEnteredActionState;
 
         private void Awake()
         {
@@ -52,11 +56,19 @@ namespace ViewComponents.Animation
             CurrentAnimationSlot = slot;
         }
 
-        public async UniTask FireAnimationAsync(CharacterAnimationSlot slot, CancellationToken cancellationToken)
+        public UniTask FireAnimationAsync(CharacterAnimationSlot slot, CancellationToken cancellationToken)
+        {
+            return FireAnimationAsync(slot, AnimationEndNormalizedTimeThreshold, cancellationToken);
+        }
+
+        public async UniTask FireAnimationAsync(
+            CharacterAnimationSlot slot,
+            float phaseEndNormalizedTime,
+            CancellationToken cancellationToken)
         {
             TriggerNamesMapItem mapItem = ResolveMapItem(slot);
             int stateHashBeforeTrigger = _animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer).fullPathHash;
-            _hasEnteredActionState = false;
+            AnimationPhaseTracker phaseTracker = new AnimationPhaseTracker();
 
             using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
@@ -69,18 +81,16 @@ namespace ViewComponents.Animation
             {
                 FireAnimation(slot);
 
-                if (_animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer).fullPathHash == stateHashBeforeTrigger)
+                if (_animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer).fullPathHash != stateHashBeforeTrigger)
                 {
-                    _hasEnteredActionState = true;
+                    phaseTracker.HasEnteredActionState = true;
                 }
 
                 await UniTask.WaitUntil(
-                    () => IsActionAnimationComplete(stateHashBeforeTrigger),
+                    () => IsActionAnimationComplete(stateHashBeforeTrigger, phaseEndNormalizedTime, phaseTracker),
                     PlayerLoopTiming.Update,
                     linkedToken
                 );
-
-                linkedToken.ThrowIfCancellationRequested();
             }
             finally
             {
@@ -105,7 +115,10 @@ namespace ViewComponents.Animation
             }
         }
 
-        private bool IsActionAnimationComplete(int stateHashBeforeTrigger)
+        private bool IsActionAnimationComplete(
+            int stateHashBeforeTrigger,
+            float phaseEndNormalizedTime,
+            AnimationPhaseTracker phaseTracker)
         {
             if (_animator.IsInTransition(AnimatorBaseLayer))
             {
@@ -114,11 +127,11 @@ namespace ViewComponents.Animation
 
             AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(AnimatorBaseLayer);
 
-            if (!_hasEnteredActionState)
+            if (!phaseTracker.HasEnteredActionState)
             {
                 if (stateInfo.fullPathHash != stateHashBeforeTrigger)
                 {
-                    _hasEnteredActionState = true;
+                    phaseTracker.HasEnteredActionState = true;
                 }
 
                 return false;
@@ -134,7 +147,7 @@ namespace ViewComponents.Animation
                 return false;
             }
 
-            return stateInfo.normalizedTime >= AnimationEndNormalizedTimeThreshold;
+            return stateInfo.normalizedTime >= phaseEndNormalizedTime;
         }
 
         private TriggerNamesMapItem ResolveMapItem(CharacterAnimationSlot slot)

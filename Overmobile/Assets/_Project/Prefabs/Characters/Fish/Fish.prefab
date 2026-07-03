@@ -342,7 +342,7 @@ MonoBehaviour:
       type: {class: TriggerObjectSpawnerStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data:
         _spawner: {fileID: 0}
-        _spawnTransform: {fileID: 0}
+        _spawnTransform: {fileID: 492393508388250871}
 --- !u!1 &2451594138100134465
 GameObject:
   m_ObjectHideFlags: 0

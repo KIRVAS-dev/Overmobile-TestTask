@@ -1,3 +1,5 @@
+using Core.Gameplay.Attack;
+using Core.Gameplay.Character;
 using Core.Gameplay.Entity;
 using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
@@ -12,6 +14,7 @@ namespace Core.Gameplay.Interaction
 {
     public sealed class InteractionService : IInteractionService
     {
+        private readonly IActiveCharacterViewProvider _activeCharacterViewProvider;
         private readonly IInventory _inventory;
         private readonly IMovementService _movementService;
         private readonly IInteractableTargetProvider _interactableTargetProvider;
@@ -21,6 +24,7 @@ namespace Core.Gameplay.Interaction
         private readonly IInteractionPipeline _interactionPipeline;
 
         public InteractionService(
+            IActiveCharacterViewProvider activeCharacterViewProvider,
             IInventory inventory,
             IMovementService movementService,
             IInteractableTargetProvider interactableTargetProvider,
@@ -29,6 +33,7 @@ namespace Core.Gameplay.Interaction
             IEntityGuardAccessRegistry guardAccessRegistry,
             IInteractionPipeline interactionPipeline)
         {
+            _activeCharacterViewProvider = activeCharacterViewProvider;
             _inventory = inventory;
             _movementService = movementService;
             _interactableTargetProvider = interactableTargetProvider;
@@ -80,11 +85,16 @@ namespace Core.Gameplay.Interaction
                     ? _interactionPipeline.AwaitTargetPresentationAsync(cancellationToken)
                     : UniTask.CompletedTask;
 
-                bool resolveResult = TryResolve(entityId);
+                InteractableTargetData targetData = _interactableTargetProvider.GetTargetByEntityId(entityId);
 
-                if (!resolveResult)
+                if (!TryResolve(entityId, targetData))
                 {
                     return;
+                }
+
+                if (targetData.Type is EntityType.Enemy or EntityType.Ally)
+                {
+                    await RunPlayerAttackPhaseAsync(cancellationToken);
                 }
 
                 if (hasPresentation)
@@ -107,14 +117,20 @@ namespace Core.Gameplay.Interaction
             await _movementService.MoveToAsync(endpointKey, facingWorldPosition, cancellationToken);
         }
 
-        private bool TryResolve(string entityId)
+        private async UniTask RunPlayerAttackPhaseAsync(CancellationToken cancellationToken)
+        {
+            _interactionPipeline.SetPhase(InteractionPhase.PlayerAttack);
+
+            IAttackView attackView = _activeCharacterViewProvider.ActiveCharacterView.AttackView;
+            await attackView.PlayAttackAsync(cancellationToken);
+        }
+
+        private bool TryResolve(string entityId, InteractableTargetData targetData)
         {
             if (_powerRegistry.Get(entityId).IsResolved.CurrentValue)
             {
                 return false;
             }
-
-            InteractableTargetData targetData = _interactableTargetProvider.GetTargetByEntityId(entityId);
 
             switch (targetData.Type)
             {

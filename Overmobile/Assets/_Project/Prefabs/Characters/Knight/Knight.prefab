@@ -30,12 +30,76 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5698394427505519143}
+  - {fileID: 5860087208176058958}
   - {fileID: 1124302989820278618}
   - {fileID: 8496148367029448877}
   - {fileID: 1240274217033941055}
   - {fileID: 6039255455328488350}
   m_Father: {fileID: 4635797771478905391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1422087332640709954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5860087208176058958}
+  - component: {fileID: 9065724377734542716}
+  m_Layer: 0
+  m_Name: Attack_SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5860087208176058958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422087332640709954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3150117600021450199}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9065724377734542716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422087332640709954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 813948250
+      Data2: 1203747652
+      Data3: -850478918
+      Data4: -1408510715
+    Path: event:/SFX/Hits/BodyHit
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1549048153503586289
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +904,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4635797771478905391}
   - component: {fileID: 5776583395254240755}
+  - component: {fileID: 8902185553286540581}
   - component: {fileID: 3528520294824144858}
   - component: {fileID: 452244593932209052}
   - component: {fileID: 7326635556052041001}
@@ -895,6 +960,21 @@ MonoBehaviour:
   _facingRotationEase: 6
   _characterAnimationView: {fileID: 3528520294824144858}
   _footstepsSfx: {fileID: 3194794899493447377}
+--- !u!114 &8902185553286540581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001716404040914708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e25d330ef002c4da5b18f88138803c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Attack.AttackView
+  _characterAnimationView: {fileID: 3528520294824144858}
+  _attackSfx: {fileID: 1422087332640709954}
+  _phaseEndNormalizedTime: 0.5
 --- !u!114 &3528520294824144858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1510,7 +1590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc478a4adb70ac4aa2cef6c73ebf678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelValueChangeView
-  _powerPanelView: {fileID: 3047393548620568376}
   _panelScaleTarget: {fileID: 2060104141554460937}
   _textScaleTarget: {fileID: 4307319796396130237}
   _changeConfig: {fileID: 11400000, guid: 9bac9515a9acc8f41a5d94cb4f99d806, type: 2}

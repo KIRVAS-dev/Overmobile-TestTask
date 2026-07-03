@@ -9,5 +9,10 @@ namespace Core.Animation
         void SetIsMoving(bool value);
         void FireAnimation(CharacterAnimationSlot slot);
         UniTask FireAnimationAsync(CharacterAnimationSlot slot, CancellationToken cancellationToken);
+
+        UniTask FireAnimationAsync(
+            CharacterAnimationSlot slot,
+            float phaseEndNormalizedTime,
+            CancellationToken cancellationToken);
     }
 }

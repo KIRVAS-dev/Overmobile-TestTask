@@ -21,7 +21,7 @@ namespace ViewComponents.UI.PowerPanel
             );
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             _blockingSubscription.Dispose();
         }

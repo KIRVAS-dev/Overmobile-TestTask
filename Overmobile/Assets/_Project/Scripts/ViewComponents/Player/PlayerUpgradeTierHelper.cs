@@ -2,6 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using ViewComponents.Animation;
+using ViewComponents.Attack;
 using ViewComponents.Movement;
 using ViewComponents.Power;
 using ViewComponents.Presentation;
@@ -11,7 +12,10 @@ namespace ViewComponents.Player
 {
     public static class PlayerUpgradeTierHelper
     {
-        public static GameObject ResolveTierPrefab(GameObject[] tierPrefabs, int tierIndex, string ownerName)
+        public static GameObject ResolveTierPrefab(
+            GameObject[] tierPrefabs,
+            int tierIndex,
+            string ownerName)
         {
             if (tierIndex < 0
              || tierIndex >= tierPrefabs.Length)
@@ -26,8 +30,12 @@ namespace ViewComponents.Player
                 : tierPrefab;
         }
 
-        public static GameObject InstantiateTier(GameObject tierPrefab, Transform parent, Vector3 worldPosition,
-            Quaternion worldRotation, IObjectResolver objectResolver)
+        public static GameObject InstantiateTier(
+            GameObject tierPrefab,
+            Transform parent,
+            Vector3 worldPosition,
+            Quaternion worldRotation,
+            IObjectResolver objectResolver)
         {
             GameObject tierInstance = Object.Instantiate(tierPrefab, parent);
             tierInstance.transform.SetPositionAndRotation(worldPosition, worldRotation);
@@ -43,6 +51,13 @@ namespace ViewComponents.Player
             if (movementView == null)
             {
                 throw new MissingCharacterViewComponentException(prefabName, nameof(MovementView));
+            }
+
+            AttackView attackView = tierInstance.GetComponent<AttackView>();
+
+            if (attackView == null)
+            {
+                throw new MissingCharacterViewComponentException(prefabName, nameof(AttackView));
             }
 
             CharacterAnimationView characterAnimationView = tierInstance.GetComponent<CharacterAnimationView>();
@@ -66,19 +81,16 @@ namespace ViewComponents.Player
                 throw new MissingActiveCharacterAnchorViewException(prefabName);
             }
 
-            PresentationSectionMap presentationSectionMap =
-                tierInstance.GetComponent<PresentationSectionMap>();
+            PresentationSectionMap presentationSectionMap = tierInstance.GetComponent<PresentationSectionMap>();
 
             if (presentationSectionMap == null)
             {
-                throw new InvalidPresentationSectionMapException(
-                    prefabName,
-                    $"{nameof(PresentationSectionMap)} is not assigned"
-                );
+                throw new InvalidPresentationSectionMapException(prefabName, $"{nameof(PresentationSectionMap)} is not assigned");
             }
 
             return new PlayerUpgradeTierComponents(
                 movementView,
+                attackView,
                 characterAnimationView,
                 entityPowerView,
                 activeCharacterAnchorView,

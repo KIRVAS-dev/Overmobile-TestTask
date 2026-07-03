@@ -1,4 +1,5 @@
 using ViewComponents.Animation;
+using ViewComponents.Attack;
 using ViewComponents.Movement;
 using ViewComponents.Power;
 using ViewComponents.Presentation;
@@ -10,12 +11,14 @@ namespace ViewComponents.Player
     {
         public PlayerUpgradeTierComponents(
             MovementView movementView,
+            AttackView attackView,
             CharacterAnimationView characterAnimationView,
             EntityPowerView entityPowerView,
             ActiveCharacterAnchorView activeCharacterAnchorView,
             PresentationSectionMap presentationSectionMap)
         {
             MovementView = movementView;
+            AttackView = attackView;
             CharacterAnimationView = characterAnimationView;
             EntityPowerView = entityPowerView;
             ActiveCharacterAnchorView = activeCharacterAnchorView;
@@ -23,6 +26,7 @@ namespace ViewComponents.Player
         }
 
         public MovementView MovementView { get; }
+        public AttackView AttackView { get; }
         public CharacterAnimationView CharacterAnimationView { get; }
         public EntityPowerView EntityPowerView { get; }
         public ActiveCharacterAnchorView ActiveCharacterAnchorView { get; }

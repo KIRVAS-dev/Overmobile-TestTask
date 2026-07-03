@@ -52,7 +52,7 @@ namespace ViewComponents.UI.PowerPanel
             );
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             _phaseSubscription?.Dispose();
             _powerSubscription?.Dispose();

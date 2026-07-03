@@ -10,6 +10,7 @@ namespace ViewComponents.Interaction
     {
         private readonly IObjectResolver _objectResolver;
         private readonly IPowerRegistry _powerRegistry;
+        private readonly IInteractionPhaseSource _interactionPhaseSource;
         private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly IInteractionTargetPresentation _interactionTargetPresentation;
         private readonly InteractableTargetProvider _interactableTargetProvider;
@@ -17,12 +18,14 @@ namespace ViewComponents.Interaction
         public InteractionViewBinder(
             IObjectResolver objectResolver,
             IPowerRegistry powerRegistry,
+            IInteractionPhaseSource interactionPhaseSource,
             IGameplayInputBlock gameplayInputBlock,
             IInteractionTargetPresentation interactionTargetPresentation,
             InteractableTargetProvider interactableTargetProvider)
         {
             _objectResolver = objectResolver;
             _powerRegistry = powerRegistry;
+            _interactionPhaseSource = interactionPhaseSource;
             _gameplayInputBlock = gameplayInputBlock;
             _interactionTargetPresentation = interactionTargetPresentation;
             _interactableTargetProvider = interactableTargetProvider;
@@ -43,6 +46,7 @@ namespace ViewComponents.Interaction
                 _objectResolver.InjectGameObject(interactableTarget.gameObject);
                 interactionView.Bind(
                     _powerRegistry,
+                    _interactionPhaseSource,
                     interactableTarget.EntityId,
                     _gameplayInputBlock,
                     _interactionTargetPresentation

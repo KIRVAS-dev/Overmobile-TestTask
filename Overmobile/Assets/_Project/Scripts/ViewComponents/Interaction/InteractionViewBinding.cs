@@ -13,11 +13,13 @@ namespace ViewComponents.Interaction
     {
         private readonly string _entityId;
         private readonly IInteractionTargetPresentation _interactionTargetPresentation;
+        private readonly IInteractionPhaseSource _interactionPhaseSource;
         private readonly CancellationTokenSource _presentationCancellationTokenSource;
         private readonly IDisposable _resolvedSubscription;
 
         public InteractionViewBinding(
             IPowerRegistry powerRegistry,
+            IInteractionPhaseSource interactionPhaseSource,
             string entityId,
             IGameplayInputBlock gameplayInputBlock,
             IInteractionTargetPresentation interactionTargetPresentation,
@@ -25,6 +27,7 @@ namespace ViewComponents.Interaction
         {
             _entityId = entityId;
             _interactionTargetPresentation = interactionTargetPresentation;
+            _interactionPhaseSource = interactionPhaseSource;
             _presentationCancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = _presentationCancellationTokenSource.Token;
 
@@ -32,7 +35,7 @@ namespace ViewComponents.Interaction
 
             if (powerEntity.IsResolved.CurrentValue)
             {
-                RunResolvePresentationAsync(gameplayInputBlock, presentationSequence, cancellationToken).Forget();
+                RunPresentationImmediateAsync(gameplayInputBlock, presentationSequence, cancellationToken).Forget();
 
                 return;
             }
@@ -44,15 +47,44 @@ namespace ViewComponents.Interaction
                .Subscribe(_ => RunResolvePresentationAsync(gameplayInputBlock, presentationSequence, cancellationToken).Forget());
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             _presentationCancellationTokenSource.Cancel();
             _presentationCancellationTokenSource.Dispose();
             _resolvedSubscription?.Dispose();
         }
 
-        private async UniTaskVoid RunResolvePresentationAsync(IGameplayInputBlock gameplayInputBlock,
-            PresentationStepSequence presentationSequence, CancellationToken cancellationToken)
+        private async UniTaskVoid RunResolvePresentationAsync(
+            IGameplayInputBlock gameplayInputBlock,
+            PresentationStepSequence presentationSequence,
+            CancellationToken cancellationToken)
+        {
+            if (_interactionPhaseSource.CurrentPhase.CurrentValue != InteractionPhase.TargetPresentation
+             && _interactionPhaseSource.CurrentPhase.CurrentValue != InteractionPhase.Idle)
+            {
+                await UniTask.WaitUntil(
+                    () => _interactionPhaseSource.CurrentPhase.CurrentValue == InteractionPhase.TargetPresentation
+                     || _interactionPhaseSource.CurrentPhase.CurrentValue == InteractionPhase.Idle,
+                    PlayerLoopTiming.Update,
+                    cancellationToken
+                );
+            }
+
+            await RunPresentationCoreAsync(gameplayInputBlock, presentationSequence, cancellationToken);
+        }
+
+        private async UniTaskVoid RunPresentationImmediateAsync(
+            IGameplayInputBlock gameplayInputBlock,
+            PresentationStepSequence presentationSequence,
+            CancellationToken cancellationToken)
+        {
+            await RunPresentationCoreAsync(gameplayInputBlock, presentationSequence, cancellationToken);
+        }
+
+        private async UniTask RunPresentationCoreAsync(
+            IGameplayInputBlock gameplayInputBlock,
+            PresentationStepSequence presentationSequence,
+            CancellationToken cancellationToken)
         {
             gameplayInputBlock.Block();
 

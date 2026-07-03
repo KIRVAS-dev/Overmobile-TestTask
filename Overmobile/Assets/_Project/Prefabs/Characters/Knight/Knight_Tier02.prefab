@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight_Tier02
       objectReference: {fileID: 0}
+    - target: {fileID: 8902185553286540581, guid: 110844e97e4551a44aac9d0e86924281, type: 3}
+      propertyPath: _phaseEndNormalizedTime
+      value: 0.33
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 811580158216184749, guid: 110844e97e4551a44aac9d0e86924281, type: 3}

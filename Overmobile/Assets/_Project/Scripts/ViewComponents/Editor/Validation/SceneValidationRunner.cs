@@ -9,7 +9,7 @@ namespace ViewComponents.Editor.Validation
 {
     public static class SceneValidationRunner
     {
-        [MenuItem("Tools/Overmobile/Validate Loaded Scenes %#v")]
+        [MenuItem("Tools/Overmobile/Validate Loaded Scenes %#t")]
         public static void ValidateLoadedScenes()
         {
             MonoBehaviour[] allComponents = Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include);
