@@ -62,9 +62,9 @@ namespace ViewComponents.Presentation
 
         private void ValidateFadeTargets()
         {
-            int spriteRendererCount = _spriteRenderers?.Length ?? 0;
-            int rendererCount = _renderers?.Length ?? 0;
-            int canvasGroupCount = _canvasGroups?.Length ?? 0;
+            int spriteRendererCount = _spriteRenderers.Length;
+            int rendererCount = _renderers.Length;
+            int canvasGroupCount = _canvasGroups.Length;
 
             if (spriteRendererCount == 0
              && rendererCount == 0

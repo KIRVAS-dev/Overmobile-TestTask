@@ -1,6 +1,7 @@
 using Core.Camera;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using ExtendedExceptions;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -44,7 +45,10 @@ namespace ViewComponents.Camera
             KillRegisteredTweens(tween: null, _camera.transform, _camera);
         }
 
-        private async UniTask AwaitTweensAsync(Tween moveTween, Tween sizeTween, CancellationToken cancellationToken)
+        private async UniTask AwaitTweensAsync(
+            Tween moveTween,
+            Tween sizeTween,
+            CancellationToken cancellationToken)
         {
             Transform cameraTransform = _camera.transform;
             UnityCamera camera = _camera;
@@ -71,7 +75,10 @@ namespace ViewComponents.Camera
             linkedToken.ThrowIfCancellationRequested();
         }
 
-        private void KillRegisteredTweens(Tween tween, Transform cameraTransform, UnityCamera camera)
+        private void KillRegisteredTweens(
+            Tween tween,
+            Transform cameraTransform,
+            UnityCamera camera)
         {
             tween?.Kill();
 
@@ -98,20 +105,22 @@ namespace ViewComponents.Camera
 
         private void Validate()
         {
-            if (_config == null)
-            {
-                throw new MissingCameraTransitionConfigException(gameObject.name);
-            }
+            Guard.AgainstNull(_camera, () => new MissingCameraTransitionFieldException(nameof(_camera), gameObject.name));
+            Guard.AgainstNull(_config, () => new MissingCameraTransitionFieldException(nameof(_config), gameObject.name));
 
             if (!_camera.orthographic)
             {
                 throw new CameraTransitionOrthographicRequiredException(gameObject.name);
             }
 
-            if (_config.DelayBeforeTransition < 0f)
-            {
-                throw new CameraTransitionInvalidDelayException(gameObject.name, _config.DelayBeforeTransition);
-            }
+            Guard.AgainstNegative(
+                _config.DelayBeforeTransition,
+                () => new InvalidCameraTransitionValueException(
+                    nameof(_config.DelayBeforeTransition),
+                    gameObject.name,
+                    _config.DelayBeforeTransition
+                )
+            );
         }
     }
 }

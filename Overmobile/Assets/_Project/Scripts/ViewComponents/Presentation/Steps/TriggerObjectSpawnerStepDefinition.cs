@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using ExtendedExceptions;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -13,19 +14,23 @@ namespace ViewComponents.Presentation
 
         public override UniTask ExecuteAsync(PresentationContext context, CancellationToken cancellationToken)
         {
-            if (_spawner == null)
-            {
-                throw new InvalidPresentationStepDefinitionException(
+            Guard.AgainstNull(
+                _spawner,
+                () => new InvalidPresentationStepDefinitionException(
                     nameof(TriggerObjectSpawnerStepDefinition),
                     "Spawner is not assigned"
-                );
-            }
+                )
+            );
 
-            Transform spawnSource = _spawnTransform != null
-                ? _spawnTransform
-                : context.Owner.transform;
+            Guard.AgainstNull(
+                _spawnTransform,
+                () => new InvalidPresentationStepDefinitionException(
+                    nameof(TriggerObjectSpawnerStepDefinition),
+                    "Spawn transform is not assigned"
+                )
+            );
 
-            _spawner.Spawn(spawnSource.position, spawnSource.rotation);
+            _spawner.Spawn(_spawnTransform.position, _spawnTransform.rotation);
 
             return UniTask.CompletedTask;
         }

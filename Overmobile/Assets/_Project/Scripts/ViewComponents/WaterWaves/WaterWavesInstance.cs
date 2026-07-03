@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using ExtendedExceptions;
 using System.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -17,15 +18,12 @@ namespace ViewComponents.WaterWaves
 
         public void Validate()
         {
-            if (_spriteRenderer == null)
-            {
-                throw new MissingWaterWavesSpriteRendererException(gameObject.name);
-            }
+            Guard.AgainstNull(
+                _spriteRenderer,
+                () => new MissingWaterWavesFieldException(nameof(_spriteRenderer), gameObject.name)
+            );
 
-            if (_config == null)
-            {
-                throw new MissingWaterWavesInstanceConfigException(gameObject.name);
-            }
+            Guard.AgainstNull(_config, () => new MissingWaterWavesFieldException(nameof(_config), gameObject.name));
 
             _config.Validate();
         }
@@ -115,7 +113,10 @@ namespace ViewComponents.WaterWaves
             KillRegisteredTweens(tween: null, movementTransform, _spriteRenderer);
         }
 
-        private void KillRegisteredTweens(Tween tween, Transform movementTransform, SpriteRenderer spriteRenderer)
+        private void KillRegisteredTweens(
+            Tween tween,
+            Transform movementTransform,
+            SpriteRenderer spriteRenderer)
         {
             tween?.Kill();
 

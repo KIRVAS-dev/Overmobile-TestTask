@@ -2,6 +2,7 @@ using Core.Gameplay.Interaction;
 using Core.Gameplay.Inventory;
 using Core.Gameplay.Movement;
 using Core.Input;
+using ExtendedExceptions;
 using Input;
 using System;
 using System.Collections.Generic;
@@ -141,7 +142,10 @@ namespace ViewComponents.Interaction
             return entityGuards.GetGuardEntityIds(hostEntityId);
         }
 
-        private MovementInputTarget BuildMovementInputTarget(string endpointKey, PointArea pointArea, Vector3 facingWorldPosition)
+        private MovementInputTarget BuildMovementInputTarget(
+            string endpointKey,
+            PointArea pointArea,
+            Vector3 facingWorldPosition)
         {
             return new MovementInputTarget(
                 endpointKey,
@@ -155,15 +159,14 @@ namespace ViewComponents.Interaction
 
         private void Validate()
         {
-            if (_interactableTargets == null
-             || _interactableTargets.Length == 0)
-            {
-                throw new InvalidInteractableTargetProviderException(gameObject.name, "Interactable targets are not assigned");
-            }
+            Guard.AgainstNullOrEmpty(
+                _interactableTargets,
+                () => new InvalidInteractableTargetProviderException(gameObject.name, "Interactable targets are not assigned")
+            );
 
             for (int i = 0; i < _interactableTargets.Length; i++)
             {
-                if (_interactableTargets[i] == null)
+                if (!_interactableTargets[i])
                 {
                     throw new InvalidInteractableTargetProviderException(
                         gameObject.name,

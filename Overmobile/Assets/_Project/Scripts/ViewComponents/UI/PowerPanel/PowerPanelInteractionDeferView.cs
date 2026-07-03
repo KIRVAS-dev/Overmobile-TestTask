@@ -1,5 +1,6 @@
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
+using ExtendedExceptions;
 using System;
 using UnityEngine;
 
@@ -42,10 +43,10 @@ namespace ViewComponents.UI.PowerPanel
 
         private void Validate()
         {
-            if (_powerPanelView == null)
-            {
-                throw new InvalidPowerPanelInteractionDeferViewException(gameObject.name, "Power panel view is not assigned");
-            }
+            Guard.AgainstNull(
+                _powerPanelView,
+                () => new MissingPowerPanelFieldException(nameof(_powerPanelView), gameObject.name)
+            );
         }
     }
 }

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using ExtendedExceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -40,11 +41,10 @@ namespace ViewComponents.Presentation
 
         private void Validate()
         {
-            if (_sections == null
-             || _sections.Length == 0)
-            {
-                throw new InvalidPresentationSectionMapException(gameObject.name, "Sections are not assigned");
-            }
+            Guard.AgainstNullOrEmpty(
+                _sections,
+                () => new InvalidPresentationSectionMapException(gameObject.name, "Sections are not assigned")
+            );
 
             HashSet<PresentationSectionKey> assignedKeys = new HashSet<PresentationSectionKey>();
 

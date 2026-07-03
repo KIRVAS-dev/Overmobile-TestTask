@@ -1,3 +1,4 @@
+using ExtendedExceptions;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -110,10 +111,7 @@ namespace Input
 
         private void Validate()
         {
-            if (_actionsAsset == null)
-            {
-                throw new MissingPlayerPointerActionsAssetException(gameObject.name);
-            }
+            Guard.AgainstNull(_actionsAsset, () => new MissingPlayerPointerActionsAssetException(gameObject.name));
 
             InputActionMap actionMap = _actionsAsset.FindActionMap(PointerInputActions.MapName, throwIfNotFound: false);
 

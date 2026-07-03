@@ -2,25 +2,31 @@ using ExtendedExceptions;
 
 namespace ViewComponents.WaterWaves
 {
-    public sealed class MissingWaterWavesWavePrefabException : ExtendedException
+    public sealed class MissingWaterWavesFieldException : ExtendedException
     {
-        public MissingWaterWavesWavePrefabException(string objectName)
-            : base("water-waves-1", $"Water waves wave prefab is not assigned on '{objectName}'") { }
+        public MissingWaterWavesFieldException(string fieldName, string objectName)
+            : base("water-waves-1", $"Required field '{fieldName}' is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class InvalidWaterWavesValueException : ExtendedException
+    {
+        public InvalidWaterWavesValueException(
+            string fieldName,
+            string objectName,
+            float value)
+            : base("water-waves-2", $"Field '{fieldName}' on '{objectName}' has invalid value: {value}") { }
+
+        public InvalidWaterWavesValueException(
+            string fieldName,
+            string objectName,
+            int value)
+            : base("water-waves-2", $"Field '{fieldName}' on '{objectName}' has invalid value: {value}") { }
     }
 
     public sealed class InvalidWaterWavesSpritesException : ExtendedException
     {
         public InvalidWaterWavesSpritesException()
-            : base("water-waves-2", "Water waves instance config sprites array is empty or contains null entries") { }
-    }
-
-    public sealed class InvalidWaterWavesSpawnCountException : ExtendedException
-    {
-        public InvalidWaterWavesSpawnCountException(int spawnCountPerBurst)
-            : base(
-                "water-waves-3",
-                $"Water waves spawner spawn count per burst must be greater than zero, got {spawnCountPerBurst}"
-            ) { }
+            : base("water-waves-3", "Water waves instance config sprites array is empty or contains null entries") { }
     }
 
     public sealed class InvalidWaterWavesPoolSizeException : ExtendedException
@@ -41,42 +47,12 @@ namespace ViewComponents.WaterWaves
             ) { }
     }
 
-    public sealed class InvalidWaterWavesMoveSpeedException : ExtendedException
-    {
-        public InvalidWaterWavesMoveSpeedException(float moveSpeed)
-            : base("water-waves-6", $"Water waves spawner move speed must be greater than zero, got {moveSpeed}") { }
-    }
-
-    public sealed class InvalidWaterWavesLifetimeException : ExtendedException
-    {
-        public InvalidWaterWavesLifetimeException(float lifetime)
-            : base("water-waves-7", $"Water waves spawner lifetime must be greater than zero, got {lifetime}") { }
-    }
-
-    public sealed class InvalidWaterWavesSpawnRadiusException : ExtendedException
-    {
-        public InvalidWaterWavesSpawnRadiusException(float spawnRadius)
-            : base("water-waves-8", $"Water waves spawner spawn radius must be zero or greater, got {spawnRadius}") { }
-    }
-
     public sealed class InvalidWaterWavesFadeDurationException : ExtendedException
     {
         public InvalidWaterWavesFadeDurationException(string fadeDurationName, float fadeDuration)
             : base(
-                "water-waves-9",
+                "water-waves-6",
                 $"Water waves instance config {fadeDurationName} must be zero or greater, got {fadeDuration}"
             ) { }
-    }
-
-    public sealed class MissingWaterWavesSpriteRendererException : ExtendedException
-    {
-        public MissingWaterWavesSpriteRendererException(string objectName)
-            : base("water-waves-11", $"Water waves sprite renderer is not assigned on '{objectName}'") { }
-    }
-
-    public sealed class MissingWaterWavesInstanceConfigException : ExtendedException
-    {
-        public MissingWaterWavesInstanceConfigException(string objectName)
-            : base("water-waves-12", $"Water waves instance config is not assigned on '{objectName}' prefab") { }
     }
 }

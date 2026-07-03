@@ -49,7 +49,7 @@ namespace ViewComponents.Power
             switch (powerPanelVisibilityViews.Length)
             {
                 case 0:
-                    throw new MissingPowerPanelVisibilityViewException(entityPowerView.gameObject.name);
+                    throw new MissingPowerPanelFieldException("PowerPanelVisibilityView", entityPowerView.gameObject.name);
 
                 case > 1:
                     throw new MultiplePowerPanelVisibilityViewException(entityPowerView.gameObject.name);

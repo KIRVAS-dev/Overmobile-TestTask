@@ -1,4 +1,5 @@
 using DG.Tweening;
+using ExtendedExceptions;
 using Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -71,7 +72,7 @@ namespace UI.TapIndicator
 
             if (_positionParent == null)
             {
-                throw new MissingTapIndicatorImageException(gameObject.name);
+                throw new MissingTapIndicatorFieldException("positionParent", gameObject.name);
             }
 
             _defaultScale = _rectTransform.localScale;
@@ -143,15 +144,8 @@ namespace UI.TapIndicator
 
         private void Validate()
         {
-            if (_image == null)
-            {
-                throw new MissingTapIndicatorImageException(gameObject.name);
-            }
-
-            if (_config == null)
-            {
-                throw new MissingTapIndicatorConfigException(gameObject.name);
-            }
+            Guard.AgainstNull(_image, () => new MissingTapIndicatorFieldException(nameof(_image), gameObject.name));
+            Guard.AgainstNull(_config, () => new MissingTapIndicatorFieldException(nameof(_config), gameObject.name));
 
             _config.Validate();
         }

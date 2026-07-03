@@ -2,10 +2,10 @@ using ExtendedExceptions;
 
 namespace ViewComponents.Power
 {
-    public sealed class MissingEntityPowerEntityIdReferenceException : ExtendedException
+    public sealed class MissingEntityPowerFieldException : ExtendedException
     {
-        public MissingEntityPowerEntityIdReferenceException(string objectName)
-            : base("entity-power-1", $"Entity id reference is not assigned on '{objectName}'") { }
+        public MissingEntityPowerFieldException(string fieldName, string objectName)
+            : base("entity-power-1", $"Required field '{fieldName}' is not assigned on '{objectName}'") { }
     }
 
     public sealed class InvalidEntityPowerProviderException : ExtendedException
@@ -38,15 +38,21 @@ namespace ViewComponents.Power
             : base("entity-power-6", $"Invalid entity guard power panel binder '{binderName}': {reason}") { }
     }
 
+    public sealed class InvalidEntityInteractionDeferPowerPanelBinderException : ExtendedException
+    {
+        public InvalidEntityInteractionDeferPowerPanelBinderException(string binderName, string reason)
+            : base("entity-power-7", $"Invalid entity interaction defer power panel binder '{binderName}': {reason}") { }
+    }
+
     public sealed class MultiplePowerPanelInteractionDeferViewException : ExtendedException
     {
         public MultiplePowerPanelInteractionDeferViewException(string objectName)
-            : base("entity-power-7", $"Multiple power panel interaction defer views found under '{objectName}'") { }
+            : base("entity-power-8", $"Multiple power panel interaction defer views found under '{objectName}'") { }
     }
 
     public sealed class MultiplePowerPanelValueChangeViewException : ExtendedException
     {
         public MultiplePowerPanelValueChangeViewException(string objectName)
-            : base("entity-power-8", $"Multiple power panel value change views found under '{objectName}'") { }
+            : base("entity-power-9", $"Multiple power panel value change views found under '{objectName}'") { }
     }
 }

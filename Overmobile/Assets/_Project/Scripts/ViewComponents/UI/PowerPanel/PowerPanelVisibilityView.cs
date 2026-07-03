@@ -1,6 +1,7 @@
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
 using DG.Tweening;
+using ExtendedExceptions;
 using System;
 using UnityEngine;
 
@@ -55,7 +56,11 @@ namespace ViewComponents.UI.PowerPanel
 
             if (transition.FadeDuration < 0f)
             {
-                throw new InvalidPowerPanelVisibilityFadeDurationException(gameObject.name, transition.FadeDuration);
+                throw new InvalidPowerPanelValueException(
+                    nameof(transition.FadeDuration),
+                    gameObject.name,
+                    transition.FadeDuration
+                );
             }
 
             _fadeTween = _canvasGroup.DOFade(targetAlpha, transition.FadeDuration).SetEase(transition.FadeEase);
@@ -76,20 +81,13 @@ namespace ViewComponents.UI.PowerPanel
 
         private void Validate()
         {
-            if (_powerPanelView == null)
-            {
-                throw new InvalidPowerPanelVisibilityViewException(gameObject.name, "Power panel view is not assigned");
-            }
+            Guard.AgainstNull(
+                _powerPanelView,
+                () => new MissingPowerPanelFieldException(nameof(_powerPanelView), gameObject.name)
+            );
 
-            if (_canvasGroup == null)
-            {
-                throw new InvalidPowerPanelVisibilityViewException(gameObject.name, "Canvas group is not assigned");
-            }
-
-            if (_config == null)
-            {
-                throw new MissingPowerPanelVisibilityConfigException(gameObject.name);
-            }
+            Guard.AgainstNull(_canvasGroup, () => new MissingPowerPanelFieldException(nameof(_canvasGroup), gameObject.name));
+            Guard.AgainstNull(_config, () => new MissingPowerPanelFieldException(nameof(_config), gameObject.name));
         }
     }
 }

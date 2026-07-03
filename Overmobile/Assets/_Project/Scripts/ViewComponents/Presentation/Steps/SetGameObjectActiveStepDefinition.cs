@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using ExtendedExceptions;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -27,18 +28,17 @@ namespace ViewComponents.Presentation
 
         private void Validate()
         {
-            if (_targets == null
-             || _targets.Length == 0)
-            {
-                throw new InvalidPresentationStepDefinitionException(
+            Guard.AgainstNullOrEmpty(
+                _targets,
+                () => new InvalidPresentationStepDefinitionException(
                     nameof(SetGameObjectActiveStepDefinition),
                     "At least one target is required"
-                );
-            }
+                )
+            );
 
             for (int i = 0; i < _targets.Length; i++)
             {
-                if (_targets[i] == null)
+                if (!_targets[i])
                 {
                     throw new InvalidPresentationStepDefinitionException(
                         nameof(SetGameObjectActiveStepDefinition),

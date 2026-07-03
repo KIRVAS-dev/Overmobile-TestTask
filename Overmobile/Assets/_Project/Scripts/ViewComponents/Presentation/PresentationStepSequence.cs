@@ -1,6 +1,7 @@
 using Core.Gameplay.Player;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using ExtendedExceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -196,11 +197,10 @@ namespace ViewComponents.Presentation
 
         private void Validate()
         {
-            if (_steps == null
-             || _steps.Length == 0)
-            {
-                throw new InvalidPresentationStepSequenceException(gameObject.name, "Steps are not assigned");
-            }
+            Guard.AgainstNullOrEmpty(
+                _steps,
+                () => new InvalidPresentationStepSequenceException(gameObject.name, "Steps are not assigned")
+            );
         }
     }
 }

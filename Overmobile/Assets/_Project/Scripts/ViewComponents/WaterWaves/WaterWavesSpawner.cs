@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using ExtendedExceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -105,17 +106,14 @@ namespace ViewComponents.WaterWaves
 
         private void Validate()
         {
-            if (_wavePrefab == null)
-            {
-                throw new MissingWaterWavesWavePrefabException(gameObject.name);
-            }
+            Guard.AgainstNull(_wavePrefab, () => new MissingWaterWavesFieldException(nameof(_wavePrefab), gameObject.name));
 
             _wavePrefab.Validate();
 
-            if (_spawnCountPerBurst <= 0)
-            {
-                throw new InvalidWaterWavesSpawnCountException(_spawnCountPerBurst);
-            }
+            Guard.AgainstNonPositive(
+                _spawnCountPerBurst,
+                () => new InvalidWaterWavesValueException(nameof(_spawnCountPerBurst), gameObject.name, _spawnCountPerBurst)
+            );
 
             if (_poolSize < _spawnCountPerBurst)
             {
@@ -127,20 +125,20 @@ namespace ViewComponents.WaterWaves
                 throw new InvalidWaterWavesSpawnIntervalException(_minSpawnInterval, _maxSpawnInterval);
             }
 
-            if (_moveSpeed <= 0f)
-            {
-                throw new InvalidWaterWavesMoveSpeedException(_moveSpeed);
-            }
+            Guard.AgainstNonPositive(
+                _moveSpeed,
+                () => new InvalidWaterWavesValueException(nameof(_moveSpeed), gameObject.name, _moveSpeed)
+            );
 
-            if (_lifetime <= 0f)
-            {
-                throw new InvalidWaterWavesLifetimeException(_lifetime);
-            }
+            Guard.AgainstNonPositive(
+                _lifetime,
+                () => new InvalidWaterWavesValueException(nameof(_lifetime), gameObject.name, _lifetime)
+            );
 
-            if (_spawnRadius < 0f)
-            {
-                throw new InvalidWaterWavesSpawnRadiusException(_spawnRadius);
-            }
+            Guard.AgainstNegative(
+                _spawnRadius,
+                () => new InvalidWaterWavesValueException(nameof(_spawnRadius), gameObject.name, _spawnRadius)
+            );
 
             _normalizedMoveDirection = _moveDirection.sqrMagnitude <= Mathf.Epsilon
                 ? Vector3.zero

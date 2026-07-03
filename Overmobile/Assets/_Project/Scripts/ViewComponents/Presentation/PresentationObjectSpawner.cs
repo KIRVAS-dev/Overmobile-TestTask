@@ -1,3 +1,4 @@
+using ExtendedExceptions;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,15 +38,11 @@ namespace ViewComponents.Presentation
 
         private void Validate()
         {
-            if (_prefabs == null
-             || _prefabs.Length == 0)
-            {
-                throw new MissingPresentationObjectSpawnerPrefabsException(gameObject.name);
-            }
+            Guard.AgainstNullOrEmpty(_prefabs, () => new MissingPresentationFieldException(nameof(_prefabs), gameObject.name));
 
             for (int i = 0; i < _prefabs.Length; i++)
             {
-                if (_prefabs[i] == null)
+                if (!_prefabs[i])
                 {
                     throw new InvalidPresentationObjectSpawnerPrefabException(gameObject.name, i);
                 }

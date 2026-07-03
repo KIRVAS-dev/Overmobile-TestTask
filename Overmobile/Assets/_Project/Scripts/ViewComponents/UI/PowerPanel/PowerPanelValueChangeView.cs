@@ -1,4 +1,5 @@
 using DG.Tweening;
+using ExtendedExceptions;
 using UnityEngine;
 
 namespace ViewComponents.UI.PowerPanel
@@ -16,16 +17,6 @@ namespace ViewComponents.UI.PowerPanel
         {
             PowerPanelScaleChangeSettings panelScaleChange = _changeConfig.PanelScaleChange;
             PowerPanelScaleChangeSettings textScaleChange = _changeConfig.TextScaleChange;
-
-            if (panelScaleChange.DurationSeconds <= 0f)
-            {
-                throw new InvalidPanelScaleChangeDurationException(gameObject.name, panelScaleChange.DurationSeconds);
-            }
-
-            if (textScaleChange.DurationSeconds <= 0f)
-            {
-                throw new InvalidTextScaleChangeDurationException(gameObject.name, textScaleChange.DurationSeconds);
-            }
 
             CancelAnimation();
 
@@ -76,20 +67,35 @@ namespace ViewComponents.UI.PowerPanel
 
         private void Validate()
         {
-            if (_panelScaleTarget == null)
-            {
-                throw new MissingPowerPanelScaleTargetException(gameObject.name);
-            }
+            Guard.AgainstNull(
+                _panelScaleTarget,
+                () => new MissingPowerPanelFieldException(nameof(_panelScaleTarget), gameObject.name)
+            );
 
-            if (_textScaleTarget == null)
-            {
-                throw new MissingTextScaleTargetException(gameObject.name);
-            }
+            Guard.AgainstNull(
+                _textScaleTarget,
+                () => new MissingPowerPanelFieldException(nameof(_textScaleTarget), gameObject.name)
+            );
 
-            if (_changeConfig == null)
-            {
-                throw new MissingPowerPanelChangeConfigException(gameObject.name);
-            }
+            Guard.AgainstNull(_changeConfig, () => new MissingPowerPanelFieldException(nameof(_changeConfig), gameObject.name));
+
+            Guard.AgainstNonPositive(
+                _changeConfig.PanelScaleChange.DurationSeconds,
+                () => new InvalidPowerPanelValueException(
+                    "PanelScaleChange.DurationSeconds",
+                    gameObject.name,
+                    _changeConfig.PanelScaleChange.DurationSeconds
+                )
+            );
+
+            Guard.AgainstNonPositive(
+                _changeConfig.TextScaleChange.DurationSeconds,
+                () => new InvalidPowerPanelValueException(
+                    "TextScaleChange.DurationSeconds",
+                    gameObject.name,
+                    _changeConfig.TextScaleChange.DurationSeconds
+                )
+            );
         }
     }
 }

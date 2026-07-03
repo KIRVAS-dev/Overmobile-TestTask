@@ -35,7 +35,7 @@ namespace ViewComponents.UI.PowerPanel
             {
                 if (isConfigRequired)
                 {
-                    throw new MissingPowerPanelConfigException(gameObject.name);
+                    throw new MissingPowerPanelFieldException(nameof(_config), gameObject.name);
                 }
 
                 return;
