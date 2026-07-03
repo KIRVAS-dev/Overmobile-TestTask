@@ -1,15 +1,22 @@
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
+using ViewComponents.UI.PowerPanel;
 
 namespace ViewComponents.Power
 {
     public sealed class EntityPowerPanelBinder : IEntityPowerPanelBinder
     {
         private readonly IPowerRegistry _powerRegistry;
+        private readonly IInteractionPhaseSource _interactionPhaseSource;
         private readonly EntityPowerProvider _entityPowerProvider;
 
-        public EntityPowerPanelBinder(IPowerRegistry powerRegistry, EntityPowerProvider entityPowerProvider)
+        public EntityPowerPanelBinder(
+            IPowerRegistry powerRegistry,
+            IInteractionPhaseSource interactionPhaseSource,
+            EntityPowerProvider entityPowerProvider)
         {
             _powerRegistry = powerRegistry;
+            _interactionPhaseSource = interactionPhaseSource;
             _entityPowerProvider = entityPowerProvider;
         }
 
@@ -29,7 +36,52 @@ namespace ViewComponents.Power
                 ? entityPower.EntityId
                 : _entityPowerProvider.PlayerEntityId;
 
-            entityPowerView.BindPowerPanel(_powerRegistry, entityId);
+            PowerPanelValueChangeView valueChangeView = ResolveValueChangeView(entityPowerView);
+            PowerPanelInteractionDeferView interactionDeferView = ResolveInteractionDeferView(entityPowerView);
+
+            if (interactionDeferView != null)
+            {
+                interactionDeferView.Bind(_interactionPhaseSource, _powerRegistry, entityId, valueChangeView);
+                return;
+            }
+
+            entityPowerView.BindPowerPanel(_powerRegistry, entityId, valueChangeView);
+        }
+
+        private PowerPanelInteractionDeferView ResolveInteractionDeferView(EntityPowerView entityPowerView)
+        {
+            PowerPanelInteractionDeferView[] interactionDeferViews =
+                entityPowerView.GetComponentsInChildren<PowerPanelInteractionDeferView>(includeInactive: true);
+
+            switch (interactionDeferViews.Length)
+            {
+                case 0:
+                    return null;
+
+                case > 1:
+                    throw new MultiplePowerPanelInteractionDeferViewException(entityPowerView.gameObject.name);
+
+                default:
+                    return interactionDeferViews[0];
+            }
+        }
+
+        private PowerPanelValueChangeView ResolveValueChangeView(EntityPowerView entityPowerView)
+        {
+            PowerPanelValueChangeView[] valueChangeViews =
+                entityPowerView.GetComponentsInChildren<PowerPanelValueChangeView>(includeInactive: true);
+
+            switch (valueChangeViews.Length)
+            {
+                case 0:
+                    return null;
+
+                case > 1:
+                    throw new MultiplePowerPanelValueChangeViewException(entityPowerView.gameObject.name);
+
+                default:
+                    return valueChangeViews[0];
+            }
         }
     }
 }

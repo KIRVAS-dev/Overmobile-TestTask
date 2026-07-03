@@ -1,4 +1,5 @@
 using Core;
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
 using VContainer;
 using VContainer.Unity;
@@ -10,18 +11,20 @@ namespace ViewComponents.Interaction
         private readonly IObjectResolver _objectResolver;
         private readonly IPowerRegistry _powerRegistry;
         private readonly IGameplayInputBlock _gameplayInputBlock;
+        private readonly IInteractionTargetPresentation _interactionTargetPresentation;
         private readonly InteractableTargetProvider _interactableTargetProvider;
-
 
         public InteractionViewBinder(
             IObjectResolver objectResolver,
             IPowerRegistry powerRegistry,
             IGameplayInputBlock gameplayInputBlock,
+            IInteractionTargetPresentation interactionTargetPresentation,
             InteractableTargetProvider interactableTargetProvider)
         {
             _objectResolver = objectResolver;
             _powerRegistry = powerRegistry;
             _gameplayInputBlock = gameplayInputBlock;
+            _interactionTargetPresentation = interactionTargetPresentation;
             _interactableTargetProvider = interactableTargetProvider;
         }
 
@@ -35,8 +38,15 @@ namespace ViewComponents.Interaction
                 {
                     continue;
                 }
+
+                _interactionTargetPresentation.RegisterTargetPresentation(interactableTarget.EntityId);
                 _objectResolver.InjectGameObject(interactableTarget.gameObject);
-                interactionView.Bind(_powerRegistry, interactableTarget.EntityId, _gameplayInputBlock);
+                interactionView.Bind(
+                    _powerRegistry,
+                    interactableTarget.EntityId,
+                    _gameplayInputBlock,
+                    _interactionTargetPresentation
+                );
             }
         }
     }

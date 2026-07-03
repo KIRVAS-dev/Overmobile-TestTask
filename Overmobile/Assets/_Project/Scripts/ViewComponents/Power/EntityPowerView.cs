@@ -1,4 +1,3 @@
-using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
 using System;
 using UnityEngine;
@@ -12,10 +11,18 @@ namespace ViewComponents.Power
         private PowerPanelView _powerPanelView;
         private IDisposable _binding;
 
-        public void BindPowerPanel(IPowerRegistry powerRegistry, string entityId)
+        public void BindPowerPanel(
+            IPowerRegistry powerRegistry,
+            string entityId,
+            PowerPanelValueChangeView valueChangeView)
         {
             _binding?.Dispose();
-            _binding = new PowerPanelBinding(powerRegistry, entityId, ResolvePowerPanelView());
+            _binding = new PowerPanelBinding(
+                powerRegistry,
+                entityId,
+                ResolvePowerPanelView(),
+                valueChangeView
+            );
         }
 
         private PowerPanelView ResolvePowerPanelView()

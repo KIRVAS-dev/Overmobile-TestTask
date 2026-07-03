@@ -1,4 +1,5 @@
 using Core;
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -10,12 +11,20 @@ namespace ViewComponents.Interaction
 {
     public sealed class InteractionViewBinding : IDisposable
     {
+        private readonly string _entityId;
+        private readonly IInteractionTargetPresentation _interactionTargetPresentation;
         private readonly CancellationTokenSource _presentationCancellationTokenSource;
         private readonly IDisposable _resolvedSubscription;
 
-        public InteractionViewBinding(IPowerRegistry powerRegistry, string entityId, IGameplayInputBlock gameplayInputBlock,
+        public InteractionViewBinding(
+            IPowerRegistry powerRegistry,
+            string entityId,
+            IGameplayInputBlock gameplayInputBlock,
+            IInteractionTargetPresentation interactionTargetPresentation,
             PresentationStepSequence presentationSequence)
         {
+            _entityId = entityId;
+            _interactionTargetPresentation = interactionTargetPresentation;
             _presentationCancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = _presentationCancellationTokenSource.Token;
 
@@ -55,6 +64,7 @@ namespace ViewComponents.Interaction
             finally
             {
                 gameplayInputBlock.Unblock();
+                _interactionTargetPresentation.CompleteTargetPresentation(_entityId);
             }
         }
     }

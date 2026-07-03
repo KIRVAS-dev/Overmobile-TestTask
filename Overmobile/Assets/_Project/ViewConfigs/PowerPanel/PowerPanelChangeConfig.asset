@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e5f6a7b8c94012d3e4f5061728394a, type: 3}
+  m_Name: PowerPanelChangeConfig
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelChangeConfig
+  _panelScaleChange:
+    _fromScale: {x: 1, y: 1, z: 1}
+    _toScale: {x: 1.5, y: 1.5, z: 1.5}
+    _durationSeconds: 0.75
+    _ease: 27
+  _textScaleChange:
+    _fromScale: {x: 1, y: 1, z: 1}
+    _toScale: {x: 1.5, y: 1.5, z: 1.5}
+    _durationSeconds: 0.75
+    _ease: 27
+  _resetToDefaultScaleOnComplete: 1

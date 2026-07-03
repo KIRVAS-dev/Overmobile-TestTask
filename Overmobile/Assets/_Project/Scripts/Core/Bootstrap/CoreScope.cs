@@ -72,6 +72,13 @@ namespace Core.Bootstrap
                .As<IGameplayInputTargetProvider>();
 
             builder.Register<EntityGuardAccessRegistry>(Lifetime.Singleton).As<IEntityGuardAccessRegistry>();
+
+            builder
+               .Register<InteractionPipeline>(Lifetime.Singleton)
+               .As<IInteractionPipeline>()
+               .As<IInteractionPhaseSource>()
+               .As<IInteractionTargetPresentation>();
+
             builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
             builder.Register<DropBinder>(Lifetime.Singleton).As<IDropBinder>();
             builder.Register<InteractionViewBinder>(Lifetime.Singleton).As<IInteractionViewBinder>();

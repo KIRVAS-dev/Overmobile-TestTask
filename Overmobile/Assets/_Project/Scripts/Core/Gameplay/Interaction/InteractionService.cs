@@ -18,6 +18,7 @@ namespace Core.Gameplay.Interaction
         private readonly IEntityGuardAccessRegistry _guardAccessRegistry;
         private readonly IPowerRegistry _powerRegistry;
         private readonly IPowerService _powerService;
+        private readonly IInteractionPipeline _interactionPipeline;
 
         public InteractionService(
             IInventory inventory,
@@ -25,7 +26,8 @@ namespace Core.Gameplay.Interaction
             IInteractableTargetProvider interactableTargetProvider,
             IPowerRegistry powerRegistry,
             IPowerService powerService,
-            IEntityGuardAccessRegistry guardAccessRegistry)
+            IEntityGuardAccessRegistry guardAccessRegistry,
+            IInteractionPipeline interactionPipeline)
         {
             _inventory = inventory;
             _movementService = movementService;
@@ -33,6 +35,7 @@ namespace Core.Gameplay.Interaction
             _powerRegistry = powerRegistry;
             _powerService = powerService;
             _guardAccessRegistry = guardAccessRegistry;
+            _interactionPipeline = interactionPipeline;
 
             ValidateEntityGuards();
         }
@@ -47,7 +50,10 @@ namespace Core.Gameplay.Interaction
             return !_guardAccessRegistry.GetAreGuardsBlocking(entityId).CurrentValue;
         }
 
-        public async UniTask InteractAsync(string endpointKey, string entityId, Vector3 facingWorldPosition,
+        public async UniTask InteractAsync(
+            string endpointKey,
+            string entityId,
+            Vector3 facingWorldPosition,
             CancellationToken cancellationToken)
         {
             if (!CanInteract(entityId))
@@ -55,27 +61,57 @@ namespace Core.Gameplay.Interaction
                 return;
             }
 
-            await RunApproachPhaseAsync(endpointKey, facingWorldPosition, cancellationToken);
+            if (_interactionPipeline.CurrentPhase.CurrentValue != InteractionPhase.Idle)
+            {
+                return;
+            }
 
-            RunResolvePhase(entityId);
+            _interactionPipeline.BeginInteraction(entityId);
+
+            try
+            {
+                await RunApproachPhaseAsync(endpointKey, facingWorldPosition, cancellationToken);
+
+                _interactionPipeline.SetPhase(InteractionPhase.Resolve);
+
+                bool hasPresentation = _interactionPipeline.HasTargetPresentation(entityId);
+
+                UniTask presentationWait = hasPresentation
+                    ? _interactionPipeline.AwaitTargetPresentationAsync(cancellationToken)
+                    : UniTask.CompletedTask;
+
+                bool resolveResult = TryResolve(entityId);
+
+                if (!resolveResult)
+                {
+                    return;
+                }
+
+                if (hasPresentation)
+                {
+                    _interactionPipeline.SetPhase(InteractionPhase.TargetPresentation);
+                    await presentationWait;
+                }
+            }
+            finally
+            {
+                _interactionPipeline.EndInteraction();
+            }
         }
 
-        private async UniTask RunApproachPhaseAsync(string endpointKey, Vector3 facingWorldPosition,
+        private async UniTask RunApproachPhaseAsync(
+            string endpointKey,
+            Vector3 facingWorldPosition,
             CancellationToken cancellationToken)
         {
             await _movementService.MoveToAsync(endpointKey, facingWorldPosition, cancellationToken);
         }
 
-        private void RunResolvePhase(string entityId)
-        {
-            ResolveInteraction(entityId);
-        }
-
-        private void ResolveInteraction(string entityId)
+        private bool TryResolve(string entityId)
         {
             if (_powerRegistry.Get(entityId).IsResolved.CurrentValue)
             {
-                return;
+                return false;
             }
 
             InteractableTargetData targetData = _interactableTargetProvider.GetTargetByEntityId(entityId);
@@ -83,45 +119,49 @@ namespace Core.Gameplay.Interaction
             switch (targetData.Type)
             {
                 case EntityType.Enemy:
-                    ResolveEnemyInteraction(entityId, targetData);
-                    break;
+                    return TryResolveEnemyInteraction(entityId, targetData);
 
                 case EntityType.Ally:
-                    ResolveAllyInteraction(entityId, targetData);
-                    break;
+                    return TryResolveAllyInteraction(entityId, targetData);
 
                 case EntityType.Player:
-                    break;
+                    return false;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(targetData.Type), targetData.Type, message: null);
             }
         }
 
-        private void ResolveEnemyInteraction(string entityId, InteractableTargetData targetData)
+        private bool TryResolveEnemyInteraction(string entityId, InteractableTargetData targetData)
         {
             if (targetData.RequiredItem.HasValue
              && !_inventory.Get(targetData.RequiredItem.Value))
             {
-                return;
+                return false;
             }
 
             if (!_powerService.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: true))
             {
-                return;
+                return false;
             }
 
             GrantLoot(targetData);
+
+            return true;
         }
 
-        private void ResolveAllyInteraction(string entityId, InteractableTargetData targetData)
+        private bool TryResolveAllyInteraction(string entityId, InteractableTargetData targetData)
         {
-            if (!_powerService.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: false))
+            bool transferResult = _powerService.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: false);
+
+            if (!transferResult)
             {
-                return;
+                return false;
             }
 
             GrantLoot(targetData);
+
+            return true;
         }
 
         private void GrantLoot(InteractableTargetData targetData)

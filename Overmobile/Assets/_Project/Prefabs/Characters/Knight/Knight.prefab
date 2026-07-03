@@ -844,6 +844,7 @@ GameObject:
   - component: {fileID: 452244593932209052}
   - component: {fileID: 7326635556052041001}
   - component: {fileID: 6882444945104046698}
+  - component: {fileID: 1989933966792652814}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -964,6 +965,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c4d5e6f7a84990b1c2d3e4f5061720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPowerView
+--- !u!114 &1989933966792652814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001716404040914708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de49d28ba1bc9a4ab670a3d229fe181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelInteractionDeferView
+  _powerPanelView: {fileID: 3047393548620568376}
 --- !u!1 &8330808332613846598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,21 +1472,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9030746934873787235, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2290939764646977292}
   m_SourcePrefab: {fileID: 100100000, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+--- !u!224 &2060104141554460937 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5426753747806846477, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 6330167739744900868}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3047393548620568376 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9048789708736905276, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
   m_PrefabInstance: {fileID: 6330167739744900868}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3065524698993941607}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f337f54e948eb14fa9bd1a51eb7ce0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelView
+--- !u!1 &3065524698993941607 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9030746934873787235, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 6330167739744900868}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2290939764646977292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065524698993941607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc478a4adb70ac4aa2cef6c73ebf678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelValueChangeView
+  _powerPanelView: {fileID: 3047393548620568376}
+  _panelScaleTarget: {fileID: 2060104141554460937}
+  _textScaleTarget: {fileID: 4307319796396130237}
+  _changeConfig: {fileID: 11400000, guid: 9bac9515a9acc8f41a5d94cb4f99d806, type: 2}
 --- !u!224 &3665374267254768442 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 6330167739744900868}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4307319796396130237 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7791203775277115577, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
   m_PrefabInstance: {fileID: 6330167739744900868}
   m_PrefabAsset: {fileID: 0}

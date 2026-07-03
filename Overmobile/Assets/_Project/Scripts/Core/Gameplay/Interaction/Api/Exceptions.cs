@@ -13,4 +13,13 @@ namespace Core.Gameplay.Interaction
         public InteractableTargetNotFoundByEntityIdException(string entityId)
             : base("interaction-2", $"Interactable target not found for entity id '{entityId}'") { }
     }
+
+    public sealed class InteractionPipelineTargetPresentationEntityMismatchException : ExtendedException
+    {
+        public InteractionPipelineTargetPresentationEntityMismatchException(string entityId, string currentTargetEntityId)
+            : base(
+                "interaction-3",
+                $"Target presentation entity id '{entityId}' does not match current target '{currentTargetEntityId}'"
+            ) { }
+    }
 }

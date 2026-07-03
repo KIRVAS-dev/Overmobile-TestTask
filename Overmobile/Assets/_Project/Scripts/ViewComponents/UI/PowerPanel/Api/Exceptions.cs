@@ -37,4 +37,40 @@ namespace ViewComponents.UI.PowerPanel
         public InvalidPowerPanelVisibilityViewException(string objectName, string reason)
             : base("power-panel-6", $"Invalid power panel visibility view on '{objectName}': {reason}") { }
     }
+
+    public sealed class MissingPowerPanelChangeConfigException : ExtendedException
+    {
+        public MissingPowerPanelChangeConfigException(string objectName)
+            : base("power-panel-7", $"Power panel change config is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class InvalidPanelScaleChangeDurationException : ExtendedException
+    {
+        public InvalidPanelScaleChangeDurationException(string objectName, float durationSeconds)
+            : base("power-panel-8", $"Panel scale change duration on '{objectName}' is invalid: {durationSeconds}") { }
+    }
+
+    public sealed class MissingPowerPanelScaleTargetException : ExtendedException
+    {
+        public MissingPowerPanelScaleTargetException(string objectName)
+            : base("power-panel-9", $"Power panel scale target is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class InvalidPowerPanelInteractionDeferViewException : ExtendedException
+    {
+        public InvalidPowerPanelInteractionDeferViewException(string objectName, string reason)
+            : base("power-panel-10", $"Invalid power panel interaction defer view on '{objectName}': {reason}") { }
+    }
+
+    public sealed class InvalidTextScaleChangeDurationException : ExtendedException
+    {
+        public InvalidTextScaleChangeDurationException(string objectName, float durationSeconds)
+            : base("power-panel-11", $"Text scale change duration on '{objectName}' is invalid: {durationSeconds}") { }
+    }
+
+    public sealed class MissingTextScaleTargetException : ExtendedException
+    {
+        public MissingTextScaleTargetException(string objectName)
+            : base("power-panel-12", $"Text scale target is not assigned on '{objectName}'") { }
+    }
 }

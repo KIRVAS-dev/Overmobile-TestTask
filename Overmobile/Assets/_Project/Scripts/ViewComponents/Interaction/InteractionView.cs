@@ -1,4 +1,5 @@
 using Core;
+using Core.Gameplay.Interaction;
 using Core.Gameplay.Power;
 using System;
 using UnityEngine;
@@ -12,7 +13,11 @@ namespace ViewComponents.Interaction
 
         private IDisposable _binding;
 
-        public void Bind(IPowerRegistry powerRegistry, string entityId, IGameplayInputBlock gameplayInputBlock)
+        public void Bind(
+            IPowerRegistry powerRegistry,
+            string entityId,
+            IGameplayInputBlock gameplayInputBlock,
+            IInteractionTargetPresentation interactionTargetPresentation)
         {
             _binding?.Dispose();
 
@@ -25,6 +30,7 @@ namespace ViewComponents.Interaction
                 powerRegistry,
                 entityId,
                 gameplayInputBlock,
+                interactionTargetPresentation,
                 _presentationSequence
             );
         }

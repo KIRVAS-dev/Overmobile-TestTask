@@ -8,11 +8,21 @@ namespace ViewComponents.UI.PowerPanel
     {
         private readonly IDisposable _powerSubscription;
 
-        public PowerPanelBinding(IPowerRegistry powerRegistry, string entityId, IPowerPanelView powerPanelView)
+        public PowerPanelBinding(
+            IPowerRegistry powerRegistry,
+            string entityId,
+            IPowerPanelView powerPanelView,
+            PowerPanelValueChangeView valueChangeView)
         {
+            PowerPanelValueApplier valueApplier = new PowerPanelValueApplier(powerPanelView, valueChangeView);
             IPowerEntity powerEntity = powerRegistry.Get(entityId);
-            powerPanelView.SetPower(powerEntity.Power.CurrentValue);
-            _powerSubscription = powerEntity.Power.Subscribe(powerPanelView.SetPower);
+            valueApplier.Apply(powerEntity.Power.CurrentValue);
+
+            _powerSubscription = powerEntity.Power.Subscribe(power =>
+                {
+                    valueApplier.Apply(power);
+                }
+            );
         }
 
         public void Dispose()
