@@ -6,7 +6,8 @@ namespace Input
 {
     public sealed class PlayerPointerInput
         : MonoBehaviour,
-          IPlayerPointerInput
+          IPlayerPointerInput,
+          IPlayerPointerInputActivation
     {
         [SerializeField] private InputActionAsset _actionsAsset;
 

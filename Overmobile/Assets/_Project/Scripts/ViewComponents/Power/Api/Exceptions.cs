@@ -20,9 +20,21 @@ namespace ViewComponents.Power
             : base("entity-power-3", $"Multiple power panel views found under '{objectName}'") { }
     }
 
+    public sealed class MultiplePowerPanelVisibilityViewException : ExtendedException
+    {
+        public MultiplePowerPanelVisibilityViewException(string objectName)
+            : base("entity-power-5", $"Multiple power panel visibility views found under '{objectName}'") { }
+    }
+
     public sealed class InvalidEntityPowerPanelBinderException : ExtendedException
     {
         public InvalidEntityPowerPanelBinderException(string binderName, string reason)
             : base("entity-power-4", $"Invalid entity power panel binder '{binderName}': {reason}") { }
+    }
+
+    public sealed class InvalidEntityGuardPowerPanelBinderException : ExtendedException
+    {
+        public InvalidEntityGuardPowerPanelBinderException(string binderName, string reason)
+            : base("entity-power-6", $"Invalid entity guard power panel binder '{binderName}': {reason}") { }
     }
 }

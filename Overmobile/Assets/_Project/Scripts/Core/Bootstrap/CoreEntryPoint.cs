@@ -15,10 +15,9 @@ namespace Core.Bootstrap
         private readonly IPlayerSpawnView _playerSpawnView;
         private readonly IDropBinder _dropBinder;
         private readonly IInteractionViewBinder _interactionViewBinder;
-        private readonly IEntityPowerPanelBinder _entityPowerPanelBinder;
+        private readonly IEntityPowerViewsBinder _entityPowerViewsBinder;
         private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly GameplayInputHandler _gameplayInputHandler;
-        private readonly EntityPowerProvider _entityPowerProvider;
         private readonly CoreCancellationSource _coreCancellation;
 
         public CoreEntryPoint(
@@ -26,20 +25,18 @@ namespace Core.Bootstrap
             IPlayerSpawnView playerSpawnView,
             IDropBinder dropBinder,
             IInteractionViewBinder interactionViewBinder,
-            IEntityPowerPanelBinder entityPowerPanelBinder,
+            IEntityPowerViewsBinder entityPowerViewsBinder,
             IGameplayInputBlock gameplayInputBlock,
             GameplayInputHandler gameplayInputHandler,
-            EntityPowerProvider entityPowerProvider,
             CoreCancellationSource coreCancellation)
         {
             _cameraTransitionView = cameraTransitionView;
             _playerSpawnView = playerSpawnView;
             _dropBinder = dropBinder;
             _interactionViewBinder = interactionViewBinder;
-            _entityPowerPanelBinder = entityPowerPanelBinder;
+            _entityPowerViewsBinder = entityPowerViewsBinder;
             _gameplayInputBlock = gameplayInputBlock;
             _gameplayInputHandler = gameplayInputHandler;
-            _entityPowerProvider = entityPowerProvider;
             _coreCancellation = coreCancellation;
         }
 
@@ -48,11 +45,7 @@ namespace Core.Bootstrap
             _playerSpawnView.Spawn(0);
             _dropBinder.BindLootDrops();
             _interactionViewBinder.BindInteractionViews();
-
-            foreach (EntityPowerView entityPowerView in _entityPowerProvider.GetInteractableEntityPowerViews())
-            {
-                _entityPowerPanelBinder.BindPowerPanel(entityPowerView);
-            }
+            _entityPowerViewsBinder.BindEntityPowerViews();
 
             StartIntroAsync().Forget();
         }

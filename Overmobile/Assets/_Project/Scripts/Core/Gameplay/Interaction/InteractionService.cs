@@ -15,45 +15,36 @@ namespace Core.Gameplay.Interaction
         private readonly IInventory _inventory;
         private readonly IMovementService _movementService;
         private readonly IInteractableTargetProvider _interactableTargetProvider;
-        private readonly PowerRegistry _powerRegistry;
+        private readonly IEntityGuardAccessRegistry _guardAccessRegistry;
+        private readonly IPowerRegistry _powerRegistry;
+        private readonly IPowerService _powerService;
 
         public InteractionService(
             IInventory inventory,
             IMovementService movementService,
             IInteractableTargetProvider interactableTargetProvider,
-            PowerRegistry powerRegistry)
+            IPowerRegistry powerRegistry,
+            IPowerService powerService,
+            IEntityGuardAccessRegistry guardAccessRegistry)
         {
             _inventory = inventory;
             _movementService = movementService;
             _interactableTargetProvider = interactableTargetProvider;
             _powerRegistry = powerRegistry;
+            _powerService = powerService;
+            _guardAccessRegistry = guardAccessRegistry;
 
             ValidateEntityGuards();
         }
 
         public bool CanInteract(string entityId)
         {
-            if (_powerRegistry.IsResolved(entityId))
+            if (_powerRegistry.Get(entityId).IsResolved.CurrentValue)
             {
                 return false;
             }
 
-            InteractableTargetData targetData = _interactableTargetProvider.GetTargetByEntityId(entityId);
-
-            if (targetData.GuardEntityIds.Count == 0)
-            {
-                return true;
-            }
-
-            foreach (string guardEntityId in targetData.GuardEntityIds)
-            {
-                if (!_powerRegistry.IsResolved(guardEntityId))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !_guardAccessRegistry.GetAreGuardsBlocking(entityId).CurrentValue;
         }
 
         public async UniTask InteractAsync(string endpointKey, string entityId, Vector3 facingWorldPosition,
@@ -82,7 +73,7 @@ namespace Core.Gameplay.Interaction
 
         private void ResolveInteraction(string entityId)
         {
-            if (_powerRegistry.IsResolved(entityId))
+            if (_powerRegistry.Get(entityId).IsResolved.CurrentValue)
             {
                 return;
             }
@@ -115,7 +106,7 @@ namespace Core.Gameplay.Interaction
                 return;
             }
 
-            if (!_powerRegistry.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: true))
+            if (!_powerService.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: true))
             {
                 return;
             }
@@ -125,7 +116,7 @@ namespace Core.Gameplay.Interaction
 
         private void ResolveAllyInteraction(string entityId, InteractableTargetData targetData)
         {
-            if (!_powerRegistry.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: false))
+            if (!_powerService.TryTransferPowerToPlayer(entityId, requirePlayerPowerGreater: false))
             {
                 return;
             }

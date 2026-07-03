@@ -4,12 +4,12 @@ namespace Core.Input
 {
     public sealed class GameplayInputBlock : IGameplayInputBlock
     {
-        private readonly PlayerPointerInput _playerPointerInput;
+        private readonly IPlayerPointerInputActivation _playerPointerInputActivation;
         private int _blockCount;
 
-        public GameplayInputBlock(PlayerPointerInput playerPointerInput)
+        public GameplayInputBlock(IPlayerPointerInputActivation playerPointerInputActivation)
         {
-            _playerPointerInput = playerPointerInput;
+            _playerPointerInputActivation = playerPointerInputActivation;
         }
 
         public bool IsBlocked => _blockCount > 0;
@@ -20,7 +20,7 @@ namespace Core.Input
 
             if (_blockCount == 1)
             {
-                _playerPointerInput.Disable();
+                _playerPointerInputActivation.Disable();
             }
         }
 
@@ -35,7 +35,7 @@ namespace Core.Input
 
             if (_blockCount == 0)
             {
-                _playerPointerInput.Enable();
+                _playerPointerInputActivation.Enable();
             }
         }
     }

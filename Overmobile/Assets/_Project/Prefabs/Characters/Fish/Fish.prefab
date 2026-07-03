@@ -211,13 +211,6 @@ MonoBehaviour:
         - rid: 7800052090912375101
         - rid: 7800052099006333072
         - rid: 7800052099006333074
-    - rid: 7800052099006333074
-      type: {class: SequenceStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
-      data:
-        _steps:
-        - rid: 7800052095566479545
-        - rid: 7800052099006333075
-        - rid: 7800052099006333070
     - rid: 7800052095566479545
       type: {class: ParallelStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data:
@@ -255,16 +248,6 @@ MonoBehaviour:
         _mode: 1
         _targets:
         - {fileID: 5330427003887673451}
-    - rid: 7800052099006333075
-      type: {class: MoveToStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
-      data:
-        _movingTransform: {fileID: 4552245034180755398}
-        _destination: 1
-        _anchorKey: Anchor
-        _targetTransform: {fileID: 0}
-        _transitionSpeed: 4
-        _isInstant: 1
-        _ease: 8
     - rid: 7800052099006333070
       type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data:
@@ -280,6 +263,23 @@ MonoBehaviour:
         _targetTransform: {fileID: 0}
         _transitionSpeed: 2
         _isInstant: 0
+        _ease: 8
+    - rid: 7800052099006333074
+      type: {class: SequenceStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _steps:
+        - rid: 7800052095566479545
+        - rid: 7800052099006333075
+        - rid: 7800052099006333070
+    - rid: 7800052099006333075
+      type: {class: MoveToStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _movingTransform: {fileID: 4552245034180755398}
+        _destination: 1
+        _anchorKey: Anchor
+        _targetTransform: {fileID: 0}
+        _transitionSpeed: 4
+        _isInstant: 1
         _ease: 8
 --- !u!1 &920005209002001001
 GameObject:
@@ -864,13 +864,52 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3877883379883453151, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1981341220848263194}
   m_SourcePrefab: {fileID: 100100000, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
 --- !u!224 &2113845322030749339 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 46462070542145130, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
   m_PrefabInstance: {fileID: 2157490437071438065}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2891856853156375086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3877883379883453151, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 2157490437071438065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1981341220848263194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891856853156375086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a6b7c8d9e05123a4b5c6d7e8f90155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelVisibilityView
+  _powerPanelView: {fileID: 6945448183636639949}
+  _canvasGroup: {fileID: 5509170001529292841}
+  _config: {fileID: 11400000, guid: 3460f5119b56b5a41917ac80be770a79, type: 2}
+--- !u!225 &5509170001529292841 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5873946199175088344, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 2157490437071438065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6945448183636639949 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9048789708736905276, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}
+  m_PrefabInstance: {fileID: 2157490437071438065}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f337f54e948eb14fa9bd1a51eb7ce0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.UI.PowerPanel.PowerPanelView
 --- !u!224 &8716631744407131343 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7279858226818307134, guid: cf9932a96452c2c49a2f31f8359a78f9, type: 3}

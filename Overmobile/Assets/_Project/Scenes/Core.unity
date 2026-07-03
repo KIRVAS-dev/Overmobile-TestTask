@@ -29718,6 +29718,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneDebug
       objectReference: {fileID: 0}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: _interactableTargets.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: _triggerAllInteractablesOnScene
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: '_interactableTargets.Array.data[0]'
+      value: 
+      objectReference: {fileID: 408679629}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: '_interactableTargets.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3680845}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: '_interactableTargets.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2065423186}
+    - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
+      propertyPath: '_interactableTargets.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1784764399}
     - target: {fileID: 5789854649249978516, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

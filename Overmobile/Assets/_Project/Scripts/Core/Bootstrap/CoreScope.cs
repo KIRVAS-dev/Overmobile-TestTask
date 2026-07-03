@@ -58,7 +58,7 @@ namespace Core.Bootstrap
 
         private void RegisterInput(IContainerBuilder builder)
         {
-            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>();
+            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>().As<IPlayerPointerInputActivation>();
             builder.RegisterComponentInHierarchy<TapIndicator>();
             builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
             builder.Register<GameplayInputHandler>(Lifetime.Singleton);
@@ -71,6 +71,7 @@ namespace Core.Bootstrap
                .As<IInteractableTargetProvider>()
                .As<IGameplayInputTargetProvider>();
 
+            builder.Register<EntityGuardAccessRegistry>(Lifetime.Singleton).As<IEntityGuardAccessRegistry>();
             builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
             builder.Register<DropBinder>(Lifetime.Singleton).As<IDropBinder>();
             builder.Register<InteractionViewBinder>(Lifetime.Singleton).As<IInteractionViewBinder>();
@@ -95,11 +96,7 @@ namespace Core.Bootstrap
 
         private void RegisterPlayer(IContainerBuilder builder)
         {
-            builder
-               .RegisterComponentInHierarchy<PlayerView>()
-               .As<IPlayerUpgradeView>()
-               .As<IPlayerSpawnView>();
-
+            builder.RegisterComponentInHierarchy<PlayerView>().As<IPlayerUpgradeView>().As<IPlayerSpawnView>();
             builder.Register<PlayerUpgradeService>(Lifetime.Singleton).As<IPlayerUpgradeService>();
 
             builder
@@ -122,7 +119,10 @@ namespace Core.Bootstrap
         {
             builder.RegisterInstance(_entityPowerProvider).As<IEntityPowerProvider>().AsSelf();
             builder.Register<PowerRegistry>(Lifetime.Singleton).As<IPowerRegistry>().AsSelf();
+            builder.Register<PowerService>(Lifetime.Singleton).As<IPowerService>();
             builder.Register<EntityPowerPanelBinder>(Lifetime.Singleton).As<IEntityPowerPanelBinder>();
+            builder.Register<EntityGuardPowerPanelBinder>(Lifetime.Singleton).As<IEntityGuardPowerPanelBinder>();
+            builder.Register<EntityPowerViewsBinder>(Lifetime.Singleton).As<IEntityPowerViewsBinder>();
         }
 
         private void RegisterScopeCancellation(IContainerBuilder builder)

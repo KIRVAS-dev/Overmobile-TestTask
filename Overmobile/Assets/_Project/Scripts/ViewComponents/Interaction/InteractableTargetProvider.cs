@@ -81,7 +81,7 @@ namespace ViewComponents.Interaction
             return inputTargets;
         }
 
-        private InteractableTargetData BuildInteractableTargetData(InteractableTarget interactableTarget)
+        public InteractableTargetData BuildInteractableTargetData(InteractableTarget interactableTarget)
         {
             InteractionRequiredItem requiredItemComponent = interactableTarget.GetComponent<InteractionRequiredItem>();
 
