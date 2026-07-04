@@ -125,6 +125,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8420344262202051623}
+  - {fileID: 1010667604786901517}
   m_Father: {fileID: 2069127016291750437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2793627057752628137
@@ -146,6 +147,8 @@ GameObject:
   - component: {fileID: 4534444802895005932}
   - component: {fileID: 7683857103816488322}
   - component: {fileID: 8812345678901234505}
+  - component: {fileID: 5426658231301354500}
+  - component: {fileID: 3986361231543811867}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -384,6 +387,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c4d5e6f7a84990b1c2d3e4f5061720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Power.EntityPowerView
+--- !u!114 &5426658231301354500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793627057752628137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cde64e039620a74d8bd5a3e96fe7dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.TargetSelectionView
+  _targetSelectionHighlighter: {fileID: 3986361231543811867}
+  _visualRoot: {fileID: 5382193008617060581}
+  _floatingUiRoot: {fileID: 7475418050952144859}
+  _pointerDownSfx: {fileID: 8045876726095917223}
+  _config: {fileID: 11400000, guid: 104a300784abf544796f918d7282a56a, type: 2}
+--- !u!114 &3986361231543811867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793627057752628137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5db1f92ac443874b9878b5367b87fcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.MeshTargetSelectionHighlighter
+  _renderers:
+  - {fileID: 1889908316289332439}
 --- !u!1 &4716099593165831685
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,6 +482,69 @@ Transform:
   - {fileID: 3707970013113300069}
   m_Father: {fileID: 3056271767251064427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8045876726095917223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010667604786901517}
+  - component: {fileID: 6575788534477321618}
+  m_Layer: 0
+  m_Name: Interaction_SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1010667604786901517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8045876726095917223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4894431104131677314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6575788534477321618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8045876726095917223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -55556454
+      Data2: 1171862019
+      Data3: 1424023735
+      Data4: -26255127
+    Path: event:/UI/OnPointerDown
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8079834135041331125
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,6 +996,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b6e06368cb5ff4499064c78262c9ac4, type: 3}
+--- !u!137 &1889908316289332439 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3693354720804939025, guid: 1b6e06368cb5ff4499064c78262c9ac4, type: 3}
+  m_PrefabInstance: {fileID: 2989021352292012486}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3382654567267251757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b6e06368cb5ff4499064c78262c9ac4, type: 3}

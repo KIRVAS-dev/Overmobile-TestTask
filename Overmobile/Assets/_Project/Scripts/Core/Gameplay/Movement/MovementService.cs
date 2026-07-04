@@ -8,27 +8,24 @@ namespace Core.Gameplay.Movement
 {
     public sealed class MovementService : IMovementService
     {
-        private readonly MovementModel _movementModel;
-        private readonly MovementConfig _movementConfig;
         private readonly IMovementRouteRegistry _routeRegistry;
         private readonly IActiveCharacterViewProvider _activeCharacterViewProvider;
+        private readonly MovementModel _movementModel;
+        private readonly MovementConfig _movementConfig;
         private readonly MovementRouteDisplayService _routeDisplayService;
-        private readonly IGameplayInputBlock _gameplayInputBlock;
 
         public MovementService(
-            MovementModel movementModel,
-            MovementConfig movementConfig,
             IMovementRouteRegistry routeRegistry,
             IActiveCharacterViewProvider activeCharacterViewProvider,
-            MovementRouteDisplayService routeDisplayService,
-            IGameplayInputBlock gameplayInputBlock)
+            MovementModel movementModel,
+            MovementConfig movementConfig,
+            MovementRouteDisplayService routeDisplayService)
         {
-            _movementModel = movementModel;
-            _movementConfig = movementConfig;
             _routeRegistry = routeRegistry;
             _activeCharacterViewProvider = activeCharacterViewProvider;
+            _movementModel = movementModel;
+            _movementConfig = movementConfig;
             _routeDisplayService = routeDisplayService;
-            _gameplayInputBlock = gameplayInputBlock;
 
             _movementModel.SetCurrentEndpointKey(_routeRegistry.SpawnLocationKey);
         }
@@ -45,16 +42,7 @@ namespace Core.Gameplay.Movement
                 throw new MovementInProgressException();
             }
 
-            _gameplayInputBlock.Block();
-
-            try
-            {
-                await MoveToInternalAsync(toEndpointKey, destinationFacingWorldPosition, cancellationToken);
-            }
-            finally
-            {
-                _gameplayInputBlock.Unblock();
-            }
+            await MoveToInternalAsync(toEndpointKey, destinationFacingWorldPosition, cancellationToken);
         }
 
         private async UniTask MoveToInternalAsync(

@@ -17,7 +17,8 @@ namespace ViewComponents.UI.PowerPanel
             IInteractionPhaseSource interactionPhaseSource,
             IPowerRegistry powerRegistry,
             string entityId,
-            PowerPanelValueChangeView valueChangeView)
+            PowerPanelValueChangeView valueChangeView,
+            IPlayerPowerDisplayState playerPowerDisplayState)
         {
             _binding?.Dispose();
             Validate();
@@ -27,7 +28,8 @@ namespace ViewComponents.UI.PowerPanel
                 entityId,
                 _powerPanelView,
                 interactionPhaseSource,
-                valueChangeView
+                valueChangeView,
+                playerPowerDisplayState
             );
         }
 

@@ -17,8 +17,10 @@ using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
 using ViewComponents.Power;
+using ViewComponents.UI.PowerPanel;
 using ViewComponents.Presentation;
 using ViewComponents.Presentation.Player;
+using ViewComponents.TargetSelection;
 
 namespace Core.Bootstrap
 {
@@ -49,6 +51,7 @@ namespace Core.Bootstrap
             RegisterPlayer(builder);
             RegisterPower(builder);
             RegisterScopeCancellation(builder);
+            RegisterTargetSelection(builder);
         }
 
         private void RegisterCamera(IContainerBuilder builder)
@@ -127,6 +130,7 @@ namespace Core.Bootstrap
             builder.RegisterInstance(_entityPowerProvider).As<IEntityPowerProvider>().AsSelf();
             builder.Register<PowerRegistry>(Lifetime.Singleton).As<IPowerRegistry>().AsSelf();
             builder.Register<PowerService>(Lifetime.Singleton).As<IPowerService>();
+            builder.Register<PlayerPowerDisplayState>(Lifetime.Singleton).As<IPlayerPowerDisplayState>();
             builder.Register<EntityPowerPanelBinder>(Lifetime.Singleton).As<IEntityPowerPanelBinder>();
             builder.Register<EntityGuardPowerPanelBinder>(Lifetime.Singleton).As<IEntityGuardPowerPanelBinder>();
             builder.Register<EntityPowerViewsBinder>(Lifetime.Singleton).As<IEntityPowerViewsBinder>();
@@ -135,6 +139,11 @@ namespace Core.Bootstrap
         private void RegisterScopeCancellation(IContainerBuilder builder)
         {
             builder.Register<CoreCancellationSource>(Lifetime.Singleton).As<ICoreScopeCancellation>().AsSelf();
+        }
+
+        private void RegisterTargetSelection(IContainerBuilder builder)
+        {
+            builder.Register<TargetSelectionBinder>(Lifetime.Singleton).As<ITargetSelectionBinder>();
         }
     }
 }

@@ -68,4 +68,6 @@ TagManager:
   - Light Layer 5
   - Light Layer 6
   - Light Layer 7
+  - TargetSelectionMesh
+  - TargetSelectionSprite
   m_MigratedRenderPipelines: []

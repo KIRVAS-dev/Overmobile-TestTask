@@ -27,7 +27,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: 9127357792919966265}
-  m_RendererFeatureMap: ad6b866f10d7b46c
+  - {fileID: 4018279980693511035}
+  m_RendererFeatureMap: ad6b866f10d7b46c7bdb4c495accc337
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
@@ -97,3 +98,21 @@ MonoBehaviour:
   m_Active: 1
   _shader: {fileID: 4800000, guid: 67d1cc30ad266f14bafaf5d439fa7b4e, type: 3}
   _renderPassEvent: 550
+--- !u!114 &4018279980693511035
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e5b1d346ff83f4c9415057257a81dc, type: 3}
+  m_Name: TargetSelectionRendererFeature
+  m_EditorClassIdentifier: Rendering::Rendering.TargetSelection.TargetSelectionRendererFeature
+  m_Active: 1
+  _meshMaskShader: {fileID: 4800000, guid: 1f54309de0a38c74486d00dc01806f5a, type: 3}
+  _spriteMaskShader: {fileID: 4800000, guid: 0d6f10cc315a0b94b9f16b424a0fa026, type: 3}
+  _compositeShader: {fileID: 4800000, guid: ce254537c525ff64d8b1dd32c3ebc002, type: 3}
+  _outlineThicknessPixels: 2
+  _renderPassEvent: 500

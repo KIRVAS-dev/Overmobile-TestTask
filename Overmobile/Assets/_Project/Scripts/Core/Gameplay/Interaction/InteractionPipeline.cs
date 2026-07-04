@@ -10,13 +10,14 @@ namespace Core.Gameplay.Interaction
         private readonly ReactiveProperty<InteractionPhase> _currentPhase =
             new ReactiveProperty<InteractionPhase>(InteractionPhase.Idle);
 
+        private readonly ReactiveProperty<string> _currentTargetEntityId = new ReactiveProperty<string>(string.Empty);
         private readonly HashSet<string> _targetPresentationEntityIds = new HashSet<string>();
 
         private UniTaskCompletionSource _targetPresentationCompletionSource;
         private bool _isTargetPresentationComplete;
-        private string _currentTargetEntityId = string.Empty;
 
         public ReadOnlyReactiveProperty<InteractionPhase> CurrentPhase => _currentPhase;
+        public ReadOnlyReactiveProperty<string> CurrentTargetEntityId => _currentTargetEntityId;
 
         public void RegisterTargetPresentation(string entityId)
         {
@@ -30,7 +31,7 @@ namespace Core.Gameplay.Interaction
 
         public void BeginInteraction(string entityId)
         {
-            _currentTargetEntityId = entityId;
+            _currentTargetEntityId.Value = entityId;
             _isTargetPresentationComplete = false;
             _targetPresentationCompletionSource = null;
             _currentPhase.Value = InteractionPhase.Approach;
@@ -65,9 +66,9 @@ namespace Core.Gameplay.Interaction
                 return;
             }
 
-            if (_currentTargetEntityId != entityId)
+            if (_currentTargetEntityId.Value != entityId)
             {
-                throw new InteractionPipelineTargetPresentationEntityMismatchException(entityId, _currentTargetEntityId);
+                throw new InteractionPipelineTargetPresentationEntityMismatchException(entityId, _currentTargetEntityId.Value);
             }
 
             _isTargetPresentationComplete = true;
@@ -77,7 +78,7 @@ namespace Core.Gameplay.Interaction
         public void EndInteraction()
         {
             _currentPhase.Value = InteractionPhase.Idle;
-            _currentTargetEntityId = string.Empty;
+            _currentTargetEntityId.Value = string.Empty;
             _isTargetPresentationComplete = false;
             _targetPresentationCompletionSource = null;
         }

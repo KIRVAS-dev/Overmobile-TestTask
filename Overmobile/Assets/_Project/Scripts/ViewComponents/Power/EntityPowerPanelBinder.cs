@@ -8,15 +8,18 @@ namespace ViewComponents.Power
     {
         private readonly IPowerRegistry _powerRegistry;
         private readonly IInteractionPhaseSource _interactionPhaseSource;
+        private readonly IPlayerPowerDisplayState _playerPowerDisplayState;
         private readonly EntityPowerProvider _entityPowerProvider;
 
         public EntityPowerPanelBinder(
             IPowerRegistry powerRegistry,
             IInteractionPhaseSource interactionPhaseSource,
+            IPlayerPowerDisplayState playerPowerDisplayState,
             EntityPowerProvider entityPowerProvider)
         {
             _powerRegistry = powerRegistry;
             _interactionPhaseSource = interactionPhaseSource;
+            _playerPowerDisplayState = playerPowerDisplayState;
             _entityPowerProvider = entityPowerProvider;
         }
 
@@ -41,7 +44,14 @@ namespace ViewComponents.Power
 
             if (interactionDeferView != null)
             {
-                interactionDeferView.Bind(_interactionPhaseSource, _powerRegistry, entityId, valueChangeView);
+                interactionDeferView.Bind(
+                    _interactionPhaseSource,
+                    _powerRegistry,
+                    entityId,
+                    valueChangeView,
+                    _playerPowerDisplayState
+                );
+
                 return;
             }
 

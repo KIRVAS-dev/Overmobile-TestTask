@@ -22,6 +22,7 @@ namespace Core.Gameplay.Interaction
         private readonly IPowerRegistry _powerRegistry;
         private readonly IPowerService _powerService;
         private readonly IInteractionPipeline _interactionPipeline;
+        private readonly IGameplayInputBlock _gameplayInputBlock;
 
         public InteractionService(
             IActiveCharacterViewProvider activeCharacterViewProvider,
@@ -31,7 +32,8 @@ namespace Core.Gameplay.Interaction
             IPowerRegistry powerRegistry,
             IPowerService powerService,
             IEntityGuardAccessRegistry guardAccessRegistry,
-            IInteractionPipeline interactionPipeline)
+            IInteractionPipeline interactionPipeline,
+            IGameplayInputBlock gameplayInputBlock)
         {
             _activeCharacterViewProvider = activeCharacterViewProvider;
             _inventory = inventory;
@@ -41,6 +43,7 @@ namespace Core.Gameplay.Interaction
             _powerService = powerService;
             _guardAccessRegistry = guardAccessRegistry;
             _interactionPipeline = interactionPipeline;
+            _gameplayInputBlock = gameplayInputBlock;
 
             ValidateEntityGuards();
         }
@@ -72,6 +75,7 @@ namespace Core.Gameplay.Interaction
             }
 
             _interactionPipeline.BeginInteraction(entityId);
+            _gameplayInputBlock.Block();
 
             try
             {
@@ -106,6 +110,7 @@ namespace Core.Gameplay.Interaction
             finally
             {
                 _interactionPipeline.EndInteraction();
+                _gameplayInputBlock.Unblock();
             }
         }
 

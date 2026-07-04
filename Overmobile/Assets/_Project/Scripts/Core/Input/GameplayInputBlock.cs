@@ -1,10 +1,13 @@
 using Input;
+using R3;
 
 namespace Core.Input
 {
     public sealed class GameplayInputBlock : IGameplayInputBlock
     {
         private readonly IPlayerPointerInputActivation _playerPointerInputActivation;
+        private readonly ReactiveProperty<bool> _isBlocked = new ReactiveProperty<bool>(false);
+
         private int _blockCount;
 
         public GameplayInputBlock(IPlayerPointerInputActivation playerPointerInputActivation)
@@ -12,16 +15,19 @@ namespace Core.Input
             _playerPointerInputActivation = playerPointerInputActivation;
         }
 
-        public bool IsBlocked => _blockCount > 0;
+        public ReadOnlyReactiveProperty<bool> IsBlocked => _isBlocked;
 
         public void Block()
         {
             _blockCount++;
 
-            if (_blockCount == 1)
+            if (_blockCount != 1)
             {
-                _playerPointerInputActivation.Disable();
+                return;
             }
+
+            _playerPointerInputActivation.Disable();
+            _isBlocked.Value = true;
         }
 
         public void Unblock()
@@ -33,10 +39,13 @@ namespace Core.Input
 
             _blockCount--;
 
-            if (_blockCount == 0)
+            if (_blockCount != 0)
             {
-                _playerPointerInputActivation.Enable();
+                return;
             }
+
+            _playerPointerInputActivation.Enable();
+            _isBlocked.Value = false;
         }
     }
 }

@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 8812345678901234533}
   - component: {fileID: 1036759838873427460}
   - component: {fileID: 8336094805626826281}
+  - component: {fileID: 8812345678901234600}
+  - component: {fileID: 8812345678901234601}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -44,6 +46,7 @@ Transform:
   - {fileID: 734109594709593700}
   - {fileID: 8684179548831828198}
   - {fileID: 920005209002001002}
+  - {fileID: 2100806364839184945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6728915907266656238
@@ -281,6 +284,37 @@ MonoBehaviour:
         _transitionSpeed: 4
         _isInstant: 1
         _ease: 8
+--- !u!114 &8812345678901234600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295969006768853803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cde64e039620a74d8bd5a3e96fe7dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.TargetSelectionView
+  _targetSelectionHighlighter: {fileID: 8812345678901234601}
+  _visualRoot: {fileID: 734109594709593700}
+  _floatingUiRoot: {fileID: 8716631744407131343}
+  _pointerDownSfx: {fileID: 8634488874746940878}
+  _config: {fileID: 11400000, guid: 0b582f72538b3f24c9a9b1a84e6d3619, type: 2}
+--- !u!114 &8812345678901234601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295969006768853803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77edd6b69fd05854886ed89edc49df3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.SpriteTargetSelectionHighlighter
+  _spriteRenderers:
+  - {fileID: 9091005241174108647}
 --- !u!1 &920005209002001001
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,6 +492,38 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5955852593540363442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100806364839184945}
+  m_Layer: 0
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100806364839184945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955852593540363442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8493404650647314703}
+  m_Father: {fileID: 492393508388250871}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6389247599105695070
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,6 +735,69 @@ Transform:
   - {fileID: 2213134092842286876}
   m_Father: {fileID: 8684179548831828198}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8634488874746940878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8493404650647314703}
+  - component: {fileID: 8515748134987158585}
+  m_Layer: 0
+  m_Name: Interaction_SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8493404650647314703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634488874746940878}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2100806364839184945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8515748134987158585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634488874746940878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -55556454
+      Data2: 1171862019
+      Data3: 1424023735
+      Data4: -26255127
+    Path: event:/UI/OnPointerDown
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8676618773829119839
 GameObject:
   m_ObjectHideFlags: 0

@@ -90,7 +90,7 @@ namespace Core.Input.Gameplay
 
             bind.OnTriggered += () =>
             {
-                if (_gameplayInputBlock.IsBlocked)
+                if (_gameplayInputBlock.IsBlocked.CurrentValue)
                 {
                     return;
                 }
@@ -104,7 +104,7 @@ namespace Core.Input.Gameplay
 
         private void OnGlobalPointerPressed()
         {
-            if (_gameplayInputBlock.IsBlocked)
+            if (_gameplayInputBlock.IsBlocked.CurrentValue)
             {
                 return;
             }
@@ -162,7 +162,7 @@ namespace Core.Input.Gameplay
         {
             _isPointerPressed = false;
 
-            if (_gameplayInputBlock.IsBlocked)
+            if (_gameplayInputBlock.IsBlocked.CurrentValue)
             {
                 ClearPendingPreview();
                 _pointerDownTarget = null;

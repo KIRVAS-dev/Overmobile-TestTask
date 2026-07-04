@@ -155,6 +155,69 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1096272389843417843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2879484938808101068}
+  - component: {fileID: 818963371150475682}
+  m_Layer: 0
+  m_Name: Interaction_SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2879484938808101068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096272389843417843}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 847024273232108790}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818963371150475682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096272389843417843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -55556454
+      Data2: 1171862019
+      Data3: 1424023735
+      Data4: -26255127
+    Path: event:/UI/OnPointerDown
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2389352759394830752
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +524,8 @@ GameObject:
   - component: {fileID: 8812345678901234523}
   - component: {fileID: 8979223653153659907}
   - component: {fileID: 8625196779946585813}
+  - component: {fileID: 8812345678901234610}
+  - component: {fileID: 8812345678901234611}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -788,6 +853,37 @@ MonoBehaviour:
     - rid: 7800052095566479530
       type: {class: PowerUpStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data: 
+--- !u!114 &8812345678901234610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394460846507662745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cde64e039620a74d8bd5a3e96fe7dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.TargetSelectionView
+  _targetSelectionHighlighter: {fileID: 8812345678901234611}
+  _visualRoot: {fileID: 4981568143793419183}
+  _floatingUiRoot: {fileID: 3660773065989574141}
+  _pointerDownSfx: {fileID: 1096272389843417843}
+  _config: {fileID: 11400000, guid: c83fa38744d7cd54b855bdb3433ce163, type: 2}
+--- !u!114 &8812345678901234611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394460846507662745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5db1f92ac443874b9878b5367b87fcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.MeshTargetSelectionHighlighter
+  _renderers:
+  - {fileID: 140787949213088669}
 --- !u!1 &8336670702915726418
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +945,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2879484938808101068}
   - {fileID: 1888268909922685069}
   m_Father: {fileID: 727680530478582852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

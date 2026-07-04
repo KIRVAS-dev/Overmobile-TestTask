@@ -54,5 +54,21 @@ namespace ExtendedExceptions
                 throw exceptionFactory();
             }
         }
+
+        public static void AgainstLessThan(float value, float minimum, Func<ExtendedException> exceptionFactory)
+        {
+            if (value < minimum)
+            {
+                throw exceptionFactory();
+            }
+        }
+
+        public static void AgainstLessThan(int value, int minimum, Func<ExtendedException> exceptionFactory)
+        {
+            if (value < minimum)
+            {
+                throw exceptionFactory();
+            }
+        }
     }
 }

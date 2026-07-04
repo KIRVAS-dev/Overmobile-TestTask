@@ -55,19 +55,23 @@ PrefabInstance:
     - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _animator
       value: 
-      objectReference: {fileID: 5182746391058726414}
+      objectReference: {fileID: 2944830338246592455}
     - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _rawTriggersMap.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
-      propertyPath: _rawTriggersMap.Array.data[1].AnimationSlot
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _rawTriggersMap.Array.data[1].TriggerName
       value: TakeDamageTrigger
       objectReference: {fileID: 0}
+    - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _rawTriggersMap.Array.data[1].AnimationSlot
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986361231543811867, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _renderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 8812345678901234701}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2718567533922839703, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
@@ -134,10 +138,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model
       objectReference: {fileID: 0}
-    - target: {fileID: 7333899812707994925, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b07196be941119d4fbd78f5e0c39a5e8, type: 2}
     - target: {fileID: 5866666021909216657, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
       propertyPath: m_Controller
       value: 
@@ -146,18 +146,27 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7333899812707994925, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b07196be941119d4fbd78f5e0c39a5e8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
+--- !u!95 &2944830338246592455 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
+  m_PrefabInstance: {fileID: 8769834755580230230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9096725080448605629 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
   m_PrefabInstance: {fileID: 8769834755580230230}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &5182746391058726414 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
+--- !u!137 &8812345678901234701 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7333899812707994925, guid: b50c553accfc09d40ae0cefb9d30cfe9, type: 3}
   m_PrefabInstance: {fileID: 8769834755580230230}
   m_PrefabAsset: {fileID: 0}

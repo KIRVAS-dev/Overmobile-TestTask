@@ -50,19 +50,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2793627057752628137, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: m_Name
-      value: Goblin
+      value: Goblin_Unarmed
       objectReference: {fileID: 0}
     - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _rawTriggersMap.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
-      propertyPath: _rawTriggersMap.Array.data[1].AnimationSlot
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
       propertyPath: _rawTriggersMap.Array.data[1].TriggerName
       value: TakeDamageTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355730437235926077, guid: 9926c8e869974f0479075bf60e3e9d20, type: 3}
+      propertyPath: _rawTriggersMap.Array.data[1].AnimationSlot
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

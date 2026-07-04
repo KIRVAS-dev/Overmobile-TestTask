@@ -1,0 +1,99 @@
+Shader "Hidden/Rendering/TargetSelectionSpriteMask"
+{
+    Properties
+    {
+        _MainTex ("Sprite Texture", 2D) = "white" {}
+        _TargetSelectionFillColor ("Fill Color", Color) = (0, 0, 0, 0)
+        _TargetSelectionOutlineColor ("Outline Color", Color) = (0, 0, 0, 0)
+        _TargetSelectionProgress ("Progress", Float) = 0
+    }
+
+    HLSLINCLUDE
+    #pragma target 3.5
+
+    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+    TEXTURE2D(_MainTex);
+    SAMPLER(sampler_MainTex);
+
+    CBUFFER_START(UnityPerMaterial)
+        float4 _MainTex_ST;
+        half4 _TargetSelectionFillColor;
+        half4 _TargetSelectionOutlineColor;
+        half _TargetSelectionProgress;
+    CBUFFER_END
+
+    struct Attributes {
+        float4 positionOS : POSITION;
+        float2 uv : TEXCOORD0;
+        half4 color : COLOR;
+        UNITY_VERTEX_INPUT_INSTANCE_ID
+    };
+
+    struct Varyings {
+        float4 positionCS : SV_POSITION;
+        float2 uv : TEXCOORD0;
+        half4 color : COLOR;
+        float linearEyeDepth : TEXCOORD1;
+        UNITY_VERTEX_OUTPUT_STEREO
+    };
+
+    Varyings Vert(Attributes input)
+    {
+        Varyings output;
+        UNITY_SETUP_INSTANCE_ID(input);
+        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+        float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+        output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+        output.uv = TRANSFORM_TEX(input.uv, _MainTex);
+        output.color = input.color;
+        output.linearEyeDepth = LinearEyeDepth(positionWS, GetWorldToViewMatrix());
+        return output;
+    }
+
+    struct MaskPassOutput {
+        half4 fill : SV_Target0;
+        half4 outline : SV_Target1;
+        float targetDepth : SV_Target2;
+    };
+
+    MaskPassOutput Frag(Varyings input)
+    {
+        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+        half alpha = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv).a * input.color.a;
+        clip(alpha - 0.5);
+        MaskPassOutput output;
+        output.fill = half4(_TargetSelectionFillColor.rgb, _TargetSelectionFillColor.a * _TargetSelectionProgress);
+        output.outline = half4(_TargetSelectionOutlineColor.rgb, _TargetSelectionOutlineColor.a * _TargetSelectionProgress);
+        output.targetDepth = input.linearEyeDepth;
+        return output;
+    }
+    ENDHLSL
+
+    SubShader
+    {
+        Tags
+        {
+            "RenderPipeline" = "UniversalPipeline"
+        }
+        LOD 100
+        ZWrite On
+        ZTest LEqual
+        Cull Off
+
+        Pass
+        {
+            Name "TargetSelectionSpriteMask"
+            Tags
+            {
+                "LightMode" = "SRPDefaultUnlit"
+            }
+
+            HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment Frag
+            ENDHLSL
+        }
+    }
+}

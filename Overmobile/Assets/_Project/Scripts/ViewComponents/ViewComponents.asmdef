@@ -6,6 +6,7 @@
         "Core.Input",
         "ExtendedExceptions",
         "Input",
+        "Rendering",
         "UniTask",
         "VContainer",
         "DOTween.Modules",

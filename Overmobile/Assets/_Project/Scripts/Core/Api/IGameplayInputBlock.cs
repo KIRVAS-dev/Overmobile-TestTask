@@ -1,8 +1,10 @@
+using R3;
+
 namespace Core
 {
     public interface IGameplayInputBlock
     {
-        bool IsBlocked { get; }
+        ReadOnlyReactiveProperty<bool> IsBlocked { get; }
         void Block();
         void Unblock();
     }

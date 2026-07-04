@@ -5,5 +5,6 @@ namespace Core.Gameplay.Interaction
     public interface IInteractionPhaseSource
     {
         ReadOnlyReactiveProperty<InteractionPhase> CurrentPhase { get; }
+        ReadOnlyReactiveProperty<string> CurrentTargetEntityId { get; }
     }
 }
