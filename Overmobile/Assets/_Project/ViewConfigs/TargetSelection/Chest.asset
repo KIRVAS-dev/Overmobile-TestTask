@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c4879603b1524428f66cc6e0198470, type: 3}
   m_Name: Chest
   m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.TargetSelectionConfig
-  _scaleMultiplier: 1.05
+  _scaleMultiplier: 1.25
   _showDurationSeconds: 0.15
-  _hideDurationSeconds: 0.1
+  _hideDurationSeconds: 0.5
   _showEase: 6
-  _hideEase: 5
+  _hideEase: 30
   _outlineColor: {r: 0, g: 1, b: 0.12156863, a: 1}
   _fillColor: {r: 0, g: 1, b: 0.12156863, a: 0.14901961}

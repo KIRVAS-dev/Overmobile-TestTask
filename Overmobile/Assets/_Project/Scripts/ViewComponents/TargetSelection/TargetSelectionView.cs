@@ -12,10 +12,14 @@ namespace ViewComponents.TargetSelection
         [SerializeField] private GameObject _pointerDownSfx;
         [SerializeField] private TargetSelectionConfig _config;
 
-        private Tween _progressTween;
+        private Tween _highlightTween;
+        private Tween _scaleTween;
         private Vector3 _baseVisualLocalScale;
         private float _baseFloatingUiLocalPositionY;
-        private float _currentProgress;
+        private float _highlightProgress;
+        private float _scaleProgress;
+        private bool _isScaleEnabled = true;
+        private bool _isHighlightVisible;
 
         private void Awake()
         {
@@ -31,21 +35,69 @@ namespace ViewComponents.TargetSelection
         {
             CancelAnimation();
             _targetSelectionHighlighter.EnableHighlight();
-            ApplyProgress(_currentProgress);
+            _isHighlightVisible = true;
 
-            _progressTween = DOVirtual
-               .Float(_currentProgress, to: 1f, _config.ShowDurationSeconds, ApplyProgress)
+            ApplyHighlightProgress(_highlightProgress);
+            ApplyScaleProgress(_scaleProgress);
+
+            _highlightTween = DOVirtual
+               .Float(_highlightProgress, to: 1f, _config.ShowDurationSeconds, ApplyHighlightProgress)
+               .SetEase(_config.ShowEase);
+
+            float targetScaleProgress = _isScaleEnabled
+                ? 1f
+                : 0f;
+
+            _scaleTween = DOVirtual
+               .Float(_scaleProgress, targetScaleProgress, _config.ShowDurationSeconds, ApplyScaleProgress)
                .SetEase(_config.ShowEase);
         }
 
         public void Hide()
         {
             CancelAnimation();
+            _isHighlightVisible = false;
 
-            _progressTween = DOVirtual
-               .Float(_currentProgress, to: 0f, _config.HideDurationSeconds, ApplyProgress)
+            _highlightTween = DOVirtual
+               .Float(_highlightProgress, to: 0f, _config.HideDurationSeconds, ApplyHighlightProgress)
                .SetEase(_config.HideEase)
                .OnComplete(() => _targetSelectionHighlighter.DisableHighlight());
+
+            _scaleTween = DOVirtual
+               .Float(_scaleProgress, to: 0f, _config.HideDurationSeconds, ApplyScaleProgress)
+               .SetEase(_config.HideEase);
+        }
+
+        public void SetScaleEnabled(bool isScaleEnabled)
+        {
+            if (_isScaleEnabled == isScaleEnabled)
+            {
+                return;
+            }
+
+            _isScaleEnabled = isScaleEnabled;
+
+            if (!_isHighlightVisible)
+            {
+                return;
+            }
+
+            _scaleTween?.Kill();
+            _scaleTween = null;
+
+            float targetScaleProgress = isScaleEnabled
+                ? 1f
+                : 0f;
+
+            float duration = isScaleEnabled
+                ? _config.ShowDurationSeconds
+                : _config.HideDurationSeconds;
+
+            Ease ease = isScaleEnabled
+                ? _config.ShowEase
+                : _config.HideEase;
+
+            _scaleTween = DOVirtual.Float(_scaleProgress, targetScaleProgress, duration, ApplyScaleProgress).SetEase(ease);
         }
 
         public void PlayPointerDownSfx()
@@ -54,9 +106,15 @@ namespace ViewComponents.TargetSelection
             _pointerDownSfx.SetActive(true);
         }
 
-        private void ApplyProgress(float progress)
+        private void ApplyHighlightProgress(float progress)
         {
-            _currentProgress = progress;
+            _highlightProgress = progress;
+            _targetSelectionHighlighter.SetProgress(progress);
+        }
+
+        private void ApplyScaleProgress(float progress)
+        {
+            _scaleProgress = progress;
 
             float factor = 1f + (_config.ScaleMultiplier - 1f) * progress;
 
@@ -65,8 +123,6 @@ namespace ViewComponents.TargetSelection
             Vector3 floatingUiLocalPosition = _floatingUiRoot.localPosition;
             floatingUiLocalPosition.y = _baseFloatingUiLocalPositionY * factor;
             _floatingUiRoot.localPosition = floatingUiLocalPosition;
-
-            _targetSelectionHighlighter.SetProgress(progress);
         }
 
         private void OnDestroy()
@@ -76,8 +132,11 @@ namespace ViewComponents.TargetSelection
 
         private void CancelAnimation()
         {
-            _progressTween?.Kill();
-            _progressTween = null;
+            _highlightTween?.Kill();
+            _highlightTween = null;
+
+            _scaleTween?.Kill();
+            _scaleTween = null;
         }
 
         private void Validate()

@@ -17,6 +17,7 @@ namespace ViewComponents.TargetSelection
 
         private IDisposable _globalVisibilitySubscription;
         private IDisposable _entityVisibilitySubscription;
+        private IDisposable _phaseSubscription;
         private TargetSelectionView _activeView;
         private string _hoveredEntityId;
 
@@ -34,6 +35,9 @@ namespace ViewComponents.TargetSelection
 
         void IDisposable.Dispose()
         {
+            _phaseSubscription?.Dispose();
+            _phaseSubscription = null;
+
             _globalVisibilitySubscription?.Dispose();
             _globalVisibilitySubscription = null;
 
@@ -56,6 +60,8 @@ namespace ViewComponents.TargetSelection
 
         public void Start(ReadOnlyReactiveProperty<string> hoveredEntityId)
         {
+            _phaseSubscription = _interactionPhaseSource.CurrentPhase.Subscribe(_ => SyncActiveViewScaleMode());
+
             _globalVisibilitySubscription = _interactionPhaseSource
                .CurrentPhase
                .CombineLatest(
@@ -169,6 +175,7 @@ namespace ViewComponents.TargetSelection
                     return;
                 }
 
+                view.SetScaleEnabled(_interactionPhaseSource.CurrentPhase.CurrentValue == InteractionPhase.Idle);
                 view.Show();
                 _activeView = view;
 
@@ -182,6 +189,16 @@ namespace ViewComponents.TargetSelection
 
             _activeView.Hide();
             _activeView = null;
+        }
+
+        private void SyncActiveViewScaleMode()
+        {
+            if (_activeView == null)
+            {
+                return;
+            }
+
+            _activeView.SetScaleEnabled(_interactionPhaseSource.CurrentPhase.CurrentValue == InteractionPhase.Idle);
         }
     }
 }
