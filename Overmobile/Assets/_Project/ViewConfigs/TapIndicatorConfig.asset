@@ -17,3 +17,7 @@ MonoBehaviour:
   _fadeInEase: 1
   _scaleOutDuration: 0.1
   _fadeOutEase: 1
+  _targetClickScaleMultiplier: 1.5
+  _targetClickScaleUpDuration: 0.08
+  _targetClickScaleUpEase: 6
+  _targetClickScaleHoldDuration: 0.1

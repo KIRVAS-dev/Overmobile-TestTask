@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ViewComponents.Camera
 {
-    [CreateAssetMenu(fileName = "CameraTransitionConfig", menuName = "Project/Configs/Camera Transition Config")]
+    [CreateAssetMenu(fileName = "CameraTransitionConfig", menuName = "Project/Configs/Camera/Camera Transition Config")]
     public sealed class CameraTransitionConfig : ScriptableObject
     {
         public float DelayBeforeTransition => _delayBeforeTransition;

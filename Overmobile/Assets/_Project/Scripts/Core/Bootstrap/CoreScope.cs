@@ -62,7 +62,7 @@ namespace Core.Bootstrap
         private void RegisterInput(IContainerBuilder builder)
         {
             builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>().As<IPlayerPointerInputActivation>();
-            builder.RegisterComponentInHierarchy<TapIndicator>();
+            builder.RegisterComponentInHierarchy<TapIndicator>().As<ITapIndicatorTargetClickArming>();
             builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
             builder.Register<GameplayInputHandler>(Lifetime.Singleton);
         }

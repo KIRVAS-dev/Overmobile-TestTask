@@ -141,6 +141,8 @@ namespace ViewComponents.TargetSelection
 
         private void Validate()
         {
+            _config.Validate();
+
             Guard.AgainstNull(_config, () => new MissingTargetSelectionFieldException(nameof(_config), gameObject.name));
             Guard.AgainstNull(_visualRoot, () => new MissingTargetSelectionFieldException(nameof(_visualRoot), gameObject.name));
 
@@ -158,8 +160,6 @@ namespace ViewComponents.TargetSelection
                 _pointerDownSfx,
                 () => new MissingTargetSelectionFieldException(nameof(_pointerDownSfx), gameObject.name)
             );
-
-            _config.Validate();
         }
     }
 }

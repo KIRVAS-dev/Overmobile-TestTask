@@ -32,4 +32,10 @@ namespace UI.TapIndicator
                 $"Tap indicator screen position {screenPosition} could not be converted to canvas coordinates"
             ) { }
     }
+
+    public sealed class InvalidTapIndicatorValueException : ExtendedException
+    {
+        public InvalidTapIndicatorValueException(string fieldName, float value)
+            : base("tap-indicator-5", $"Tap indicator config {fieldName} must be one or greater, got {value}") { }
+    }
 }

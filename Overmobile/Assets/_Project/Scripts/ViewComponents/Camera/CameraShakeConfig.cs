@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ViewComponents.Camera
 {
-    [CreateAssetMenu(fileName = "CameraShakeConfig", menuName = "Project/Configs/Camera Shake Config")]
+    [CreateAssetMenu(fileName = "CameraShakeConfig", menuName = "Project/Configs/Camera/Camera Shake Config")]
     public sealed class CameraShakeConfig : ScriptableObject
     {
         private const float MaxRandomness = 180f;

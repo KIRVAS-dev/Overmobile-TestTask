@@ -7,7 +7,9 @@ using VContainer;
 
 namespace UI.TapIndicator
 {
-    public sealed class TapIndicator : MonoBehaviour
+    public sealed class TapIndicator
+        : MonoBehaviour,
+          ITapIndicatorTargetClickArming
     {
         private static readonly Vector3 HiddenScale = Vector3.zero;
 
@@ -20,6 +22,7 @@ namespace UI.TapIndicator
         private Vector3 _defaultScale;
         private Tween _activeScaleTween;
         private bool _isPointerHeld;
+        private bool _isTargetClickReleaseArmed;
 
         [Inject]
         public void Construct(IPlayerPointerInput pointerInput)
@@ -63,6 +66,16 @@ namespace UI.TapIndicator
         private void OnReleased()
         {
             Hide();
+        }
+
+        void ITapIndicatorTargetClickArming.ArmTargetClickRelease()
+        {
+            _isTargetClickReleaseArmed = true;
+        }
+
+        void ITapIndicatorTargetClickArming.DisarmTargetClickRelease()
+        {
+            _isTargetClickReleaseArmed = false;
         }
 
         private void Initialize()
@@ -112,6 +125,31 @@ namespace UI.TapIndicator
 
             _isPointerHeld = false;
             KillRegisteredTweens(_activeScaleTween, _rectTransform);
+
+            if (_isTargetClickReleaseArmed)
+            {
+                _isTargetClickReleaseArmed = false;
+
+                Vector3 peakScale = _defaultScale * _config.TargetClickScaleMultiplier;
+
+                _activeScaleTween = DOTween
+                   .Sequence()
+                   .Append(
+                        _rectTransform
+                           .DOScale(peakScale, _config.TargetClickScaleUpDuration)
+                           .SetEase(_config.TargetClickScaleUpEase)
+                    )
+                   .AppendInterval(_config.TargetClickScaleHoldDuration)
+                   .Append(_rectTransform.DOScale(HiddenScale, _config.ScaleOutDuration).SetEase(_config.FadeOutEase));
+
+                return;
+            }
+
+            PlayScaleOutTween();
+        }
+
+        private void PlayScaleOutTween()
+        {
             _activeScaleTween = _rectTransform.DOScale(HiddenScale, _config.ScaleOutDuration).SetEase(_config.FadeOutEase);
         }
 
@@ -144,10 +182,10 @@ namespace UI.TapIndicator
 
         private void Validate()
         {
+            _config.Validate();
+
             Guard.AgainstNull(_image, () => new MissingTapIndicatorFieldException(nameof(_image), gameObject.name));
             Guard.AgainstNull(_config, () => new MissingTapIndicatorFieldException(nameof(_config), gameObject.name));
-
-            _config.Validate();
         }
     }
 }

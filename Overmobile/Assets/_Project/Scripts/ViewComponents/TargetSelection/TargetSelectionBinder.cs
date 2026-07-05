@@ -21,10 +21,16 @@ namespace ViewComponents.TargetSelection
             IInteractionPhaseSource interactionPhaseSource,
             IGameplayInputBlock gameplayInputBlock,
             IPlayerPointerInput playerPointerInput,
+            ITapIndicatorTargetClickArming tapIndicatorTargetClickArming,
             InteractableTargetProvider interactableTargetProvider)
         {
             _interactableTargetProvider = interactableTargetProvider;
-            _pointerTracker = new TargetSelectionPointerTracker(playerPointerInput, gameplayInputBlock);
+
+            _pointerTracker = new TargetSelectionPointerTracker(
+                playerPointerInput,
+                gameplayInputBlock,
+                tapIndicatorTargetClickArming
+            );
 
             _highlightResolver = new TargetSelectionHighlightResolver(
                 powerRegistry,
