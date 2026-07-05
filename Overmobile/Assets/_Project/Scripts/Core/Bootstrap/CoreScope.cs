@@ -9,6 +9,7 @@ using Core.Input.Gameplay;
 using Input;
 using UI.TapIndicator;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 using ViewComponents.Camera;
@@ -26,6 +27,7 @@ namespace Core.Bootstrap
     public sealed class CoreScope : LifetimeScope
     {
         [Header("Input")]
+        [SerializeField] private InputActionAsset _inputActionsAsset;
         [SerializeField] private PlayerPointerInput _playerPointerInput;
 
         [Header("Interaction")]
@@ -55,12 +57,24 @@ namespace Core.Bootstrap
 
         private void RegisterCamera(IContainerBuilder builder)
         {
+            builder.RegisterComponentInHierarchy<CameraLateUpdateDriver>();
+
             builder.RegisterComponentInHierarchy<CameraTransitionView>().As<ICameraTransitionView>();
+
+            builder
+               .RegisterComponentInHierarchy<CameraConfinerOrientation>()
+               .As<ICameraConfinerView>()
+               .As<ICameraOrthoFitProvider>()
+               .As<ICameraBoundsFrameUpdater>();
+
             builder.RegisterComponentInHierarchy<CameraShakeView>().As<ICameraShakeView>();
+
+            builder.RegisterComponentInHierarchy<CameraZoomView>().As<ICameraZoomView>().As<ICameraZoomFrameUpdater>();
         }
 
         private void RegisterInput(IContainerBuilder builder)
         {
+            builder.RegisterInstance(_inputActionsAsset);
             builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>().As<IPlayerPointerInputActivation>();
             builder.RegisterComponentInHierarchy<TapIndicator>().As<ITapIndicatorTargetClickArming>();
             builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();

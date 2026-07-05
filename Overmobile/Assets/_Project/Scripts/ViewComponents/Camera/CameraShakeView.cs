@@ -1,7 +1,6 @@
-using DG.Tweening;
 using ExtendedExceptions;
+using Unity.Cinemachine;
 using UnityEngine;
-using UnityCamera = UnityEngine.Camera;
 
 namespace ViewComponents.Camera
 {
@@ -10,8 +9,9 @@ namespace ViewComponents.Camera
         : MonoBehaviour,
           ICameraShakeView
     {
-        [SerializeField] private UnityCamera _camera;
-        [SerializeField] private CameraShakeConfig _config;
+        [SerializeField] private CinemachineCamera _cinemachineCamera;
+        [SerializeField] private CinemachineImpulseListener _impulseListener;
+        [SerializeField] private CinemachineImpulseSource _impulseSource;
 
         private void Awake()
         {
@@ -20,38 +20,30 @@ namespace ViewComponents.Camera
 
         public void PlayShake()
         {
-            Transform cameraTransform = _camera.transform;
-            cameraTransform.DOKill();
-
-            cameraTransform.DOShakePosition(
-                _config.Duration,
-                _config.Strength,
-                _config.Vibrato,
-                _config.Randomness,
-                snapping: false,
-                _config.FadeOut
-            );
-        }
-
-        private void OnDestroy()
-        {
-            if (_camera != null)
-            {
-                _camera.transform.DOKill();
-            }
+            _impulseSource.GenerateImpulseWithVelocity(_impulseSource.DefaultVelocity);
         }
 
         private void Validate()
         {
-            Guard.AgainstNull(_camera, () => new MissingCameraShakeFieldException(nameof(_camera), gameObject.name));
-            Guard.AgainstNull(_config, () => new MissingCameraShakeFieldException(nameof(_config), gameObject.name));
+            Guard.AgainstNull(
+                _cinemachineCamera,
+                () => new MissingCameraShakeFieldException(nameof(_cinemachineCamera), gameObject.name)
+            );
 
-            if (!_camera.orthographic)
+            Guard.AgainstNull(
+                _impulseSource,
+                () => new MissingCameraShakeFieldException(nameof(_impulseSource), gameObject.name)
+            );
+
+            Guard.AgainstNull(
+                _impulseListener,
+                () => new MissingCameraShakeFieldException(nameof(_impulseListener), gameObject.name)
+            );
+
+            if (_cinemachineCamera.Lens.ModeOverride != LensSettings.OverrideModes.Orthographic)
             {
                 throw new CameraShakeOrthographicRequiredException(gameObject.name);
             }
-
-            _config.Validate();
         }
     }
 }

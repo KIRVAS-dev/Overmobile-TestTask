@@ -3,8 +3,9 @@ using DG.Tweening;
 using ExtendedExceptions;
 using System;
 using System.Threading;
+using Unity.Cinemachine;
 using UnityEngine;
-using UnityCamera = UnityEngine.Camera;
+using VContainer;
 
 namespace ViewComponents.Camera
 {
@@ -13,8 +14,18 @@ namespace ViewComponents.Camera
         : MonoBehaviour,
           ICameraTransitionView
     {
-        [SerializeField] private UnityCamera _camera;
-        [SerializeField] private CameraTransitionConfig _config;
+        [SerializeField] private CinemachineCamera _cinemachineCamera;
+        [SerializeField] private CameraConfig _config;
+
+        private ICameraOrthoFitProvider _cameraOrthoFitProvider;
+        private ICameraConfinerView _cameraConfinerView;
+
+        [Inject]
+        public void Construct(ICameraOrthoFitProvider cameraOrthoFitProvider, ICameraConfinerView cameraConfinerView)
+        {
+            _cameraOrthoFitProvider = cameraOrthoFitProvider;
+            _cameraConfinerView = cameraConfinerView;
+        }
 
         private void Awake()
         {
@@ -23,35 +34,59 @@ namespace ViewComponents.Camera
 
         public async UniTask PlayTransitionAsync(CancellationToken cancellationToken)
         {
-            _camera.transform.DOKill();
-            _camera.DOKill();
+            float startOrthographicSize = _cameraOrthoFitProvider.MinOrthographicSize;
+            float targetOrthographicSize = _cameraOrthoFitProvider.FitOrthographicSize;
 
-            _camera.transform.position = _config.StartPosition;
-            _camera.orthographicSize = _config.StartOrthographicSize;
+            Transform cinemachineCameraTransform = _cinemachineCamera.transform;
+            cinemachineCameraTransform.DOKill();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_config.DelayBeforeTransition), cancellationToken: cancellationToken);
+            _cameraConfinerView.BeginBoundsFollow();
 
-            float duration = CalculateTransitionDuration();
+            try
+            {
+                cinemachineCameraTransform.position = _config.StartPosition;
+                SetOrthographicSize(startOrthographicSize);
+                _cameraConfinerView.UpdateBoundsFollow(_config.StartPosition);
 
-            Tween moveTween = _camera.transform.DOMove(_config.TargetPosition, duration).SetEase(_config.Ease);
-            Tween sizeTween = _camera.DOOrthoSize(_config.TargetOrthographicSize, duration).SetEase(_config.Ease);
+                await UniTask.Delay(TimeSpan.FromSeconds(_config.DelayBeforeTransition), cancellationToken: cancellationToken);
 
-            await AwaitTweensAsync(moveTween, sizeTween, cancellationToken);
+                float duration = CalculateTransitionDuration(
+                    startOrthographicSize,
+                    targetOrthographicSize,
+                    _config.StartPosition,
+                    _config.TargetPosition
+                );
+
+                Tween moveTween = cinemachineCameraTransform.DOMove(_config.TargetPosition, duration).SetEase(_config.Ease);
+                Tween sizeTween = CreateOrthographicSizeTween(targetOrthographicSize, duration);
+
+                await AwaitTweensAsync(moveTween, sizeTween, cinemachineCameraTransform, cancellationToken);
+
+                KillRegisteredTweens(moveTween, cinemachineCameraTransform);
+                sizeTween.Kill();
+
+                cinemachineCameraTransform.position = _config.TargetPosition;
+            }
+            finally
+            {
+                _cameraConfinerView.EndBoundsFollow();
+            }
         }
 
         private void OnDestroy()
         {
-            KillRegisteredTweens(tween: null, _camera.transform, _camera);
+            if (_cinemachineCamera != null)
+            {
+                KillRegisteredTweens(tween: null, _cinemachineCamera.transform);
+            }
         }
 
         private async UniTask AwaitTweensAsync(
             Tween moveTween,
             Tween sizeTween,
+            Transform cinemachineCameraTransform,
             CancellationToken cancellationToken)
         {
-            Transform cameraTransform = _camera.transform;
-            UnityCamera camera = _camera;
-
             using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
                 this.GetCancellationTokenOnDestroy()
@@ -61,41 +96,61 @@ namespace ViewComponents.Camera
 
             await using CancellationTokenRegistration registration = linkedToken.Register(() =>
                 {
-                    KillRegisteredTweens(tween: null, cameraTransform, camera);
+                    KillRegisteredTweens(tween: null, cinemachineCameraTransform);
                 }
             );
 
             while (moveTween.IsActive()
              || sizeTween.IsActive())
             {
+                _cameraConfinerView.UpdateBoundsFollow(cinemachineCameraTransform.position);
+
                 await UniTask.Yield(linkedToken);
             }
 
             linkedToken.ThrowIfCancellationRequested();
         }
 
-        private void KillRegisteredTweens(
-            Tween tween,
-            Transform cameraTransform,
-            UnityCamera camera)
+        private Tween CreateOrthographicSizeTween(float targetSize, float duration)
+        {
+            CinemachineCamera cinemachineCamera = _cinemachineCamera;
+
+            return DOTween
+               .To(() => cinemachineCamera.Lens.OrthographicSize, value => SetOrthographicSize(value), targetSize, duration)
+               .SetEase(_config.Ease);
+        }
+
+        private void SetOrthographicSize(float orthographicSize)
+        {
+            CinemachineCamera cinemachineCamera = _cinemachineCamera;
+            LensSettings lens = cinemachineCamera.Lens;
+            lens.OrthographicSize = orthographicSize;
+            cinemachineCamera.Lens = lens;
+        }
+
+        private void KillRegisteredTweens(Tween tween, Transform cinemachineCameraTransform)
         {
             tween?.Kill();
 
-            if (cameraTransform != null)
+            if (cinemachineCameraTransform != null)
             {
-                cameraTransform.DOKill();
+                cinemachineCameraTransform.DOKill();
             }
 
-            if (camera != null)
+            if (_cinemachineCamera != null)
             {
-                camera.DOKill();
+                DOTween.Kill(_cinemachineCamera);
             }
         }
 
-        private float CalculateTransitionDuration()
+        private float CalculateTransitionDuration(
+            float startOrthographicSize,
+            float targetOrthographicSize,
+            Vector3 startPosition,
+            Vector3 targetPosition)
         {
-            float positionDistance = Vector3.Distance(_config.StartPosition, _config.TargetPosition);
-            float sizeDelta = Mathf.Abs(_config.TargetOrthographicSize - _config.StartOrthographicSize);
+            float positionDistance = Vector3.Distance(startPosition, targetPosition);
+            float sizeDelta = Mathf.Abs(targetOrthographicSize - startOrthographicSize);
             float positionDuration = positionDistance / _config.TransitionSpeed;
             float sizeDuration = sizeDelta / _config.TransitionSpeed;
 
@@ -104,22 +159,19 @@ namespace ViewComponents.Camera
 
         private void Validate()
         {
-            Guard.AgainstNull(_camera, () => new MissingCameraTransitionFieldException(nameof(_camera), gameObject.name));
-            Guard.AgainstNull(_config, () => new MissingCameraTransitionFieldException(nameof(_config), gameObject.name));
+            _config.Validate();
 
-            if (!_camera.orthographic)
-            {
-                throw new CameraTransitionOrthographicRequiredException(gameObject.name);
-            }
-
-            Guard.AgainstNegative(
-                _config.DelayBeforeTransition,
-                () => new InvalidCameraTransitionValueException(
-                    nameof(_config.DelayBeforeTransition),
-                    gameObject.name,
-                    _config.DelayBeforeTransition
-                )
+            Guard.AgainstNull(
+                _cinemachineCamera,
+                () => new MissingCameraConfigFieldException(nameof(_cinemachineCamera), gameObject.name)
             );
+
+            Guard.AgainstNull(_config, () => new MissingCameraConfigFieldException(nameof(_config), gameObject.name));
+
+            if (_cinemachineCamera.Lens.ModeOverride != LensSettings.OverrideModes.Orthographic)
+            {
+                throw new CameraOrthographicRequiredException(gameObject.name);
+            }
         }
     }
 }

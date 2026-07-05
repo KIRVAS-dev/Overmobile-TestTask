@@ -2,6 +2,7 @@ using ExtendedExceptions;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 
 namespace Input
 {
@@ -10,8 +11,7 @@ namespace Input
           IPlayerPointerInput,
           IPlayerPointerInputActivation
     {
-        [SerializeField] private InputActionAsset _actionsAsset;
-
+        private InputActionAsset _actionsAsset;
         private InputAction _click;
         private InputAction _point;
         private InputControl _activePressControl;
@@ -21,6 +21,12 @@ namespace Input
 
         public event Action Pressed;
         public event Action Released;
+
+        [Inject]
+        public void Construct(InputActionAsset inputActionsAsset)
+        {
+            _actionsAsset = inputActionsAsset;
+        }
 
         public void Enable()
         {

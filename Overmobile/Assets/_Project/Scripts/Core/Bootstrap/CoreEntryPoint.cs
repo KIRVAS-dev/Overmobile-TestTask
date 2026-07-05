@@ -15,6 +15,8 @@ namespace Core.Bootstrap
           IDisposable
     {
         private readonly ICameraTransitionView _cameraTransitionView;
+        private readonly ICameraOrthoFitProvider _cameraOrthoFitProvider;
+        private readonly ICameraZoomView _cameraZoomView;
         private readonly IPlayerSpawnView _playerSpawnView;
         private readonly IDropBinder _dropBinder;
         private readonly IInteractionViewBinder _interactionViewBinder;
@@ -26,6 +28,8 @@ namespace Core.Bootstrap
 
         public CoreEntryPoint(
             ICameraTransitionView cameraTransitionView,
+            ICameraOrthoFitProvider cameraOrthoFitProvider,
+            ICameraZoomView cameraZoomView,
             IPlayerSpawnView playerSpawnView,
             IDropBinder dropBinder,
             IInteractionViewBinder interactionViewBinder,
@@ -36,6 +40,8 @@ namespace Core.Bootstrap
             CoreCancellationSource coreCancellation)
         {
             _cameraTransitionView = cameraTransitionView;
+            _cameraOrthoFitProvider = cameraOrthoFitProvider;
+            _cameraZoomView = cameraZoomView;
             _playerSpawnView = playerSpawnView;
             _dropBinder = dropBinder;
             _interactionViewBinder = interactionViewBinder;
@@ -60,11 +66,14 @@ namespace Core.Bootstrap
         void IDisposable.Dispose()
         {
             _gameplayInputHandler.StopListening();
+            _cameraZoomView.StopListening();
         }
 
         private async UniTaskVoid StartIntroAsync()
         {
+            _cameraOrthoFitProvider.RefreshOrthoFit();
             _gameplayInputBlock.Block();
+
             bool isCancelled = false;
 
             try
@@ -82,6 +91,7 @@ namespace Core.Bootstrap
 
             if (!isCancelled)
             {
+                _cameraZoomView.StartListening();
                 _gameplayInputHandler.StartListening();
             }
         }

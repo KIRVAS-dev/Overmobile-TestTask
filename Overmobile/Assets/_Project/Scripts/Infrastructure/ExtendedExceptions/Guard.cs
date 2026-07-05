@@ -55,7 +55,10 @@ namespace ExtendedExceptions
             }
         }
 
-        public static void AgainstLessThan(float value, float minimum, Func<ExtendedException> exceptionFactory)
+        public static void AgainstLessThan(
+            float value,
+            float minimum,
+            Func<ExtendedException> exceptionFactory)
         {
             if (value < minimum)
             {
@@ -63,9 +66,58 @@ namespace ExtendedExceptions
             }
         }
 
-        public static void AgainstLessThan(int value, int minimum, Func<ExtendedException> exceptionFactory)
+        public static void AgainstLessThan(
+            int value,
+            int minimum,
+            Func<ExtendedException> exceptionFactory)
         {
             if (value < minimum)
+            {
+                throw exceptionFactory();
+            }
+        }
+
+        public static void AgainstGreaterThan(
+            float value,
+            float maximum,
+            Func<ExtendedException> exceptionFactory)
+        {
+            if (value > maximum)
+            {
+                throw exceptionFactory();
+            }
+        }
+
+        public static void AgainstGreaterThan(
+            int value,
+            int maximum,
+            Func<ExtendedException> exceptionFactory)
+        {
+            if (value > maximum)
+            {
+                throw exceptionFactory();
+            }
+        }
+
+        public static void AgainstInvalidRange(
+            float min,
+            float max,
+            Func<ExtendedException> exceptionFactory)
+        {
+            AgainstGreaterThan(min, max, exceptionFactory);
+        }
+
+        public static void AgainstInvalidRange(
+            int min,
+            int max,
+            Func<ExtendedException> exceptionFactory)
+        {
+            AgainstGreaterThan(min, max, exceptionFactory);
+        }
+
+        public static void AgainstTrue(bool condition, Func<ExtendedException> exceptionFactory)
+        {
+            if (condition)
             {
                 throw exceptionFactory();
             }
