@@ -320,6 +320,7 @@ MonoBehaviour:
         - rid: 7800052090912374979
         - rid: 7800052090912375029
         - rid: 7800052090912375030
+        - rid: 7800052159142690934
         - rid: 7800052090912375031
     - rid: 7800052090912374979
       type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
@@ -374,6 +375,9 @@ MonoBehaviour:
         _ease: 8
     - rid: 7800052090912375033
       type: {class: PowerUpStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data: 
+    - rid: 7800052159142690934
+      type: {class: CameraShakeStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data: 
 --- !u!114 &8812345678901234505
 MonoBehaviour:

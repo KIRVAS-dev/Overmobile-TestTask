@@ -274,6 +274,7 @@ MonoBehaviour:
         - rid: 7800052095566479545
         - rid: 7800052099006333075
         - rid: 7800052099006333070
+        - rid: 7800052159142690931
     - rid: 7800052099006333075
       type: {class: MoveToStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data:
@@ -284,6 +285,9 @@ MonoBehaviour:
         _transitionSpeed: 4
         _isInstant: 1
         _ease: 8
+    - rid: 7800052159142690931
+      type: {class: CameraShakeStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data: 
 --- !u!114 &8812345678901234600
 MonoBehaviour:
   m_ObjectHideFlags: 0

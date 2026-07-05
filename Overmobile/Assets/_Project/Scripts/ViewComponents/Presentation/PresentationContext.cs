@@ -1,5 +1,6 @@
 using Core.Gameplay.Player;
 using System.Threading;
+using ViewComponents.Camera;
 
 namespace ViewComponents.Presentation
 {
@@ -7,12 +8,14 @@ namespace ViewComponents.Presentation
     {
         public PresentationContext(
             PresentationStepSequence owner,
+            ICameraShakeView cameraShakeView,
             IActiveCharacterPresentationProvider activeCharacterPresentationProvider,
             IActivePresentationSectionMapProvider activePresentationSectionMapProvider,
             IPlayerUpgradeService playerUpgradeService,
             CancellationToken cancellationToken)
         {
             Owner = owner;
+            CameraShakeView = cameraShakeView;
             ActiveCharacterPresentationProvider = activeCharacterPresentationProvider;
             ActivePresentationSectionMapProvider = activePresentationSectionMapProvider;
             PlayerUpgradeService = playerUpgradeService;
@@ -20,6 +23,7 @@ namespace ViewComponents.Presentation
         }
 
         public PresentationStepSequence Owner { get; }
+        public ICameraShakeView CameraShakeView { get; }
         public IActiveCharacterPresentationProvider ActiveCharacterPresentationProvider { get; }
         public IActivePresentationSectionMapProvider ActivePresentationSectionMapProvider { get; }
         public IPlayerUpgradeService PlayerUpgradeService { get; }

@@ -1,4 +1,3 @@
-using Core.Camera;
 using Core.Gameplay.Character;
 using Core.Gameplay.Interaction;
 using Core.Gameplay.Inventory;
@@ -17,10 +16,10 @@ using ViewComponents.Interaction;
 using ViewComponents.Movement;
 using ViewComponents.Player;
 using ViewComponents.Power;
-using ViewComponents.UI.PowerPanel;
 using ViewComponents.Presentation;
 using ViewComponents.Presentation.Player;
 using ViewComponents.TargetSelection;
+using ViewComponents.UI.PowerPanel;
 
 namespace Core.Bootstrap
 {
@@ -57,6 +56,7 @@ namespace Core.Bootstrap
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<CameraTransitionView>().As<ICameraTransitionView>();
+            builder.RegisterComponentInHierarchy<CameraShakeView>().As<ICameraShakeView>();
         }
 
         private void RegisterInput(IContainerBuilder builder)

@@ -1,16 +1,18 @@
-using Core.Camera;
 using Core.Gameplay.Player;
 using Core.Input.Gameplay;
 using Cysharp.Threading.Tasks;
 using System;
+using VContainer.Unity;
+using ViewComponents.Camera;
 using ViewComponents.Interaction;
 using ViewComponents.Power;
 using ViewComponents.TargetSelection;
-using VContainer.Unity;
 
 namespace Core.Bootstrap
 {
-    public sealed class CoreEntryPoint : IStartable, IDisposable
+    public sealed class CoreEntryPoint
+        : IStartable,
+          IDisposable
     {
         private readonly ICameraTransitionView _cameraTransitionView;
         private readonly IPlayerSpawnView _playerSpawnView;

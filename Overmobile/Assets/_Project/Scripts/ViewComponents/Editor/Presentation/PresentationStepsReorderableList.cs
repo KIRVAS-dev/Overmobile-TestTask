@@ -26,14 +26,16 @@ namespace ViewComponents.Editor.Presentation
             typeof(TriggerObjectSpawnerStepDefinition),
             typeof(UpgradeTriggerStepDefinition),
             typeof(ItemPickUpStepDefinition),
-            typeof(PowerUpStepDefinition)
+            typeof(PowerUpStepDefinition),
+            typeof(CameraShakeStepDefinition)
         };
 
         private static readonly HashSet<Type> NonExpandableStepTypes = new HashSet<Type>
         {
             typeof(UpgradeTriggerStepDefinition),
             typeof(ItemPickUpStepDefinition),
-            typeof(PowerUpStepDefinition)
+            typeof(PowerUpStepDefinition),
+            typeof(CameraShakeStepDefinition)
         };
 
         private static GUIStyle _boldFoldoutStyle;
@@ -46,8 +48,12 @@ namespace ViewComponents.Editor.Presentation
         private readonly string _headerLabel;
         private readonly bool _isNested;
 
-        public PresentationStepsReorderableList(SerializedObject serializedObject, SerializedProperty stepsProperty,
-            string foldoutKeyPrefix, string headerLabel = "Steps", bool isNested = false)
+        public PresentationStepsReorderableList(
+            SerializedObject serializedObject,
+            SerializedProperty stepsProperty,
+            string foldoutKeyPrefix,
+            string headerLabel = "Steps",
+            bool isNested = false)
         {
             _serializedObject = serializedObject;
             _stepsProperty = stepsProperty;
@@ -124,13 +130,17 @@ namespace ViewComponents.Editor.Presentation
                 return;
             }
 
-            for (int i = 0; i < stalePropertyPaths.Count; i++)
+            foreach (string staleProperty in stalePropertyPaths)
             {
-                _nestedListsByPropertyPath.Remove(stalePropertyPaths[i]);
+                _nestedListsByPropertyPath.Remove(staleProperty);
             }
         }
 
-        private void DrawStepElement(Rect rect, int index, bool isActive, bool isFocused)
+        private void DrawStepElement(
+            Rect rect,
+            int index,
+            bool isActive,
+            bool isFocused)
         {
             SerializedProperty elementProperty = _stepsProperty.GetArrayElementAtIndex(index);
             float lineHeight = EditorGUIUtility.singleLineHeight;
@@ -179,7 +189,7 @@ namespace ViewComponents.Editor.Presentation
 
             PresentationInspectorLayout.ApplyLabelWidth(contentRect.width);
 
-            if (IsParallelStep(elementProperty))
+            if (HasNestedSteps(elementProperty))
             {
                 Rect nestedListRect = contentRect;
 
@@ -229,7 +239,7 @@ namespace ViewComponents.Editor.Presentation
               + PresentationInspectorLayout.ExpandedStepTopPadding
               + PresentationInspectorLayout.ExpandedStepBottomPadding;
 
-            if (IsParallelStep(elementProperty))
+            if (HasNestedSteps(elementProperty))
             {
                 height += GetNestedList(elementProperty).GetHeight();
 
@@ -241,10 +251,11 @@ namespace ViewComponents.Editor.Presentation
             return height;
         }
 
-        private PresentationStepsReorderableList GetNestedList(SerializedProperty parallelStepProperty)
+        private PresentationStepsReorderableList GetNestedList(SerializedProperty nestedStepProperty)
         {
-            SerializedProperty nestedStepsProperty = parallelStepProperty.FindPropertyRelative("_steps");
+            SerializedProperty nestedStepsProperty = nestedStepProperty.FindPropertyRelative("_steps");
             string nestedStepsPropertyPath = nestedStepsProperty.propertyPath;
+            string nestedHeaderLabel = ResolveNestedStepsHeaderLabel(nestedStepProperty);
 
             if (_nestedListsByPropertyPath.TryGetValue(nestedStepsPropertyPath, out PresentationStepsReorderableList nestedList))
             {
@@ -254,8 +265,8 @@ namespace ViewComponents.Editor.Presentation
             nestedList = new PresentationStepsReorderableList(
                 _serializedObject,
                 nestedStepsProperty,
-                $"{_foldoutKeyPrefix}.parallel.{nestedStepsPropertyPath}",
-                "Parallel Steps",
+                $"{_foldoutKeyPrefix}.nested.{nestedStepsPropertyPath}",
+                nestedHeaderLabel,
                 isNested: true
             );
 
@@ -334,12 +345,14 @@ namespace ViewComponents.Editor.Presentation
                 return "Power Up Trigger";
             }
 
-            if (stepType == typeof(TriggerObjectSpawnerStepDefinition))
+            if (stepType == typeof(CameraShakeStepDefinition))
             {
-                return "Object Spawner Trigger";
+                return "Camera Shake Trigger";
             }
 
-            return stepType.Name.Replace("StepDefinition", string.Empty);
+            return stepType == typeof(TriggerObjectSpawnerStepDefinition)
+                ? "Object Spawner Trigger"
+                : stepType.Name.Replace("StepDefinition", string.Empty);
         }
 
         private void AddStep(SerializedProperty targetStepsProperty, Type stepType)
@@ -357,9 +370,20 @@ namespace ViewComponents.Editor.Presentation
             return stepType == null || !NonExpandableStepTypes.Contains(stepType);
         }
 
-        private static bool IsParallelStep(SerializedProperty elementProperty)
+        private static bool HasNestedSteps(SerializedProperty elementProperty)
         {
-            return elementProperty.managedReferenceValue?.GetType() == typeof(ParallelStepDefinition);
+            Type stepType = elementProperty.managedReferenceValue?.GetType();
+
+            return stepType == typeof(ParallelStepDefinition) || stepType == typeof(SequenceStepDefinition);
+        }
+
+        private static string ResolveNestedStepsHeaderLabel(SerializedProperty elementProperty)
+        {
+            Type stepType = elementProperty.managedReferenceValue?.GetType();
+
+            return stepType == typeof(SequenceStepDefinition)
+                ? "Steps"
+                : "Parallel Steps";
         }
 
         private bool IsStepExpanded(int index)

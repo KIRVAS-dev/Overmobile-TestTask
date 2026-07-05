@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-namespace Core.Camera
+namespace ViewComponents.Camera
 {
     public interface ICameraTransitionView
     {

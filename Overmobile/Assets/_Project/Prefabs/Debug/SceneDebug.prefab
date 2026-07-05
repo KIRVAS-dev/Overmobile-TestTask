@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5789854649249978516}
   - component: {fileID: 7183390087286431013}
+  - component: {fileID: 378925346940685172}
   - component: {fileID: 4508230560325564529}
   m_Layer: 0
   m_Name: SceneDebug
@@ -46,6 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Debug::ProjectDebug.DebugSceneRestart
   _hotkey: 32
+--- !u!114 &378925346940685172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705243123835960281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe27f21ab301c16499bcd514fce13546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Debug::ProjectDebug.DebugCameraShakeTrigger
+  _hotkey: 17
 --- !u!114 &4508230560325564529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,3 +73,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Debug::ProjectDebug.DebugInteractAllTrigger
   _hotkey: 23
+  _triggerAllInteractablesOnScene: 1
+  _interactableTargets: []

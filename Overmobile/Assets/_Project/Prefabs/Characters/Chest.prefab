@@ -553,6 +553,7 @@ Transform:
   - {fileID: 6810498307352998469}
   - {fileID: 847024273232108790}
   - {fileID: 6722151419242364608}
+  - {fileID: 3961766717675399615}
   - {fileID: 3589564520107291385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -707,6 +708,7 @@ MonoBehaviour:
   _playOnStart: 0
   _stopOnDisable: 0
   _steps:
+  - rid: 7800052159142690958
   - rid: 7800052074283270376
   - rid: 7800052079586443392
   - rid: 7800052074283270384
@@ -820,6 +822,7 @@ MonoBehaviour:
         - rid: 7800052090912374890
         - rid: 7800052090912374892
         - rid: 7800052090912374891
+        - rid: 7800052159142690932
     - rid: 7800052090912374890
       type: {class: SetGameObjectActiveStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data:
@@ -853,6 +856,19 @@ MonoBehaviour:
     - rid: 7800052095566479530
       type: {class: PowerUpStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data: 
+    - rid: 7800052159142690932
+      type: {class: CameraShakeStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data: 
+    - rid: 7800052159142690958
+      type: {class: MoveToStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _movingTransform: {fileID: 727680530478582852}
+        _destination: 2
+        _anchorKey: 
+        _targetTransform: {fileID: 3961766717675399615}
+        _transitionSpeed: 2
+        _isInstant: 0
+        _ease: 9
 --- !u!114 &8812345678901234610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,6 +900,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: ViewComponents::ViewComponents.TargetSelection.MeshTargetSelectionHighlighter
   _renderers:
   - {fileID: 140787949213088669}
+--- !u!1 &7511296036764329956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3961766717675399615}
+  m_Layer: 0
+  m_Name: Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3961766717675399615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7511296036764329956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4, y: 0.185, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 727680530478582852}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8336670702915726418
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,6 +1044,7 @@ MonoBehaviour:
   _playOnStart: 0
   _stopOnDisable: 0
   _steps:
+  - rid: 7800052159142690976
   - rid: 7800052079586443429
   - rid: 7800052074283270355
   - rid: 7800052074283270357
@@ -1026,6 +1074,10 @@ MonoBehaviour:
         _mode: 1
         _targets:
         - {fileID: 4962463246226122824}
+    - rid: 7800052159142690976
+      type: {class: DelayStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data:
+        _durationSeconds: 1.25
 --- !u!1 &9150884924440227319
 GameObject:
   m_ObjectHideFlags: 0

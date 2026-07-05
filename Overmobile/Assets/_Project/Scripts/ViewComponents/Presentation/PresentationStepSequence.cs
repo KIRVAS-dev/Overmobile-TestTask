@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using ViewComponents.Camera;
 using VContainer;
 
 namespace ViewComponents.Presentation
@@ -20,6 +21,7 @@ namespace ViewComponents.Presentation
 
         private readonly List<Tween> _activeTweens = new List<Tween>();
 
+        private ICameraShakeView _cameraShakeView;
         private IActiveCharacterPresentationProvider _activeCharacterPresentationProvider;
         private IActivePresentationSectionMapProvider _activePresentationSectionMapProvider;
         private IPlayerUpgradeService _playerUpgradeService;
@@ -29,10 +31,12 @@ namespace ViewComponents.Presentation
 
         [Inject]
         public void Construct(
+            ICameraShakeView cameraShakeView,
             IActiveCharacterPresentationProvider activeCharacterPresentationProvider,
             IActivePresentationSectionMapProvider activePresentationSectionMapProvider,
             IPlayerUpgradeService playerUpgradeService)
         {
+            _cameraShakeView = cameraShakeView;
             _activeCharacterPresentationProvider = activeCharacterPresentationProvider;
             _activePresentationSectionMapProvider = activePresentationSectionMapProvider;
             _playerUpgradeService = playerUpgradeService;
@@ -107,6 +111,7 @@ namespace ViewComponents.Presentation
         {
             PresentationContext context = new PresentationContext(
                 this,
+                _cameraShakeView,
                 _activeCharacterPresentationProvider,
                 _activePresentationSectionMapProvider,
                 _playerUpgradeService,

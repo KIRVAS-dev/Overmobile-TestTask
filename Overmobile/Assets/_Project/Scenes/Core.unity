@@ -304,6 +304,10 @@ PrefabInstance:
       value: ViewComponents ViewComponents.Presentation.SetGameObjectActiveStepDefinition
       objectReference: {fileID: 0}
     - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
+      propertyPath: 'managedReferences[7800052159142690937]'
+      value: ViewComponents ViewComponents.Presentation.CameraShakeStepDefinition
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
       propertyPath: managedReferences[7800052095566479482]._mode
       value: 1
       objectReference: {fileID: 0}
@@ -417,7 +421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
       propertyPath: managedReferences[7800052095566479481]._steps.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
       propertyPath: managedReferences[7800052095566479484]._targetPosition.x
@@ -521,7 +525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
       propertyPath: 'managedReferences[7800052095566479481]._steps.Array.data[3]'
-      value: 7800052095566479486
+      value: 7800052159142690937
       objectReference: {fileID: 0}
     - target: {fileID: 9108942232168814838, guid: 858d8bcb3c04ab745b4a5713901f6690, type: 3}
       propertyPath: 'managedReferences[7800052095566479481]._steps.Array.data[4]'
@@ -9713,6 +9717,7 @@ GameObject:
   - component: {fileID: 659169232}
   - component: {fileID: 659169234}
   - component: {fileID: 659169235}
+  - component: {fileID: 659169236}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9844,6 +9849,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Camera.CameraTransitionView
   _camera: {fileID: 659169232}
   _config: {fileID: 11400000, guid: 8e5b0d3f2c9a7654b1e2f3a4c5d6b708, type: 2}
+--- !u!114 &659169236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659169230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d602e62c67e873b448cf59b1de231ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Camera.CameraShakeView
+  _camera: {fileID: 659169232}
+  _config: {fileID: 11400000, guid: b81fec3324ab14949867e8b04928d143, type: 2}
 --- !u!1 &660274612
 GameObject:
   m_ObjectHideFlags: 0
@@ -13346,6 +13365,7 @@ MonoBehaviour:
   - rid: 7800052095566479473
   - rid: 7800052095566479474
   - rid: 7800052095566479475
+  - rid: 7800052159142690935
   references:
     version: 2
     RefIds:
@@ -13395,6 +13415,9 @@ MonoBehaviour:
         _transformEase: 1
     - rid: 7800052095566479475
       type: {class: ItemPickUpStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
+      data: 
+    - rid: 7800052159142690935
+      type: {class: CameraShakeStepDefinition, ns: ViewComponents.Presentation, asm: ViewComponents}
       data: 
 --- !u!1 &1027356161
 GameObject:
@@ -19023,6 +19046,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.185
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 5756525150725792658, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
       propertyPath: _endpointKey
       value: Center
@@ -19039,6 +19090,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8625196779946585813, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+      propertyPath: managedReferences[7800052159142690958]._targetTransform
+      value: 
+      objectReference: {fileID: 1643430494}
     - target: {fileID: 8812345678901234520, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
       propertyPath: _powerId
       value: 568105589213718188
@@ -22287,6 +22342,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!4 &1643430494 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3961766717675399615, guid: 67cd2c83b33438d439b6c4499e60e973, type: 3}
+  m_PrefabInstance: {fileID: 1413325213}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1645029797
 GameObject:
   m_ObjectHideFlags: 0
@@ -29644,16 +29704,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: _interactableTargets.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: _triggerAllInteractablesOnScene
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: '_interactableTargets.Array.data[0]'
       value: 
-      objectReference: {fileID: 1413325214}
+      objectReference: {fileID: 3680845}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: '_interactableTargets.Array.data[1]'
       value: 
