@@ -24,7 +24,7 @@ namespace ViewComponents.Presentation
                 for (int i = 0; i < _spawnCount; i++)
                 {
                     GameObject prefab = _prefabs[Random.Range(minInclusive: 0, _prefabs.Length)];
-                    Instantiate(prefab, position, rotation);
+                    Instantiate(prefab, position, rotation, transform);
                 }
 
                 return;
@@ -32,7 +32,7 @@ namespace ViewComponents.Presentation
 
             foreach (GameObject prefab in _prefabs)
             {
-                Instantiate(prefab, position, rotation);
+                Instantiate(prefab, position, rotation, transform);
             }
         }
 
