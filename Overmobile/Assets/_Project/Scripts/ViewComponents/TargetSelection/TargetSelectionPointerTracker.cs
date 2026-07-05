@@ -1,4 +1,5 @@
 using Core;
+using Core.Gameplay.Interaction;
 using Input;
 using Input.Binds;
 using R3;
@@ -12,6 +13,7 @@ namespace ViewComponents.TargetSelection
     {
         private readonly IPlayerPointerInput _playerPointerInput;
         private readonly IGameplayInputBlock _gameplayInputBlock;
+        private readonly IInteractionService _interactionService;
         private readonly ITapIndicatorTargetClickArming _tapIndicatorTargetClickArming;
         private readonly List<Bind> _pointerBinds = new List<Bind>();
         private readonly ReactiveProperty<string> _hoveredEntityId = new ReactiveProperty<string>();
@@ -19,10 +21,12 @@ namespace ViewComponents.TargetSelection
         public TargetSelectionPointerTracker(
             IPlayerPointerInput playerPointerInput,
             IGameplayInputBlock gameplayInputBlock,
+            IInteractionService interactionService,
             ITapIndicatorTargetClickArming tapIndicatorTargetClickArming)
         {
             _playerPointerInput = playerPointerInput;
             _gameplayInputBlock = gameplayInputBlock;
+            _interactionService = interactionService;
             _tapIndicatorTargetClickArming = tapIndicatorTargetClickArming;
         }
 
@@ -48,7 +52,7 @@ namespace ViewComponents.TargetSelection
             pointerEnterBind.OnTriggered += () =>
             {
                 _hoveredEntityId.Value = entityId;
-                TryPlayDragOverTargetFeedback(targetSelectionView);
+                TryPlayDragOverTargetFeedback(entityId, targetSelectionView);
             };
 
             pointerEnterBind.Enable();
@@ -70,7 +74,7 @@ namespace ViewComponents.TargetSelection
             _pointerBinds.Add(pointerExitBind);
 
             Bind pointerDownBind = new Bind(interactableTarget.PointArea.PointerDown);
-            pointerDownBind.OnTriggered += () => ApplyTargetPointerDownFeedback(targetSelectionView);
+            pointerDownBind.OnTriggered += () => ApplyTargetPointerDownFeedback(entityId, targetSelectionView);
             pointerDownBind.Enable();
             _pointerBinds.Add(pointerDownBind);
         }
@@ -85,19 +89,20 @@ namespace ViewComponents.TargetSelection
             _hoveredEntityId.Value = null;
         }
 
-        private void TryPlayDragOverTargetFeedback(TargetSelectionView targetSelectionView)
+        private void TryPlayDragOverTargetFeedback(string entityId, TargetSelectionView targetSelectionView)
         {
             if (!_playerPointerInput.IsPressed)
             {
                 return;
             }
 
-            ApplyTargetPointerDownFeedback(targetSelectionView);
+            ApplyTargetPointerDownFeedback(entityId, targetSelectionView);
         }
 
-        private void ApplyTargetPointerDownFeedback(TargetSelectionView targetSelectionView)
+        private void ApplyTargetPointerDownFeedback(string entityId, TargetSelectionView targetSelectionView)
         {
-            if (_gameplayInputBlock.IsBlocked.CurrentValue)
+            if (_gameplayInputBlock.IsBlocked.CurrentValue
+             || !_interactionService.CanInteract(entityId))
             {
                 return;
             }

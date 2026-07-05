@@ -21,6 +21,7 @@ namespace ViewComponents.TargetSelection
             IInteractionPhaseSource interactionPhaseSource,
             IGameplayInputBlock gameplayInputBlock,
             IPlayerPointerInput playerPointerInput,
+            IInteractionService interactionService,
             ITapIndicatorTargetClickArming tapIndicatorTargetClickArming,
             InteractableTargetProvider interactableTargetProvider)
         {
@@ -29,6 +30,7 @@ namespace ViewComponents.TargetSelection
             _pointerTracker = new TargetSelectionPointerTracker(
                 playerPointerInput,
                 gameplayInputBlock,
+                interactionService,
                 tapIndicatorTargetClickArming
             );
 
