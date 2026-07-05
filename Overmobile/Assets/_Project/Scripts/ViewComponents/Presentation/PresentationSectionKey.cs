@@ -4,6 +4,7 @@ namespace ViewComponents.Presentation
     {
         Upgrade,
         ItemPickUp,
-        PowerUp
+        PowerUp,
+        Death,
     }
 }

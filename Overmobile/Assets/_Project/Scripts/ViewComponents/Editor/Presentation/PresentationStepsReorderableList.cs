@@ -26,6 +26,7 @@ namespace ViewComponents.Editor.Presentation
             typeof(TriggerObjectSpawnerStepDefinition),
             typeof(UpgradeTriggerStepDefinition),
             typeof(ItemPickUpStepDefinition),
+            typeof(DeathTriggerStepDefinition),
             typeof(PowerUpStepDefinition),
             typeof(CameraShakeStepDefinition)
         };
@@ -34,6 +35,7 @@ namespace ViewComponents.Editor.Presentation
         {
             typeof(UpgradeTriggerStepDefinition),
             typeof(ItemPickUpStepDefinition),
+            typeof(DeathTriggerStepDefinition),
             typeof(PowerUpStepDefinition),
             typeof(CameraShakeStepDefinition)
         };
@@ -338,6 +340,11 @@ namespace ViewComponents.Editor.Presentation
             if (stepType == typeof(ItemPickUpStepDefinition))
             {
                 return "Item Pick Up Trigger";
+            }
+
+            if (stepType == typeof(DeathTriggerStepDefinition))
+            {
+                return "Death Trigger";
             }
 
             if (stepType == typeof(PowerUpStepDefinition))

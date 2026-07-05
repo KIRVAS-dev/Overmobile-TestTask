@@ -11515,6 +11515,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: ViewComponents::ViewComponents.Movement.MovementWaypoint
   _endpointKey: Chest
   _sprite: {fileID: 1007278906}
+--- !u!1 &809644849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 809644850}
+  - component: {fileID: 809644851}
+  m_Layer: 0
+  m_Name: ElectricityChargeSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &809644850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809644849}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2128067945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809644851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809644849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47d2f3eaf46c4408b0a242e54ea32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ViewComponents::ViewComponents.Presentation.PresentationObjectSpawner
+  _prefabs:
+  - {fileID: 1552459158750391673, guid: 7fc8b9351f905cb4e82cf2d7b7d0d094, type: 3}
+  _spawnRandomly: 0
+  _spawnCount: 1
 --- !u!1 &811232573
 GameObject:
   m_ObjectHideFlags: 0
@@ -17910,6 +17958,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!4 &1321534626 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2710398031735457213, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+  m_PrefabInstance: {fileID: 1784764398}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1325653145
 GameObject:
   m_ObjectHideFlags: 0
@@ -24880,12 +24933,44 @@ PrefabInstance:
       value: FishR
       objectReference: {fileID: 0}
     - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: 'managedReferences[7800052159142691018]'
+      value: ViewComponents ViewComponents.Presentation.TriggerObjectSpawnerStepDefinition
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: 'managedReferences[7800052159142691023]'
+      value: ViewComponents ViewComponents.Presentation.DeathTriggerStepDefinition
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
       propertyPath: managedReferences[7800052095566479548]._spawner
       value: 
       objectReference: {fileID: 1750563358}
     - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: managedReferences[7800052159142691018]._spawner
+      value: 
+      objectReference: {fileID: 809644851}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: managedReferences[7800052159142691018]._spawnTransform
+      value: 
+      objectReference: {fileID: 1321534626}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: managedReferences[7800052090912374990]._steps.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
       propertyPath: managedReferences[7800052090912374992]._targets.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: 'managedReferences[7800052090912374990]._steps.Array.data[1]'
+      value: 7800052159142691023
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: 'managedReferences[7800052090912374990]._steps.Array.data[2]'
+      value: 7800052090912374992
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
+      propertyPath: 'managedReferences[7800052090912374990]._steps.Array.data[3]'
+      value: 7800052159142691018
       objectReference: {fileID: 0}
     - target: {fileID: 6630022542927078896, guid: ed2b2bdea4ef5cc4a9cbf72b1bd2c225, type: 3}
       propertyPath: 'managedReferences[7800052090912374992]._targets.Array.data[1]'
@@ -29075,6 +29160,7 @@ Transform:
   m_Children:
   - {fileID: 1343888427}
   - {fileID: 1750563357}
+  - {fileID: 809644850}
   - {fileID: 5717619135413793082}
   - {fileID: 6253386336241176464}
   m_Father: {fileID: 0}
@@ -29704,11 +29790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: _interactableTargets.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: _triggerAllInteractablesOnScene
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4508230560325564529, guid: 59b32582cb16d594f937ef1ea1b0db1f, type: 3}
       propertyPath: '_interactableTargets.Array.data[0]'
