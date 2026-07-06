@@ -28,10 +28,14 @@ namespace ViewComponents.TargetSelection
             _gameplayInputBlock = gameplayInputBlock;
             _interactionService = interactionService;
             _tapIndicatorTargetClickArming = tapIndicatorTargetClickArming;
+
+            _playerPointerInput.Released += OnPointerReleased;
         }
 
         void IDisposable.Dispose()
         {
+            _playerPointerInput.Released -= OnPointerReleased;
+
             foreach (Bind pointerBind in _pointerBinds)
             {
                 pointerBind.Disable();
@@ -77,6 +81,17 @@ namespace ViewComponents.TargetSelection
             pointerDownBind.OnTriggered += () => ApplyTargetPointerDownFeedback(entityId, targetSelectionView);
             pointerDownBind.Enable();
             _pointerBinds.Add(pointerDownBind);
+        }
+
+        private void OnPointerReleased(PointerReleaseType releaseType)
+        {
+            if (releaseType != PointerReleaseType.MultiTouch)
+            {
+                return;
+            }
+
+            DisarmTargetClickRelease();
+            _hoveredEntityId.Value = null;
         }
 
         private void ClearHoveredEntityId(string entityId)

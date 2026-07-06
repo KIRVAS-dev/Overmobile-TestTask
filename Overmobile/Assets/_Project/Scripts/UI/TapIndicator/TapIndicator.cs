@@ -63,8 +63,13 @@ namespace UI.TapIndicator
             ShowAt(_pointerInput.ScreenPosition);
         }
 
-        private void OnReleased()
+        private void OnReleased(PointerReleaseType releaseType)
         {
+            if (releaseType == PointerReleaseType.MultiTouch)
+            {
+                _isTargetClickReleaseArmed = false;
+            }
+
             Hide();
         }
 

@@ -8,6 +8,6 @@ namespace Input
         Vector2 ScreenPosition { get; }
         bool IsPressed { get; }
         event Action Pressed;
-        event Action Released;
+        event Action<PointerReleaseType> Released;
     }
 }

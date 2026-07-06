@@ -20,7 +20,7 @@ namespace Input
         public bool IsPressed => _activePressControl != null;
 
         public event Action Pressed;
-        public event Action Released;
+        public event Action<PointerReleaseType> Released;
 
         [Inject]
         public void Construct(InputActionAsset inputActionsAsset)
@@ -36,7 +36,7 @@ namespace Input
 
         public void Disable()
         {
-            ReleaseActivePress();
+            ReleaseActivePress(PointerReleaseType.PointerUp);
             _click.Disable();
             _point.Disable();
         }
@@ -63,9 +63,17 @@ namespace Input
         private void Update()
         {
             if (_activePressControl != null
+             && TouchInputHelper.IsMultiTouchActive())
+            {
+                ReleaseActivePress(PointerReleaseType.MultiTouch);
+
+                return;
+            }
+
+            if (_activePressControl != null
              && !_activePressControl.IsPressed())
             {
-                ReleaseActivePress();
+                ReleaseActivePress(PointerReleaseType.PointerUp);
             }
         }
 
@@ -94,10 +102,10 @@ namespace Input
                 return;
             }
 
-            ReleaseActivePress();
+            ReleaseActivePress(PointerReleaseType.PointerUp);
         }
 
-        private void ReleaseActivePress()
+        private void ReleaseActivePress(PointerReleaseType releaseType)
         {
             if (_activePressControl == null)
             {
@@ -105,13 +113,18 @@ namespace Input
             }
 
             _activePressControl = null;
-            Released?.Invoke();
+            Released?.Invoke(releaseType);
         }
 
         private Vector2 ReadActiveScreenPosition()
         {
-            return _activePressControl == null
-                ? throw new ActivePlayerPointerNotAssignedException()
+            if (_activePressControl == null)
+            {
+                throw new ActivePlayerPointerNotAssignedException();
+            }
+
+            return TouchInputHelper.TryGetTouchPosition(_activePressControl, out Vector2 touchPosition)
+                ? touchPosition
                 : _point.ReadValue<Vector2>();
         }
 

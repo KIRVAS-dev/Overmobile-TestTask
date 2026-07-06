@@ -1,6 +1,5 @@
+using Input;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityCamera = UnityEngine.Camera;
 
 namespace ViewComponents.Camera
@@ -13,40 +12,7 @@ namespace ViewComponents.Camera
 
         public static bool TryGetActivePinch(out Vector2 firstTouchPosition, out Vector2 secondTouchPosition)
         {
-            firstTouchPosition = default;
-            secondTouchPosition = default;
-
-            Touchscreen touchscreen = Touchscreen.current;
-
-            if (touchscreen == null)
-            {
-                return false;
-            }
-
-            int pressedTouchCount = 0;
-
-            foreach (TouchControl touchControl in touchscreen.touches)
-            {
-                if (!touchControl.press.isPressed)
-                {
-                    continue;
-                }
-
-                if (pressedTouchCount == 0)
-                {
-                    firstTouchPosition = touchControl.position.ReadValue();
-                }
-                else
-                {
-                    secondTouchPosition = touchControl.position.ReadValue();
-
-                    return true;
-                }
-
-                pressedTouchCount++;
-            }
-
-            return false;
+            return TouchInputHelper.TryGetActivePinch(out firstTouchPosition, out secondTouchPosition);
         }
 
         public static Vector2 GetPinchMidpoint(Vector2 firstTouchPosition, Vector2 secondTouchPosition)

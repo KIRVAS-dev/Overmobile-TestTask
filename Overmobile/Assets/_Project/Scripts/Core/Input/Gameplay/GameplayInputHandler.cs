@@ -158,9 +158,18 @@ namespace Core.Input.Gameplay
             }
         }
 
-        private void OnPointerUp()
+        private void OnPointerUp(PointerReleaseType releaseType)
         {
             _isPointerPressed = false;
+
+            if (releaseType == PointerReleaseType.MultiTouch)
+            {
+                ClearPendingPreview();
+                _pointerDownTarget = null;
+                _isPointerOverTarget = false;
+
+                return;
+            }
 
             if (_gameplayInputBlock.IsBlocked.CurrentValue)
             {
