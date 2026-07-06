@@ -9463,6 +9463,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _inputActionsAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _playerPointerInputConfig: {fileID: 11400000, guid: 8d5b3e2f1a0c4967b8a9c0d1e2f3a4b5, type: 2}
   _playerPointerInput: {fileID: 663580182}
   _interactableTargetProvider: {fileID: 1036685244}
   _movementRouteProvider: {fileID: 1297179013}

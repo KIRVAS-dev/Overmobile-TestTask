@@ -9,23 +9,26 @@ namespace Input
     public sealed class PlayerPointerInput
         : MonoBehaviour,
           IPlayerPointerInput,
-          IPlayerPointerInputActivation
+          IPlayerPointerInputActivation,
+          IPlayerPointerIntentGate
     {
+        private IPendingPointerDownTrigger _pendingPointerDown;
         private InputActionAsset _actionsAsset;
         private InputAction _click;
         private InputAction _point;
-        private InputControl _activePressControl;
+        private PlayerPointerInputConfig _config;
+        private PointerIntentStateMachine _intentStateMachine;
 
-        public Vector2 ScreenPosition => ReadActiveScreenPosition();
-        public bool IsPressed => _activePressControl != null;
-
+        public Vector2 ScreenPosition => PointerIntentHelper.ReadScreenPosition(_point, _intentStateMachine.ActivePressControl);
+        public bool IsPressed => _intentStateMachine.IsPressed;
         public event Action Pressed;
         public event Action<PointerReleaseType> Released;
 
         [Inject]
-        public void Construct(InputActionAsset inputActionsAsset)
+        public void Construct(InputActionAsset inputActionsAsset, PlayerPointerInputConfig config)
         {
             _actionsAsset = inputActionsAsset;
+            _config = config;
         }
 
         public void Enable()
@@ -36,15 +39,39 @@ namespace Input
 
         public void Disable()
         {
-            ReleaseActivePress(PointerReleaseType.PointerUp);
+            _intentStateMachine.ResetForDisable();
             _click.Disable();
             _point.Disable();
         }
 
+        void IPlayerPointerIntentGate.RegisterPendingPointerDown(IPendingPointerDownTrigger trigger)
+        {
+            _pendingPointerDown = trigger;
+
+            if (!_intentStateMachine.IsPressed)
+            {
+                return;
+            }
+
+            FlushPendingPointerDown();
+        }
+
         private void Awake()
         {
+            _intentStateMachine = new PointerIntentStateMachine(gameObject.name);
+            _intentStateMachine.PendingDownFlushed += OnPendingDownFlushed;
+            _intentStateMachine.PendingDownCleared += ClearPendingPointerDown;
+            _intentStateMachine.IntentReleased += OnIntentReleased;
+
             Validate();
             Enable();
+        }
+
+        private void OnDestroy()
+        {
+            _intentStateMachine.PendingDownFlushed -= OnPendingDownFlushed;
+            _intentStateMachine.PendingDownCleared -= ClearPendingPointerDown;
+            _intentStateMachine.IntentReleased -= OnIntentReleased;
         }
 
         private void OnEnable()
@@ -57,80 +84,77 @@ namespace Input
         {
             _click.performed -= OnClickPerformed;
             _click.canceled -= OnClickCanceled;
-            _activePressControl = null;
+            _intentStateMachine.ReleaseActivePressIfActive(PointerReleaseType.PointerUp);
         }
 
         private void Update()
         {
-            if (_activePressControl != null
-             && TouchInputHelper.IsMultiTouchActive())
+            if (!_intentStateMachine.IsPressed
+             && !_intentStateMachine.IsPending)
             {
-                ReleaseActivePress(PointerReleaseType.MultiTouch);
-
                 return;
             }
 
-            if (_activePressControl != null
-             && !_activePressControl.IsPressed())
-            {
-                ReleaseActivePress(PointerReleaseType.PointerUp);
-            }
+            InputControl activePressControl = _intentStateMachine.ActivePressControl;
+            Vector2 currentScreenPosition = PointerIntentHelper.ReadScreenPosition(_point, activePressControl);
+
+            _intentStateMachine.Tick(
+                Time.unscaledDeltaTime,
+                currentScreenPosition,
+                _config,
+                TouchInputHelper.IsMultiTouchActive(),
+                activePressControl.IsPressed()
+            );
         }
 
         private void OnClickPerformed(InputAction.CallbackContext context)
         {
-            if (!context.ReadValueAsButton()
-             || _activePressControl != null)
+            if (!context.ReadValueAsButton())
             {
                 return;
             }
 
-            _activePressControl = context.control;
-            Pressed?.Invoke();
+            Vector2 screenPosition = PointerIntentHelper.ReadScreenPosition(_point, context.control);
+            _intentStateMachine.BeginPending(context.control, screenPosition, _config);
         }
 
         private void OnClickCanceled(InputAction.CallbackContext context)
         {
-            if (_activePressControl == null)
-            {
-                return;
-            }
-
-            if (context.control != null
-             && context.control != _activePressControl)
-            {
-                return;
-            }
-
-            ReleaseActivePress(PointerReleaseType.PointerUp);
+            _intentStateMachine.HandleClickCanceled(context.control);
         }
 
-        private void ReleaseActivePress(PointerReleaseType releaseType)
+        private void OnPendingDownFlushed()
         {
-            if (_activePressControl == null)
-            {
-                return;
-            }
+            FlushPendingPointerDown();
+            Pressed?.Invoke();
+        }
 
-            _activePressControl = null;
+        private void OnIntentReleased(PointerReleaseType releaseType)
+        {
             Released?.Invoke(releaseType);
         }
 
-        private Vector2 ReadActiveScreenPosition()
+        private void FlushPendingPointerDown()
         {
-            if (_activePressControl == null)
+            if (_pendingPointerDown == null)
             {
-                throw new ActivePlayerPointerNotAssignedException();
+                return;
             }
 
-            return TouchInputHelper.TryGetTouchPosition(_activePressControl, out Vector2 touchPosition)
-                ? touchPosition
-                : _point.ReadValue<Vector2>();
+            _pendingPointerDown.InvokeConfirmed();
+            _pendingPointerDown = null;
+        }
+
+        private void ClearPendingPointerDown()
+        {
+            _pendingPointerDown = null;
         }
 
         private void Validate()
         {
             Guard.AgainstNull(_actionsAsset, () => new MissingPlayerPointerActionsAssetException(gameObject.name));
+            Guard.AgainstNull(_config, () => new MissingPlayerPointerInputConfigException(gameObject.name));
+            _config.Validate();
 
             InputActionMap actionMap = _actionsAsset.FindActionMap(PointerInputActions.MapName, throwIfNotFound: false);
 

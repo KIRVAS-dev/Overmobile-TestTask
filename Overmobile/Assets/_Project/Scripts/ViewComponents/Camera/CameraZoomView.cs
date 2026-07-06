@@ -22,6 +22,8 @@ namespace ViewComponents.Camera
         private InputAction _scrollWheelAction;
         private Vector2 _focalScreenPoint;
         private bool _isZoomEnabled;
+        private int? _pinchFirstTouchId;
+        private int? _pinchSecondTouchId;
         private float? _previousPinchDistance;
         private float _targetOrthographicSize;
 
@@ -50,6 +52,8 @@ namespace ViewComponents.Camera
             _cameraOrthoFitProvider.OrthoFitChanged -= OnOrthoFitChanged;
             _scrollWheelAction.Disable();
             _isZoomEnabled = false;
+            _pinchFirstTouchId = null;
+            _pinchSecondTouchId = null;
             _previousPinchDistance = null;
         }
 
@@ -67,7 +71,12 @@ namespace ViewComponents.Camera
                 return;
             }
 
-            _previousPinchDistance = null;
+            if (!_pinchFirstTouchId.HasValue
+             || !_pinchSecondTouchId.HasValue)
+            {
+                _previousPinchDistance = null;
+            }
+
             QueueScrollZoomTarget();
             ApplySmoothZoom();
         }
@@ -96,9 +105,23 @@ namespace ViewComponents.Camera
 
         private bool TryApplyPinchZoom()
         {
-            if (!CameraZoomHelper.TryGetActivePinch(out Vector2 firstTouchPosition, out Vector2 secondTouchPosition))
+            int? priorPinchFirstTouchId = _pinchFirstTouchId;
+            int? priorPinchSecondTouchId = _pinchSecondTouchId;
+
+            if (!CameraZoomHelper.TryGetActivePinch(
+                ref _pinchFirstTouchId,
+                ref _pinchSecondTouchId,
+                out Vector2 firstTouchPosition,
+                out Vector2 secondTouchPosition
+            ))
             {
                 return false;
+            }
+
+            if (priorPinchFirstTouchId != _pinchFirstTouchId
+             || priorPinchSecondTouchId != _pinchSecondTouchId)
+            {
+                _previousPinchDistance = null;
             }
 
             Vector2 focalScreenPoint = CameraZoomHelper.GetPinchMidpoint(firstTouchPosition, secondTouchPosition);

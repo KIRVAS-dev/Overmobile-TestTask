@@ -5,6 +5,8 @@ using Input.Binds;
 using R3;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using ViewComponents.Interaction;
 
 namespace ViewComponents.TargetSelection
@@ -15,7 +17,10 @@ namespace ViewComponents.TargetSelection
         private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly IInteractionService _interactionService;
         private readonly ITapIndicatorTargetClickArming _tapIndicatorTargetClickArming;
+        private readonly Dictionary<string, InteractableTarget> _interactableTargetsByEntityId =
+            new Dictionary<string, InteractableTarget>();
         private readonly List<Bind> _pointerBinds = new List<Bind>();
+        private readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
         private readonly ReactiveProperty<string> _hoveredEntityId = new ReactiveProperty<string>();
 
         public TargetSelectionPointerTracker(
@@ -29,11 +34,13 @@ namespace ViewComponents.TargetSelection
             _interactionService = interactionService;
             _tapIndicatorTargetClickArming = tapIndicatorTargetClickArming;
 
+            _playerPointerInput.Pressed += OnConfirmedPress;
             _playerPointerInput.Released += OnPointerReleased;
         }
 
         void IDisposable.Dispose()
         {
+            _playerPointerInput.Pressed -= OnConfirmedPress;
             _playerPointerInput.Released -= OnPointerReleased;
 
             foreach (Bind pointerBind in _pointerBinds)
@@ -42,6 +49,7 @@ namespace ViewComponents.TargetSelection
             }
 
             _pointerBinds.Clear();
+            _interactableTargetsByEntityId.Clear();
             _hoveredEntityId.Dispose();
         }
 
@@ -51,10 +59,17 @@ namespace ViewComponents.TargetSelection
         {
             string entityId = interactableTarget.EntityId;
 
+            _interactableTargetsByEntityId[entityId] = interactableTarget;
+
             Bind pointerEnterBind = new Bind(interactableTarget.PointArea.PointerEnter);
 
             pointerEnterBind.OnTriggered += () =>
             {
+                if (!_playerPointerInput.IsPressed)
+                {
+                    return;
+                }
+
                 _hoveredEntityId.Value = entityId;
                 TryPlayDragOverTargetFeedback(entityId, targetSelectionView);
             };
@@ -81,6 +96,16 @@ namespace ViewComponents.TargetSelection
             pointerDownBind.OnTriggered += () => ApplyTargetPointerDownFeedback(entityId, targetSelectionView);
             pointerDownBind.Enable();
             _pointerBinds.Add(pointerDownBind);
+        }
+
+        private void OnConfirmedPress()
+        {
+            if (!TryResolveEntityAtScreenPosition(_playerPointerInput.ScreenPosition, out string entityId))
+            {
+                return;
+            }
+
+            _hoveredEntityId.Value = entityId;
         }
 
         private void OnPointerReleased(PointerReleaseType releaseType)
@@ -134,6 +159,44 @@ namespace ViewComponents.TargetSelection
             }
 
             _tapIndicatorTargetClickArming.DisarmTargetClickRelease();
+        }
+
+        private bool TryResolveEntityAtScreenPosition(Vector2 screenPosition, out string entityId)
+        {
+            entityId = null;
+
+            EventSystem eventSystem = EventSystem.current;
+
+            if (eventSystem == null)
+            {
+                return false;
+            }
+
+            PointerEventData pointerEventData = new PointerEventData(eventSystem) { position = screenPosition };
+
+            _raycastResults.Clear();
+            eventSystem.RaycastAll(pointerEventData, _raycastResults);
+
+            foreach (RaycastResult raycastResult in _raycastResults)
+            {
+                InteractableTarget interactableTarget = raycastResult.gameObject.GetComponentInParent<InteractableTarget>();
+
+                if (interactableTarget == null)
+                {
+                    continue;
+                }
+
+                if (!_interactableTargetsByEntityId.ContainsKey(interactableTarget.EntityId))
+                {
+                    continue;
+                }
+
+                entityId = interactableTarget.EntityId;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

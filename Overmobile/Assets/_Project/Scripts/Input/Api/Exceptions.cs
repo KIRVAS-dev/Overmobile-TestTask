@@ -25,4 +25,40 @@ namespace Input
         public ActivePlayerPointerNotAssignedException()
             : base("input-4", "Active player pointer is not assigned") { }
     }
+
+    public sealed class InvalidPlayerPointerInputConfigValueException : ExtendedException
+    {
+        public InvalidPlayerPointerInputConfigValueException(string fieldName, float value)
+            : base("input-5", $"Player pointer input config {fieldName} has invalid value {value}") { }
+    }
+
+    public sealed class InvalidPointerIntentStateException : ExtendedException
+    {
+        public InvalidPointerIntentStateException(string objectName, int stateValue)
+            : base("input-6", $"Player pointer intent state {stateValue} is invalid on '{objectName}'") { }
+    }
+
+    public sealed class MissingPlayerPointerInputConfigException : ExtendedException
+    {
+        public MissingPlayerPointerInputConfigException(string objectName)
+            : base("input-7", $"Player pointer input config is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class MissingPointAreaFieldException : ExtendedException
+    {
+        public MissingPointAreaFieldException(string fieldName, string objectName)
+            : base("input-8", $"Point area {fieldName} is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class MissingPointerDownIntentGateException : ExtendedException
+    {
+        public MissingPointerDownIntentGateException(string objectName)
+            : base("input-9", $"Pointer down intent gate is not assigned on '{objectName}'") { }
+    }
+
+    public sealed class MissingPlayerPointerInputForPointAreaBindException : ExtendedException
+    {
+        public MissingPlayerPointerInputForPointAreaBindException(string objectName)
+            : base("input-10", $"Player pointer input is not assigned for point area bind on '{objectName}'") { }
+    }
 }

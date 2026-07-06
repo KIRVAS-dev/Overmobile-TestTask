@@ -10,9 +10,18 @@ namespace ViewComponents.Camera
         private const float VIEWPORT_CENTER = 0.5f;
         private const float MIDPOINT_FACTOR = 0.5f;
 
-        public static bool TryGetActivePinch(out Vector2 firstTouchPosition, out Vector2 secondTouchPosition)
+        public static bool TryGetActivePinch(
+            ref int? firstTouchId,
+            ref int? secondTouchId,
+            out Vector2 firstTouchPosition,
+            out Vector2 secondTouchPosition)
         {
-            return TouchInputHelper.TryGetActivePinch(out firstTouchPosition, out secondTouchPosition);
+            return TouchInputHelper.TryGetActivePinch(
+                ref firstTouchId,
+                ref secondTouchId,
+                out firstTouchPosition,
+                out secondTouchPosition
+            );
         }
 
         public static Vector2 GetPinchMidpoint(Vector2 firstTouchPosition, Vector2 secondTouchPosition)
@@ -25,7 +34,7 @@ namespace ViewComponents.Camera
             float pinchDelta,
             float pinchSensitivity)
         {
-            return currentOrthographicSize + pinchDelta * pinchSensitivity;
+            return currentOrthographicSize - pinchDelta * pinchSensitivity;
         }
 
         public static float CalculateScrollTargetOrthographicSize(

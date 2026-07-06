@@ -28,6 +28,7 @@ namespace Core.Bootstrap
     {
         [Header("Input")]
         [SerializeField] private InputActionAsset _inputActionsAsset;
+        [SerializeField] private PlayerPointerInputConfig _playerPointerInputConfig;
         [SerializeField] private PlayerPointerInput _playerPointerInput;
 
         [Header("Interaction")]
@@ -76,7 +77,14 @@ namespace Core.Bootstrap
         private void RegisterInput(IContainerBuilder builder)
         {
             builder.RegisterInstance(_inputActionsAsset);
-            builder.RegisterComponent(_playerPointerInput).As<IPlayerPointerInput>().As<IPlayerPointerInputActivation>();
+            builder.RegisterInstance(_playerPointerInputConfig);
+
+            builder
+               .RegisterComponent(_playerPointerInput)
+               .As<IPlayerPointerInput>()
+               .As<IPlayerPointerInputActivation>()
+               .As<IPlayerPointerIntentGate>();
+
             builder.RegisterComponentInHierarchy<TapIndicator>().As<ITapIndicatorTargetClickArming>();
             builder.Register<GameplayInputBlock>(Lifetime.Singleton).As<IGameplayInputBlock>();
             builder.Register<GameplayInputHandler>(Lifetime.Singleton);
@@ -99,6 +107,7 @@ namespace Core.Bootstrap
 
             builder.Register<InteractionService>(Lifetime.Singleton).As<IInteractionService>();
             builder.Register<DropBinder>(Lifetime.Singleton).As<IDropBinder>();
+            builder.Register<PointAreaInputBinder>(Lifetime.Singleton).As<IPointAreaInputBinder>();
             builder.Register<InteractionViewBinder>(Lifetime.Singleton).As<IInteractionViewBinder>();
         }
 

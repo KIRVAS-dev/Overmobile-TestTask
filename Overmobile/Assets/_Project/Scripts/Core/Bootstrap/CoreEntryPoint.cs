@@ -21,6 +21,7 @@ namespace Core.Bootstrap
         private readonly IDropBinder _dropBinder;
         private readonly IInteractionViewBinder _interactionViewBinder;
         private readonly IEntityPowerViewsBinder _entityPowerViewsBinder;
+        private readonly IPointAreaInputBinder _pointAreaInputBinder;
         private readonly ITargetSelectionBinder _targetSelectionBinder;
         private readonly IGameplayInputBlock _gameplayInputBlock;
         private readonly GameplayInputHandler _gameplayInputHandler;
@@ -34,6 +35,7 @@ namespace Core.Bootstrap
             IDropBinder dropBinder,
             IInteractionViewBinder interactionViewBinder,
             IEntityPowerViewsBinder entityPowerViewsBinder,
+            IPointAreaInputBinder pointAreaInputBinder,
             ITargetSelectionBinder targetSelectionBinder,
             IGameplayInputBlock gameplayInputBlock,
             GameplayInputHandler gameplayInputHandler,
@@ -46,6 +48,7 @@ namespace Core.Bootstrap
             _dropBinder = dropBinder;
             _interactionViewBinder = interactionViewBinder;
             _entityPowerViewsBinder = entityPowerViewsBinder;
+            _pointAreaInputBinder = pointAreaInputBinder;
             _targetSelectionBinder = targetSelectionBinder;
             _gameplayInputBlock = gameplayInputBlock;
             _gameplayInputHandler = gameplayInputHandler;
@@ -58,6 +61,7 @@ namespace Core.Bootstrap
             _dropBinder.BindLootDrops();
             _interactionViewBinder.BindInteractionViews();
             _entityPowerViewsBinder.BindEntityPowerViews();
+            _pointAreaInputBinder.BindPointAreas();
             _targetSelectionBinder.BindTargetSelection();
 
             StartIntroAsync().Forget();
