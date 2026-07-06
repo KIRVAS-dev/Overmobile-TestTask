@@ -71,5 +71,5 @@ MonoBehaviour:
   _meshMaskShader: {fileID: 4800000, guid: 1f54309de0a38c74486d00dc01806f5a, type: 3}
   _spriteMaskShader: {fileID: 4800000, guid: 0d6f10cc315a0b94b9f16b424a0fa026, type: 3}
   _compositeShader: {fileID: 4800000, guid: ce254537c525ff64d8b1dd32c3ebc002, type: 3}
-  _outlineThicknessPixels: 2
+  _renderingConfig: {fileID: 11400000, guid: c1d2e3f4a5b6789012345678abcdef01, type: 2}
   _renderPassEvent: 500

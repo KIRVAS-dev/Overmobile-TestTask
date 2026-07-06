@@ -1,11 +1,11 @@
 using Core.Gameplay.Power;
+using ExtendedExceptions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ViewComponents.UI.PowerPanel
 {
-    [ExecuteAlways]
     public sealed class PowerPanelView
         : MonoBehaviour,
           IPowerPanelView
@@ -14,14 +14,10 @@ namespace ViewComponents.UI.PowerPanel
         [SerializeField] private TMP_Text _textLabel;
         [SerializeField] private PowerPanelConfig _config;
 
-        private void OnValidate()
-        {
-            ApplyConfig(isConfigRequired: false);
-        }
-
         private void Awake()
         {
-            ApplyConfig(isConfigRequired: Application.isPlaying);
+            Validate();
+            ApplyConfig();
         }
 
         public void SetPower(int power)
@@ -29,20 +25,24 @@ namespace ViewComponents.UI.PowerPanel
             _textLabel.text = power.ToString();
         }
 
-        private void ApplyConfig(bool isConfigRequired)
+        private void ApplyConfig()
         {
-            if (_config == null)
-            {
-                if (isConfigRequired)
-                {
-                    throw new MissingPowerPanelFieldException(nameof(_config), gameObject.name);
-                }
-
-                return;
-            }
-
             _backgroundImage.color = _config.BackgroundColor;
             _textLabel.color = _config.TextColor;
+            _textLabel.outlineWidth = _config.TextOutlineWidth;
+        }
+
+        private void Validate()
+        {
+            _config.Validate();
+
+            Guard.AgainstNull(
+                _backgroundImage,
+                () => new MissingPowerPanelFieldException(nameof(_backgroundImage), gameObject.name)
+            );
+
+            Guard.AgainstNull(_textLabel, () => new MissingPowerPanelFieldException(nameof(_textLabel), gameObject.name));
+            Guard.AgainstNull(_config, () => new MissingPowerPanelFieldException(nameof(_config), gameObject.name));
         }
     }
 }

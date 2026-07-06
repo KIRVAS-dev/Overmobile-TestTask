@@ -12,7 +12,7 @@ namespace Rendering.TargetSelection
         [SerializeField] private Shader _meshMaskShader;
         [SerializeField] private Shader _spriteMaskShader;
         [SerializeField] private Shader _compositeShader;
-        [SerializeField] private float _outlineThicknessPixels = 2f;
+        [SerializeField] private TargetSelectionRenderingConfig _renderingConfig;
         [SerializeField] private RenderPassEvent _renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
 
         private Material _compositeMaterial;
@@ -23,7 +23,11 @@ namespace Rendering.TargetSelection
             Validate();
 
             _compositeMaterial = CoreUtils.CreateEngineMaterial(_compositeShader);
-            _compositeMaterial.SetFloat(TargetSelectionShaderProperties.OutlineThickness, _outlineThicknessPixels);
+
+            _compositeMaterial.SetFloat(
+                TargetSelectionShaderProperties.OutlineThickness,
+                _renderingConfig.OutlineThicknessPixels
+            );
 
             _renderPass =
                 new TargetSelectionRenderPass(_compositeMaterial, _meshMaskShader, _spriteMaskShader)
@@ -57,11 +61,9 @@ namespace Rendering.TargetSelection
             Guard.AgainstNull(_meshMaskShader, () => new MissingTargetSelectionShaderException(FeatureName, "mesh mask"));
             Guard.AgainstNull(_spriteMaskShader, () => new MissingTargetSelectionShaderException(FeatureName, "sprite mask"));
             Guard.AgainstNull(_compositeShader, () => new MissingTargetSelectionShaderException(FeatureName, "composite"));
+            Guard.AgainstNull(_renderingConfig, () => new MissingTargetSelectionRenderingConfigException(FeatureName));
 
-            Guard.AgainstNegative(
-                _outlineThicknessPixels,
-                () => new InvalidTargetSelectionRenderingValueException(nameof(_outlineThicknessPixels), _outlineThicknessPixels)
-            );
+            _renderingConfig.Validate();
         }
     }
 }

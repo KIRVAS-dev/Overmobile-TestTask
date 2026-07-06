@@ -57,6 +57,24 @@ MonoBehaviour:
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
   m_TileOnlyMode: 0
+--- !u!114 &4018279980693511035
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e5b1d346ff83f4c9415057257a81dc, type: 3}
+  m_Name: TargetSelectionRendererFeature
+  m_EditorClassIdentifier: Rendering::Rendering.TargetSelection.TargetSelectionRendererFeature
+  m_Active: 1
+  _meshMaskShader: {fileID: 4800000, guid: 1f54309de0a38c74486d00dc01806f5a, type: 3}
+  _spriteMaskShader: {fileID: 4800000, guid: 0d6f10cc315a0b94b9f16b424a0fa026, type: 3}
+  _compositeShader: {fileID: 4800000, guid: ce254537c525ff64d8b1dd32c3ebc002, type: 3}
+  _renderingConfig: {fileID: 11400000, guid: c1d2e3f4a5b6789012345678abcdef01, type: 2}
+  _renderPassEvent: 500
 --- !u!114 &7833122117494664109
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,21 +116,3 @@ MonoBehaviour:
   m_Active: 1
   _shader: {fileID: 4800000, guid: 67d1cc30ad266f14bafaf5d439fa7b4e, type: 3}
   _renderPassEvent: 550
---- !u!114 &4018279980693511035
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e5b1d346ff83f4c9415057257a81dc, type: 3}
-  m_Name: TargetSelectionRendererFeature
-  m_EditorClassIdentifier: Rendering::Rendering.TargetSelection.TargetSelectionRendererFeature
-  m_Active: 1
-  _meshMaskShader: {fileID: 4800000, guid: 1f54309de0a38c74486d00dc01806f5a, type: 3}
-  _spriteMaskShader: {fileID: 4800000, guid: 0d6f10cc315a0b94b9f16b424a0fa026, type: 3}
-  _compositeShader: {fileID: 4800000, guid: ce254537c525ff64d8b1dd32c3ebc002, type: 3}
-  _outlineThicknessPixels: 2
-  _renderPassEvent: 500
