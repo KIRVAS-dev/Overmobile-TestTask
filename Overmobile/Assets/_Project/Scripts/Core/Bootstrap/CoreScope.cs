@@ -63,6 +63,7 @@ namespace Core.Bootstrap
 
             builder
                .RegisterComponentInHierarchy<CameraConfinerOrientation>()
+               .AsSelf()
                .As<ICameraConfinerView>()
                .As<ICameraOrthoFitProvider>()
                .As<ICameraBoundsFrameUpdater>();

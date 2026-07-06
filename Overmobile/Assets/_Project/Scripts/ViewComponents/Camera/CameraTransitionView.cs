@@ -17,14 +17,12 @@ namespace ViewComponents.Camera
         [SerializeField] private CinemachineCamera _cinemachineCamera;
         [SerializeField] private CameraConfig _config;
 
-        private ICameraOrthoFitProvider _cameraOrthoFitProvider;
-        private ICameraConfinerView _cameraConfinerView;
+        private CameraConfinerOrientation _cameraConfiner;
 
         [Inject]
-        public void Construct(ICameraOrthoFitProvider cameraOrthoFitProvider, ICameraConfinerView cameraConfinerView)
+        public void Construct(CameraConfinerOrientation cameraConfiner)
         {
-            _cameraOrthoFitProvider = cameraOrthoFitProvider;
-            _cameraConfinerView = cameraConfinerView;
+            _cameraConfiner = cameraConfiner;
         }
 
         private void Awake()
@@ -34,19 +32,19 @@ namespace ViewComponents.Camera
 
         public async UniTask PlayTransitionAsync(CancellationToken cancellationToken)
         {
-            float startOrthographicSize = _cameraOrthoFitProvider.MinOrthographicSize;
-            float targetOrthographicSize = _cameraOrthoFitProvider.FitOrthographicSize;
+            float startOrthographicSize = _cameraConfiner.MinOrthographicSize;
+            float targetOrthographicSize = _cameraConfiner.FitOrthographicSize;
 
             Transform cinemachineCameraTransform = _cinemachineCamera.transform;
             cinemachineCameraTransform.DOKill();
 
-            _cameraConfinerView.BeginBoundsFollow();
+            _cameraConfiner.BeginBoundsFollow();
 
             try
             {
                 cinemachineCameraTransform.position = _config.StartPosition;
                 SetOrthographicSize(startOrthographicSize);
-                _cameraConfinerView.UpdateBoundsFollow(_config.StartPosition);
+                _cameraConfiner.UpdateBoundsFollow(_config.StartPosition);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(_config.DelayBeforeTransition), cancellationToken: cancellationToken);
 
@@ -69,7 +67,7 @@ namespace ViewComponents.Camera
             }
             finally
             {
-                _cameraConfinerView.EndBoundsFollow();
+                _cameraConfiner.EndBoundsFollow();
             }
         }
 
@@ -89,7 +87,8 @@ namespace ViewComponents.Camera
         {
             using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
-                this.GetCancellationTokenOnDestroy()
+                this.GetCancellationTokenOnDestroy(),
+                _cameraConfiner.GetCancellationTokenOnDestroy()
             );
 
             CancellationToken linkedToken = linkedCts.Token;
@@ -103,7 +102,7 @@ namespace ViewComponents.Camera
             while (moveTween.IsActive()
              || sizeTween.IsActive())
             {
-                _cameraConfinerView.UpdateBoundsFollow(cinemachineCameraTransform.position);
+                _cameraConfiner.UpdateBoundsFollow(cinemachineCameraTransform.position);
 
                 await UniTask.Yield(linkedToken);
             }

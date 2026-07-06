@@ -27,6 +27,8 @@ namespace ViewComponents.Camera
         private float _minOrthographicSize;
         private bool _boundsFollowActive;
 
+        private bool IsAlive => this;
+
         public float FitOrthographicSize => _fitOrthographicSize;
         public float MinOrthographicSize => _minOrthographicSize;
         public event Action OrthoFitChanged;
@@ -38,7 +40,8 @@ namespace ViewComponents.Camera
 
         public void UpdateBoundsFollow(Vector3 followPosition)
         {
-            if (!_boundsFollowActive)
+            if (!_boundsFollowActive
+             || !IsAlive)
             {
                 return;
             }
@@ -52,7 +55,18 @@ namespace ViewComponents.Camera
 
         public void EndBoundsFollow()
         {
+            if (!_boundsFollowActive)
+            {
+                return;
+            }
+
             _boundsFollowActive = false;
+
+            if (!IsAlive)
+            {
+                return;
+            }
+
             transform.position = _restBoundsPosition;
             RefreshOrthoFit();
             SetOrthographicSize(_fitOrthographicSize);
@@ -69,6 +83,11 @@ namespace ViewComponents.Camera
         {
             Validate();
             _restBoundsPosition = transform.position;
+        }
+
+        private void OnDestroy()
+        {
+            _boundsFollowActive = false;
         }
 
         public void TickBoundsFrame()
