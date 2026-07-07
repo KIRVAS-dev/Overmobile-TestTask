@@ -40,8 +40,6 @@ namespace ViewComponents.UI.PowerPanel
                 {
                     if (interactionPhaseSource.CurrentPhase.CurrentValue != InteractionPhase.Idle)
                     {
-                        valueApplier.UpdateSilently(power);
-
                         return;
                     }
 

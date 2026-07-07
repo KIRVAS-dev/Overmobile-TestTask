@@ -33,14 +33,11 @@ namespace ViewComponents.UI.PowerPanel
 
         public void SetWithoutAnimation(int power, int? displayedBaseline = null)
         {
-            _powerPanelView.SetPower(power);
-            _hasDisplayedPower = true;
-            _displayedPower = displayedBaseline ?? power;
-        }
+            int visiblePower = displayedBaseline ?? power;
 
-        public void UpdateSilently(int power)
-        {
-            _powerPanelView.SetPower(power);
+            _powerPanelView.SetPower(visiblePower);
+            _hasDisplayedPower = true;
+            _displayedPower = visiblePower;
         }
     }
 }
